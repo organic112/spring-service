@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
-
+/**
+ * Example endpoint, valid url: localhost:8081/api/v1/user/login/username=admin
+ */
 @RestController
 @RequestMapping(value = UserApi.ENDPOINT, produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
@@ -21,10 +23,10 @@ public class UserApi {
     static final String ENDPOINT = "/api/v1/user";
     private final UserService userService;
 
-    @GetMapping(value = "login/{username}")
-    public UserDetailsAuthority getUserByName(@PathVariable String userName) {
+    @GetMapping(value = "/login/{username}")
+    public UserDetailsAuthority getUserByName(@PathVariable ("username") String userName) {
 
-        System.out.println("request in api !!");
+        System.out.println("request in user api (with param)!");
 
         Optional<UserDetailsAuthority> user = userService.findByUserName(userName);
         return user.orElseThrow(() -> new RuntimeException("User not found"));
