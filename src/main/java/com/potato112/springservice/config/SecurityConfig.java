@@ -1,5 +1,6 @@
 package com.potato112.springservice.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -7,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+@Slf4j
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -31,12 +33,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         @Override
         public String encode(CharSequence rawPass) {
+            log.info("SERVICE: raw password to encode:" + rawPass);
+
             return rawPass.toString();
         }
 
         @Override
-        public boolean matches(CharSequence rawPass, String encodedPass) {
-            return rawPass.toString().equals(encodedPass);
+        public boolean matches(CharSequence rawPass, String decodedPass) {
+
+            log.info("try mach raw pass:" + rawPass + " and encoded pass:" + decodedPass);
+
+            return rawPass.toString().equals(decodedPass);
         }
     }
 }

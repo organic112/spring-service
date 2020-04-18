@@ -6,8 +6,8 @@ import lombok.Data;
 public class UserDetailsAuthority {
 
     private UserDetailsVO userDetailsVO;
-    private boolean accountNonExpired;
-    private boolean credentialsNonExpired;
+    private boolean accountNotExpired;
+    private boolean accountNotLocked;
+    private boolean credentialsNotExpired;
     private boolean enabled;
-
 }
