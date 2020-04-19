@@ -1,14 +1,15 @@
 package com.potato112.springservice.domain.user.api;
 
 
-import com.potato112.springservice.domain.user.CreateUserService;
-import com.potato112.springservice.domain.user.UserService;
+import com.potato112.springservice.domain.user.*;
 import com.potato112.springservice.domain.user.model.UserDetailsAuthority;
+import com.potato112.springservice.domain.user.model.UserOverviewResponseVo;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -39,8 +40,18 @@ public class UserApi {
         return createUserService.createUser(userVo);
     }
 
+    @GetMapping
+    OffsetResponseVo<UserOverviewResponseVo> getUsers(@RequestParam Map<String, String> allParams){
 
+        UserSearchVo userSearchVo = new UserSearchVo(allParams);
+        return userService.getUsers(userSearchVo);
+    }
 
+    @GetMapping(value = "/create-parameters")
+    public UserFormParametersVo getUserParameters() {
+
+        return createUserService.getUserParameters();
+    }
 
     /*@PostMapping
     public String createUser(@RequestMapping @Valid UserVo user) {

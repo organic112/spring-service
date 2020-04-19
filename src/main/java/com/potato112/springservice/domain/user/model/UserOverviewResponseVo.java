@@ -12,8 +12,10 @@ public interface UserOverviewResponseVo {
     String getFirstName();
     String getLastName();
 
-    @Value("#{target.organizations != null ? target.organizations.split(\"&&\") : {}}")
-    List<String> getOrganizations();
+    // TODO implement getGroups();
+    //@Value("#{target.organizations != null ? target.organizations.split(\"&&\") : {}}")
+    @Value("#{{}}")
+    List<String> getGroups();
     String getPhone();
     UserStatus getLocked();
 }

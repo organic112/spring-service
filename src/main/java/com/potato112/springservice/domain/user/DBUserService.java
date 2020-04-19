@@ -2,10 +2,10 @@ package com.potato112.springservice.domain.user;
 
 
 import com.potato112.springservice.domain.user.model.*;
-import com.potato112.springservice.repository.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -31,6 +31,40 @@ public class DBUserService implements UserService {
         // FIXME
         return Optional.of(getUserServiceMockedAuthorityByName());
     }
+
+    @Override
+    public OffsetResponseVo<UserOverviewResponseVo> getUsers(UserSearchVo searchVo) {
+
+        Pageable pageable = searchVo.getPageable();
+
+        //getUserGrop(UserSearchVo searchVo);
+
+        Page<UserOverviewResponseVo> page = getUsersOverviewItems(pageable, searchVo);
+
+        OffsetQueryInfoVo infoVo = new OffsetQueryInfoVo(pageable.getOffset(), pageable.getPageSize(), page.getTotalElements());
+        return new OffsetResponseVo<>(page.getContent(), infoVo);
+    }
+
+    Page<UserOverviewResponseVo> getUsersOverviewItems(Pageable pageable, UserSearchVo searchVo) {
+
+        //Fixme some logic related to groups
+        Page<UserOverviewResponseVo> page;
+
+//        FIXME add params
+       page = userRepository.getAllUsersForOverview(
+                searchVo.getEmail(),
+                searchVo.getFirstName(),
+                searchVo.getLastName(),
+                //searchVo.getGroups(),
+                searchVo.getPhone(),
+                searchVo.getLocked(),
+                pageable);
+
+       // page = userRepository.getAllUsersForOverview();
+        return page;
+    }
+
+
 
     // FIXME MOCKED AUTHORITIES
     private UserDetailsAuthority getUserServiceMockedAuthorityByName() {
@@ -60,4 +94,20 @@ public class DBUserService implements UserService {
     // TODO add the rest of methods
 
 
+    @Override
+    public UserFormParametersVo getUserFormParameters() {
+        return null;
+    }
+
+    @Override
+    public String generateRandomPass() {
+        // FIXME
+        return "TODO_RANDOM_PASS_STRING";
+    }
+
+    @Override
+    public String generateHashedPass(String newPassword) {
+        // FIXME
+        return "TODO_RANDOM_HASHED_PASS";
+    }
 }

@@ -2,6 +2,9 @@ package com.potato112.springservice.domain.user.api;
 
 import com.potato112.springservice.domain.user.UserStatus;
 import com.potato112.springservice.domain.user.model.UserGroupVO;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
@@ -9,6 +12,9 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.List;
 
+@Getter
+@Setter
+@EqualsAndHashCode
 public class UserVo {
 
     public static final class AttributeName {

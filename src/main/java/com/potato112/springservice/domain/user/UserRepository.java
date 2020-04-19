@@ -32,13 +32,41 @@ public interface UserRepository extends PagingAndSortingRepository<User, String>
     TODO add more sophisticated methods
      and native SQL queries
      */
-    @Query(value = " TODO native query ", countQuery = " TODO native query ", nativeQuery = true)
+    @Query(value =
+            "SELECT " +
+            "usr.pk_user as id,"+
+            "usr.email as email,"+
+            "usr.first_name as firstName,"+
+            "usr.last_name as lastName,"+
+            "usr.lock_flag as locked,"+
+            "usr.phone as phone "+
+            // "'GROUP_NAME' as groups"+
+            "FROM user usr "+
+            "WHERE ( "+
+            "    ( :email is null or usr.email LIKE concat('%', :email ,'%') ) "+
+            "AND ( :firstName is null or usr.first_name LIKE concat('%', :firstName ,'%') ) "+
+            "AND ( :lastName is null or usr.last_name LIKE concat('%', :lastName ,'%') ) "+
+            "AND ( :locked is null or usr.lock_flag LIKE concat('%', :locked ,'%')  ) "+
+            "AND ( :phone is null or usr.phone LIKE concat('%', :phone ,'%') ) "+
+            " ) ",
+             countQuery =
+            "SELECT COUNT(usr.pk_user) FROM user usr "+
+            "WHERE ( "+
+            "    ( :email is null or usr.email LIKE concat('%', :email ,'%') ) "+
+            "AND ( :firstName is null or usr.first_name LIKE concat('%', :firstName ,'%') ) "+
+            "AND ( :lastName is null or usr.last_name LIKE concat('%', :lastName ,'%') ) "+
+            "AND ( :locked is null or usr.lock_flag LIKE concat('%', :locked ,'%')  ) "+
+            "AND ( :phone is null or usr.phone LIKE concat('%', :phone ,'%') ) "+
+            " ) ",
+            nativeQuery = true)
     Page<UserOverviewResponseVo> getAllUsersForOverview(@Param("email") String email,
                                                         @Param("firstName") String firstName,
                                                         @Param("lastName") String lastName,
-                                                        @Param("organizations") String organizations,
+                                                     // @Param("organizations") String organizations,
                                                         @Param("phone") String phone,
                                                         @Param("locked") String locked,
                                                         Pageable pageable);
 
+
+   // Page<UserOverviewResponseVo> getAllUsersForOverview();
 }

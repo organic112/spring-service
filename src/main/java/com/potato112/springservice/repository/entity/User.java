@@ -5,7 +5,15 @@ import com.potato112.springservice.domain.user.UserStatus;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.Column;
+import javax.persistence.Basic;
+import javax.persistence.Enumerated;
+import javax.persistence.EnumType;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -14,18 +22,17 @@ import java.time.LocalDate;
 
 @Data
 @Entity
-@Table(name = "user")
+@Table(schema = "demo-db", name = "user")
 public class User implements Serializable {
 
-
     // TODO add annotaions
-
     @Id
     @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "pk_user")
-    @GeneratedValue(generator = "fixme")
-    @GenericGenerator(name = "", strategy = "")
+    @Column(name = "pk_user", length = 80)
+/*    @GeneratedValue(generator = "seq_id")
+    @GenericGenerator(name = "seq_id", strategy = "identity")*/
+    @GeneratedValue(generator="system-uuid")
+    @GenericGenerator(name="system-uuid", strategy = "uuid")
     private String id;
 
     @Email
@@ -34,13 +41,13 @@ public class User implements Serializable {
     private String email;
 
     @Basic(optional = false)
-    @NotNull
+    //@NotNull
     @Size(min = 1, max = 128)
     @Column(name = "password")
     private String password;
 
     @Basic(optional = false)
-    @NotNull
+    //@NotNull
     @Size(min = 1, max = 50)
     @Column(name = "first_name")
     private String firstName;
@@ -54,7 +61,7 @@ public class User implements Serializable {
     private String phone;
 
     @Basic(optional = false)
-    @NotNull
+   // @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "lock_flag")
     private UserStatus locked;
@@ -62,7 +69,8 @@ public class User implements Serializable {
     @Column(name = "last_loggedin_date")
     private LocalDate lastLoggedInDate;
 
-    //private List<UserOrganization> userOrganizations;
+    // TODO
+    //private List<UserGroup> userGroups;
 
 
 }
