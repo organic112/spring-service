@@ -1,7 +1,7 @@
 package com.potato112.springservice.repository.entity;
 
 
-import com.potato112.springservice.domain.user.UserStatus;
+import com.potato112.springservice.domain.user.model.authorize.UserStatus;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -29,9 +29,7 @@ public class User implements Serializable {
     @Id
     @NotNull
     @Column(name = "pk_user", length = 80)
-/*    @GeneratedValue(generator = "seq_id")
-    @GenericGenerator(name = "seq_id", strategy = "identity")*/
-    @GeneratedValue(generator="system-uuid")
+    @GeneratedValue(generator="system-uuid") // auto generated as String to Varchar
     @GenericGenerator(name="system-uuid", strategy = "uuid")
     private String id;
 
@@ -41,13 +39,13 @@ public class User implements Serializable {
     private String email;
 
     @Basic(optional = false)
-    //@NotNull
+    @NotNull   //
     @Size(min = 1, max = 128)
     @Column(name = "password")
     private String password;
 
     @Basic(optional = false)
-    //@NotNull
+    @NotNull  //
     @Size(min = 1, max = 50)
     @Column(name = "first_name")
     private String firstName;
@@ -61,7 +59,7 @@ public class User implements Serializable {
     private String phone;
 
     @Basic(optional = false)
-   // @NotNull
+    @NotNull  //
     @Enumerated(EnumType.STRING)
     @Column(name = "lock_flag")
     private UserStatus locked;

@@ -1,9 +1,14 @@
 package com.potato112.springservice.domain.user.api;
 
 
-import com.potato112.springservice.domain.user.*;
-import com.potato112.springservice.domain.user.model.UserDetailsAuthority;
-import com.potato112.springservice.domain.user.model.UserOverviewResponseVo;
+import com.potato112.springservice.domain.common.search.OffsetResponseVo;
+import com.potato112.springservice.domain.user.model.authorize.UserDetailsAuthority;
+import com.potato112.springservice.domain.user.model.search.UserSearchVo;
+import com.potato112.springservice.domain.user.model.views.UserFormParametersVo;
+import com.potato112.springservice.domain.user.model.views.UserOverviewResponseVo;
+import com.potato112.springservice.domain.user.model.authorize.UserVo;
+import com.potato112.springservice.domain.user.crud.CreateUserService;
+import com.potato112.springservice.domain.user.crud.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +18,9 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * Example endpoint, valid url: localhost:8081/api/v1/user/login/username=admin
+ * Class stores all endpoints related to User domain
+ *
+ * Example endpoint valid url: localhost:8081/api/v1/user/login/username=admin
  */
 @RestController
 @RequestMapping(value = UserApi.ENDPOINT, produces = MediaType.APPLICATION_JSON_VALUE)
