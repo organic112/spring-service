@@ -1,6 +1,6 @@
 package com.potato112.springservice.domain.user.model.search;
 
-import com.potato112.springservice.repository.entity.User;
+import com.potato112.springservice.repository.entities.auth.User;
 import org.springframework.data.jpa.domain.Specification;
 
 public class UserSpecification {

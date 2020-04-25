@@ -16,7 +16,7 @@ public class UserDetailsVO {
     private String email;
     private String password;
     private String selectedOrganizationId;
-    private List<UserGroupVO> userGroups = new ArrayList<>();
+    private List<UserGroupVO> userGroupMappings = new ArrayList<>();
 
 
 }

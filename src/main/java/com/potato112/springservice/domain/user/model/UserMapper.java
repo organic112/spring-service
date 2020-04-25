@@ -2,7 +2,10 @@ package com.potato112.springservice.domain.user.model;
 
 import com.potato112.springservice.domain.common.SysMapper;
 import com.potato112.springservice.domain.user.model.authorize.UserVo;
-import com.potato112.springservice.repository.entity.User;
+import com.potato112.springservice.repository.entities.auth.User;
+import com.potato112.springservice.repository.entities.auth.UserGroupMapping;
+
+import java.util.List;
 
 public class UserMapper implements SysMapper<User, UserVo> {
 
@@ -17,6 +20,9 @@ public class UserMapper implements SysMapper<User, UserVo> {
         userVo.setPassword(user.getPassword());
         userVo.setPhone(user.getPhone());
         userVo.setLocked(user.getLocked());
+
+        List<UserGroupMapping> userGroupMappings = user.getUserGroups();
+
 
         // TODO implement Grops mapping
         return userVo;

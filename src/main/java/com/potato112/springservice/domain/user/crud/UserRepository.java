@@ -2,7 +2,7 @@ package com.potato112.springservice.domain.user.crud;
 
 
 import com.potato112.springservice.domain.user.model.views.UserOverviewResponseVo;
-import com.potato112.springservice.repository.entity.User;
+import com.potato112.springservice.repository.entities.auth.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

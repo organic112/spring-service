@@ -1,36 +1,42 @@
-package com.potato112.springservice.repository.entity;
+package com.potato112.springservice.repository.entities.auth;
 
 
 import com.potato112.springservice.domain.user.model.authorize.UserStatus;
+import com.potato112.springservice.repository.entities.BaseEntity;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
-import javax.persistence.Column;
-import javax.persistence.Basic;
-import javax.persistence.Enumerated;
-import javax.persistence.EnumType;
-
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
+@NamedQueries({
+        @NamedQuery(
+                name = "getAllUsers",
+                query = "select u from User u order by u.lastLoggedInDate DESC"
+        ),
+        @NamedQuery(
+                name = "deleteAllUserGroups",
+                query = "delete from User u"
+        ),
+        @NamedQuery(
+                name = "deleteUserGroupById",
+                query = "delete from User u where u.id = :userId"
+        )
+})
 @Data
 @Entity
 @Table(schema = "demo-db", name = "user")
-public class User implements Serializable {
+public class User extends BaseEntity {
 
-    // TODO add annotaions
     @Id
     @NotNull
     @Column(name = "pk_user", length = 80)
-    @GeneratedValue(generator="system-uuid") // auto generated as String to Varchar
-    @GenericGenerator(name="system-uuid", strategy = "uuid")
+    @GeneratedValue(generator = "system-uuid") // auto generated as String to Varchar
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String id;
 
     @Email
@@ -59,7 +65,7 @@ public class User implements Serializable {
     private String phone;
 
     @Basic(optional = false)
-    @NotNull  //
+    @NotNull //
     @Enumerated(EnumType.STRING)
     @Column(name = "lock_flag")
     private UserStatus locked;
@@ -67,8 +73,8 @@ public class User implements Serializable {
     @Column(name = "last_loggedin_date")
     private LocalDate lastLoggedInDate;
 
-    // TODO
-    //private List<UserGroup> userGroups;
+    @OneToMany(mappedBy = "user")
+    private List<UserGroupMapping> userGroupMappings;
 
 
 }

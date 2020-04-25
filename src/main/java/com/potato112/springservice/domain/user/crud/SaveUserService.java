@@ -3,7 +3,7 @@ package com.potato112.springservice.domain.user.crud;
 
 import com.potato112.springservice.domain.user.model.UserMapper;
 import com.potato112.springservice.domain.user.model.authorize.UserVo;
-import com.potato112.springservice.repository.entity.User;
+import com.potato112.springservice.repository.entities.auth.User;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 

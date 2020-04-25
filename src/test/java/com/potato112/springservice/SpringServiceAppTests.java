@@ -21,6 +21,22 @@ public class SpringServiceAppTests {
 
     @Test
     public void contextLoads() {
+
+
+        System.out.println("test 1");
+        if(true){
+            System.out.println("test 3");
+            return;
+        }
+        System.out.println("test text 3");
+
+    }
+
+
+    private void foo(){
+
+        System.out.println("test text ");
+
     }
 
 }
