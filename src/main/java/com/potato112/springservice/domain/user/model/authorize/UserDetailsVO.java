@@ -20,5 +20,4 @@ public class UserDetailsVO {
     private String selectedOrganizationId;
     private List<UserGroupVO> userGroups = new ArrayList<>();
 
-
 }

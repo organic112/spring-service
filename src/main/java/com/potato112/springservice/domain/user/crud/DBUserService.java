@@ -84,9 +84,18 @@ public class DBUserService implements UserService {
         UserDetailsAuthority userDetailsAuthority = new UserDetailsAuthority();
 
         GroupPermissionVO groupPermissionVO = new GroupPermissionVO();
-        groupPermissionVO.setViewName(ViewName.FOO_OVERVIEW_VIEW);
+        groupPermissionVO.setViewName(ViewName.USER_VIEW);
+        groupPermissionVO.setCanCreate(true);
+        groupPermissionVO.setCanUpdate(true);
+        groupPermissionVO.setCanDelete(true);
 
-        List<GroupPermissionVO> permissionVOS = Arrays.asList(groupPermissionVO);
+        GroupPermissionVO groupPermissionVO2 = new GroupPermissionVO();
+        groupPermissionVO2.setViewName(ViewName.FOO_OVERVIEW_VIEW);
+        groupPermissionVO2.setCanCreate(true);
+        groupPermissionVO2.setCanUpdate(true);
+        groupPermissionVO2.setCanDelete(true);
+
+        List<GroupPermissionVO> permissionVOS = Arrays.asList(groupPermissionVO, groupPermissionVO2);
 
         UserGroupVO userGroupVO = new UserGroupVO();
         userGroupVO.setGroupPermissions(permissionVOS);

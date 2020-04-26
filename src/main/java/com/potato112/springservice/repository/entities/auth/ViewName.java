@@ -3,7 +3,7 @@ package com.potato112.springservice.repository.entities.auth;
 import java.util.Optional;
 
 public enum ViewName {
-    USER_VIEW("User view"),
+    USER_VIEW("USER_VIEW"),
     GROUP_VIEW("Group view"),
     FOO_OVERVIEW_VIEW("FOO_OVERVIEW_VIEW");
 
