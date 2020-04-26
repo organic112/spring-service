@@ -19,7 +19,7 @@ import java.util.Optional;
 
 /**
  * Class stores all endpoints related to User domain
- *
+ * <p>
  * Example endpoint valid url: localhost:8081/api/v1/user/login/username=admin
  */
 @RestController
@@ -35,7 +35,7 @@ public class UserApi {
     @GetMapping(value = "/login/{username}")
     public UserDetailsAuthority getUserByName(@PathVariable("username") String userName) {
 
-        System.out.println("request in user api (with param)!");
+        System.out.println("request in user api (with param)! userName:" + userName);
 
         Optional<UserDetailsAuthority> user = userService.findByUserName(userName);
         return user.orElseThrow(() -> new RuntimeException("User not found"));
@@ -48,7 +48,7 @@ public class UserApi {
     }
 
     @GetMapping
-    OffsetResponseVo<UserOverviewResponseVo> getUsers(@RequestParam Map<String, String> allParams){
+    OffsetResponseVo<UserOverviewResponseVo> getUsers(@RequestParam Map<String, String> allParams) {
 
         UserSearchVo userSearchVo = new UserSearchVo(allParams);
         return userService.getUsers(userSearchVo);
@@ -57,6 +57,7 @@ public class UserApi {
     @GetMapping(value = "/create-parameters")
     public UserFormParametersVo getUserParameters() {
 
+        System.out.println("CREATE PARAMETERS!");
         return createUserService.getUserParameters();
     }
 

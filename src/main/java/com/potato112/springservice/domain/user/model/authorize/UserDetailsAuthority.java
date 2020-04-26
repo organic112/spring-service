@@ -11,4 +11,5 @@ public class UserDetailsAuthority {
     private boolean accountNotLocked;
     private boolean credentialsNotExpired;
     private boolean enabled;
+
 }

@@ -4,7 +4,9 @@ import com.potato112.springservice.domain.common.SysMapper;
 import com.potato112.springservice.repository.entities.auth.GroupPermission;
 import org.springframework.data.repository.CrudRepository;
 
+
 public class GroupPermissionMapper implements SysMapper<GroupPermission, GroupPermissionVO>  {
+
 
     @Override
     public GroupPermissionVO mapToVo(GroupPermission groupPermission) {
@@ -16,6 +18,7 @@ public class GroupPermissionMapper implements SysMapper<GroupPermission, GroupPe
         groupPermissionVO.setCanUpdate(groupPermission.isCanUpdate());
         groupPermissionVO.setCanDelete(groupPermission.isCanDelete());
 
+        return groupPermissionVO;
     }
 
     @Override

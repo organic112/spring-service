@@ -21,10 +21,9 @@ public class UserMapper implements SysMapper<User, UserVo> {
         userVo.setPhone(user.getPhone());
         userVo.setLocked(user.getLocked());
 
-        List<UserGroupMapping> userGroupMappings = user.getUserGroups();
-
-
         // TODO implement Grops mapping
+        //List<UserGroupMapping> userGroupMappings = user.getUserGroups();
+
         return userVo;
     }
 

@@ -1,11 +1,11 @@
 package com.potato112.springservice.domain.user.model.authorize;
 
+import com.potato112.springservice.domain.user.model.UserGroupMapper;
 import com.potato112.springservice.repository.entities.auth.User;
 import com.potato112.springservice.repository.entities.auth.UserGroup;
 import com.potato112.springservice.repository.entities.auth.UserGroupMapping;
 
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 public class UserDetailsAuthorityMapper implements Function<User, UserDetailsAuthority> {
 
-    public UserDetailsAuthority apply(@NotNull User user){
+    public UserDetailsAuthority apply(@NotNull User user) {
 
         UserDetailsAuthority userDetailsAuthority = new UserDetailsAuthority();
         userDetailsAuthority.setUserDetailsVO(mapToUserDetailsVo(user));
@@ -29,31 +29,22 @@ public class UserDetailsAuthorityMapper implements Function<User, UserDetailsAut
         userDetailsVO.setLastName(user.getLastName());
         userDetailsVO.setEmail(user.getEmail());
         userDetailsVO.setPassword(user.getPassword());
-        List<UserGroupVO> userGroupMappings = getUserGroupsVO(user);
-        userDetailsVO.setUserGroupMappings(userGroupMappings);
+        List<UserGroupVO> userGroups = getUserGroupsVO(user);
+        userDetailsVO.setUserGroups(userGroups);
 
         return userDetailsVO;
     }
 
     private List<UserGroupVO> getUserGroupsVO(User user) {
 
-        List<UserGroupMapping> userGroupMappings = new ArrayList<>();
-
-        user.getUserGroupMappings().forEach(mapping -> mapping.getUserGroup());
-
+        // get groups
         List<UserGroup> userGroups = user.getUserGroupMappings().stream()
                 .map(UserGroupMapping::getUserGroup)
                 .collect(Collectors.toList());
 
-        userGroups.stream()
-
-
-
-
-
+        // map to vo
+        return userGroups.stream()
+                .map(group -> new UserGroupMapper().mapToVo(group))
+                .collect(Collectors.toList());
     }
-
-
-    // FIXME add implementation of mapper
-
 }

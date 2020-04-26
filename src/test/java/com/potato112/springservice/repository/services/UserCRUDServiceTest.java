@@ -38,10 +38,10 @@ public class UserCRUDServiceTest {
     public void shouldAddUser() {
 
         User user = new User();
-        user.setFirstName("John");
-        user.setLastName("Doe");
-        user.setPassword("testPassword");
-        user.setEmail("test@test.com");
+        user.setFirstName("admin");
+        user.setLastName("admin");
+        user.setPassword("98ACDA0612B5263009C0E9F605F6844B8DAFF5AE");
+        user.setEmail("admin@temp.com");
         user.setLocked(UserStatus.ENABLED);
         user.setPhone("52 5556 6565 54");
 

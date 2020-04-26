@@ -8,7 +8,7 @@ import com.potato112.springservice.domain.user.model.views.UserFormParametersVo;
 import com.potato112.springservice.domain.user.model.search.UserSearchVo;
 import com.potato112.springservice.domain.user.model.authorize.*;
 import com.potato112.springservice.domain.user.model.views.UserOverviewResponseVo;
-import com.potato112.springservice.repository.entities.auth.User;
+import com.potato112.springservice.repository.entities.auth.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -30,14 +30,14 @@ public class DBUserService implements UserService {
     @Override
     public Optional<UserDetailsAuthority> findByUserName(String userName) {
 
-        Optional<User> userById = getByUserName(userName);
+/*        Optional<User> userById = getByUserName(userName);
         if (userById.isPresent()) {
             UserDetailsAuthority vo = new UserDetailsAuthorityMapper().apply(userById.get());
             return Optional.of(vo);
         }
-        return Optional.empty();
+        return Optional.empty();*/
         // FIXME
-       // return Optional.of(getUserServiceMockedAuthorityByName());
+        return Optional.of(getMockedUserAuthorityVo());
     }
 
     private Optional<User> getByUserName(String userName) {
@@ -79,16 +79,42 @@ public class DBUserService implements UserService {
         return page;
     }
 
+    private UserDetailsAuthority getMockedUserAuthorityVo(){
+
+        UserDetailsAuthority userDetailsAuthority = new UserDetailsAuthority();
+
+        GroupPermissionVO groupPermissionVO = new GroupPermissionVO();
+        groupPermissionVO.setViewName(ViewName.FOO_OVERVIEW_VIEW);
+
+        List<GroupPermissionVO> permissionVOS = Arrays.asList(groupPermissionVO);
+
+        UserGroupVO userGroupVO = new UserGroupVO();
+        userGroupVO.setGroupPermissions(permissionVOS);
+
+        UserDetailsVO userDetailsVO = new UserDetailsVO();
+        userDetailsVO.setEmail("admin"); //test@email.com FIXME @ causes problem in argument
+        userDetailsVO.setPassword("98ACDA0612B5263009C0E9F605F6844B8DAFF5AE");
+        userDetailsVO.setFirstName("admin");
+        userDetailsVO.setLastName("admin");
+        userDetailsVO.setSelectedOrganizationId("aaabbbcccddd"); // FIXME
+        userDetailsVO.setUserGroups(Arrays.asList(userGroupVO));
+
+        userDetailsAuthority.setUserDetailsVO(userDetailsVO);
+        log.info("Try for user login(e-mail): " + userDetailsVO.getEmail());
+
+        return userDetailsAuthority;
+    }
+
 
 
     // FIXME MOCKED AUTHORITIES
-    private UserDetailsAuthority getUserServiceMockedAuthorityByName() {
+   /* private UserDetailsAuthority getUserServiceMockedAuthorityByName() {
 
         UserDetailsAuthority userDetailsAuthority = new UserDetailsAuthority();
         UserGroupVO userGroupVO = new UserGroupVO();
         userGroupVO.setGroupType(GroupType.OWNER);
         List<Roles> roles = Arrays.asList(Roles.ADMIN, Roles.MANAGER, Roles.USER);
-        userGroupVO.setRoles(roles);
+        userGroupVO.setGroupPermissions(roles);
         UserDetailsVO userDetailsVO = new UserDetailsVO();
         userDetailsVO.setEmail("admin"); //test@email.com
         userDetailsVO.setPassword("98ACDA0612B5263009C0E9F605F6844B8DAFF5AE");
@@ -99,7 +125,7 @@ public class DBUserService implements UserService {
         userDetailsAuthority.setUserDetailsVO(userDetailsVO);
         log.info("Try for user login(e-mail): " + userDetailsVO.getEmail());
         return userDetailsAuthority;
-    }
+    }*/
 
 /*    private Optional<User> getByUserName(String userName) {
         Specification<User> userSpecification = UserSpecification.userByEmail(userName);

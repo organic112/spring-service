@@ -1,5 +1,6 @@
 package com.potato112.springservice.domain.user.model.authorize;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,6 +9,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@EqualsAndHashCode
 public class UserDetailsVO {
 
     private String id;
@@ -16,7 +18,7 @@ public class UserDetailsVO {
     private String email;
     private String password;
     private String selectedOrganizationId;
-    private List<UserGroupVO> userGroupMappings = new ArrayList<>();
+    private List<UserGroupVO> userGroups = new ArrayList<>();
 
 
 }
