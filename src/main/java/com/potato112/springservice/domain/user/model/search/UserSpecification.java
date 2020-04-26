@@ -10,6 +10,9 @@ public class UserSpecification {
 
     public static Specification<User> userByEmail(String email){
 
+        //String fullEmail = user.getEmail();
+        //String emailUserName = fullEmail.substring(0,fullEmail.indexOf("@"));
+
         return ((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("email"), email));
     }
 }

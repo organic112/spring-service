@@ -73,7 +73,7 @@ public class User extends BaseEntity {
     @Column(name = "last_loggedin_date")
     private LocalDate lastLoggedInDate;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<UserGroupMapping> userGroupMappings;
 
 

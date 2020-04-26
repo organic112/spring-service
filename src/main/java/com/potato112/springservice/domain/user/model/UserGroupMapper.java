@@ -22,6 +22,7 @@ public class UserGroupMapper implements SysMapper<UserGroup, UserGroupVO> {
         userGroupVo.setGroupName(userGroup.getGroupName());
 
         List<GroupPermission> groupPermissions = userGroup.getGroupPermissions();
+
         List<GroupPermissionVO> groupPermissionVOS = getGroupPermissionVOS(groupPermissions);
         userGroupVo.setGroupPermissions(groupPermissionVOS);
         return userGroupVo;

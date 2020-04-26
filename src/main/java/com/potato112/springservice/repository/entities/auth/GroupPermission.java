@@ -1,10 +1,9 @@
 package com.potato112.springservice.repository.entities.auth;
 
 
-import com.potato112.springservice.repository.entities.auth.UserGroup;
-import com.potato112.springservice.repository.entities.auth.ViewName;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -17,11 +16,12 @@ public class GroupPermission {
     @Id
     @NotNull
     @Column(name = "pk_permission", length = 80)
-    @GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid", strategy = "uuid")
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     String id;
 
     @ManyToOne
+    @JoinColumn(name = "group_id")
     private UserGroup userGroup;
 
     @Basic(optional = false)

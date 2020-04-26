@@ -30,14 +30,14 @@ public class DBUserService implements UserService {
     @Override
     public Optional<UserDetailsAuthority> findByUserName(String userName) {
 
-/*        Optional<User> userById = getByUserName(userName);
+        Optional<User> userById = getByUserName(userName);
         if (userById.isPresent()) {
             UserDetailsAuthority vo = new UserDetailsAuthorityMapper().apply(userById.get());
             return Optional.of(vo);
         }
-        return Optional.empty();*/
+        return Optional.empty();
         // FIXME
-        return Optional.of(getMockedUserAuthorityVo());
+       // return Optional.of(getMockedUserAuthorityVo());
     }
 
     private Optional<User> getByUserName(String userName) {
