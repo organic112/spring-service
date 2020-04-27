@@ -8,13 +8,13 @@ import lombok.ToString;
 @Getter
 @ToString
 @EqualsAndHashCode
-public class OffsetInfoVo {
+public class OffsetInfoDto {
 
     private long offset;
     private long limit;
     private long total;
 
-    public OffsetInfoVo(long offset, long limit, long total) {
+    public OffsetInfoDto(long offset, long limit, long total) {
         this.offset = offset;
         this.limit = limit;
         this.total = total;

@@ -115,32 +115,6 @@ public class DBUserService implements UserService {
     }
 
 
-
-    // FIXME MOCKED AUTHORITIES
-   /* private UserDetailsAuthority getUserServiceMockedAuthorityByName() {
-
-        UserDetailsAuthority userDetailsAuthority = new UserDetailsAuthority();
-        UserGroupVO userGroupVO = new UserGroupVO();
-        userGroupVO.setGroupType(GroupType.OWNER);
-        List<Roles> roles = Arrays.asList(Roles.ADMIN, Roles.MANAGER, Roles.USER);
-        userGroupVO.setGroupPermissions(roles);
-        UserDetailsVO userDetailsVO = new UserDetailsVO();
-        userDetailsVO.setEmail("admin"); //test@email.com
-        userDetailsVO.setPassword("98ACDA0612B5263009C0E9F605F6844B8DAFF5AE");
-        userDetailsVO.setFirstName("admin");
-        userDetailsVO.setLastName("admin");
-        userDetailsVO.setUser(Arrays.asList(userGroupVO));
-        userDetailsVO.setSelectedOrganizationId("aaabbbcccddd"); // FIXME
-        userDetailsAuthority.setUserDetailsVO(userDetailsVO);
-        log.info("Try for user login(e-mail): " + userDetailsVO.getEmail());
-        return userDetailsAuthority;
-    }*/
-
-/*    private Optional<User> getByUserName(String userName) {
-        Specification<User> userSpecification = UserSpecification.userByEmail(userName);
-        return userRepository.findOne(userSpecification);
-    }*/
-
     // TODO add the rest of methods
 
 

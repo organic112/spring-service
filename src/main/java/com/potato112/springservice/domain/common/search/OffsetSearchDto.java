@@ -9,7 +9,7 @@ import org.springframework.data.domain.Sort;
 import java.util.Map;
 
 @Getter
-public class OffsetSearchVo implements HasPageable {
+public class OffsetSearchDto implements HasPageable {
 
     public static final String SORT_FIELD = "sortField";
     public static final String SORT_ORDER = "sortOrder";
@@ -18,7 +18,7 @@ public class OffsetSearchVo implements HasPageable {
 
     protected final OffsetPageRequest pageable;
 
-    public OffsetSearchVo(Map<String, String> params) {
+    public OffsetSearchDto(Map<String, String> params) {
 
         if (StringUtils.isBlank(params.get("limit")) || StringUtils.isBlank(params.get("offset"))) {
             throw new IllegalArgumentException("limit and offset should be defined");

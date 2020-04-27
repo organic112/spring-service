@@ -15,7 +15,7 @@ public class UserGroup extends BaseEntity {
 
     @Id
     @NotNull
-    @Column(name = "pk_user_group_mapping", length = 80)
+    @Column(name = "pk_user_group", length = 80)
     @GeneratedValue(generator="system-uuid") // auto generated as String to Varchar
     @GenericGenerator(name="system-uuid", strategy = "uuid")
     private String id;

@@ -60,9 +60,17 @@ public class AppConfig implements CommandLineRunner {
         groupPermission2.setCanDelete(true);
         groupPermission2.setUserGroup(userGroup1);
 
+        GroupPermission groupPermission3 = new GroupPermission();
+        groupPermission3.setViewName(ViewName.GROUP_VIEW);
+        groupPermission3.setCanCreate(true);
+        groupPermission3.setCanUpdate(true);
+        groupPermission3.setCanDelete(true);
+        groupPermission3.setUserGroup(userGroup1);
+
         List<GroupPermission> permissions = new ArrayList<>();
         permissions.add(groupPermission1);
         permissions.add(groupPermission2);
+        permissions.add(groupPermission3);
 
         userGroup1.setGroupPermissions(permissions);
         userGroupCRUDService.create(userGroup1);

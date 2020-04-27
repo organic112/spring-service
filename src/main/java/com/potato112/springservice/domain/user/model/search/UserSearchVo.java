@@ -1,6 +1,6 @@
 package com.potato112.springservice.domain.user.model.search;
 
-import com.potato112.springservice.domain.common.search.OffsetSearchVo;
+import com.potato112.springservice.domain.common.search.OffsetSearchDto;
 import com.potato112.springservice.domain.user.model.authorize.UserStatus;
 import lombok.Getter;
 import org.apache.commons.lang3.EnumUtils;
@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.Map;
 
 @Getter
-public class UserSearchVo extends OffsetSearchVo {
+public class UserSearchVo extends OffsetSearchDto {
 
 
     private static final String USER_EMAIL_FIELD = "email";
