@@ -7,11 +7,16 @@ import com.potato112.springservice.domain.group.GroupSearchDto;
 import com.potato112.springservice.domain.user.api.GroupDto;
 import com.potato112.springservice.domain.user.api.GroupOverviewResponseDto;
 import com.potato112.springservice.domain.user.api.GroupService;
+import com.potato112.springservice.domain.user.model.GroupOverviewMapper;
+import com.potato112.springservice.repository.entities.auth.UserGroup;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -40,8 +45,12 @@ public class DBGroupService implements GroupService {
     }
 
     private Page<GroupOverviewResponseDto> getGroupsOverviewItems(Pageable pageable, GroupSearchDto searchDto) {
-        Page<GroupOverviewResponseDto> page = groupRepository
-                .getGroupsForOverview(searchDto.getGroupName(), pageable);
-        return page;
+
+        // fetch entity
+        Page<UserGroup> entityPage =  groupRepository.findAll(pageable);
+        
+        // convert entity to specific dto
+        Page<GroupOverviewResponseDto> dtoPage =  entityPage.map(group -> new GroupOverviewMapper().mapToVo(group));
+        return dtoPage;
     }
 }

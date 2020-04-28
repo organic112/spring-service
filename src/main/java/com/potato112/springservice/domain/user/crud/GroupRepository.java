@@ -35,16 +35,18 @@ public interface GroupRepository extends PagingAndSortingRepository<UserGroup, S
             "SELECT " +
                     "grp.pk_user_group as id,"+
                     "grp.group_name as groupName "+
-                    // "'GROUP_NAME' as permissions"+
+
                     "FROM user_group grp "+
+                    //"LEFT JOIN group_permission per ON  per.group_id = grp.pk_user_group "+
                     "WHERE ( "+
                     "    ( :groupName is null or grp.group_name LIKE concat('%', :groupName ,'%') ) "+
                     " ) ",
             countQuery =
                     "SELECT COUNT(grp.pk_user_group) FROM user_group grp "+
+                            //"LEFT JOIN group_permission per ON  per.group_id = grp.pk_user_group "+
                             "WHERE ( "+
                             "    ( :groupName is null or grp.group_name LIKE concat('%', :groupName ,'%') ) "+
                             " ) ",
             nativeQuery = true)
-    Page<GroupOverviewResponseDto> getGroupsForOverview(@Param("groupName") String groupName, Pageable pageable);
+    Page<UserGroup> getGroupsForOverview(@Param("groupName") String groupName, Pageable pageable);
 }
