@@ -28,7 +28,7 @@ public class UserSearchVo extends OffsetSearchDto {
         email = getStringOrNull(params, USER_EMAIL_FIELD);
         firstName = getStringOrNull(params, "firstName");
         lastName = getStringOrNull(params, "lastName");
-        //groups = getStringOrNull(params, "groups");
+        groups = getStringOrNull(params, "groups");
         phone = getStringOrNull(params, "phone");
         String lockedValue = getStringOrNull(params, "locked");
         locked = checkIfUserStatusIsValidEnum(lockedValue);

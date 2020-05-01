@@ -12,10 +12,8 @@ public interface UserOverviewResponseVo {
     String getFirstName();
     String getLastName();
 
-    // TODO implement getGroups();
-    //@Value("#{target.organizations != null ? target.organizations.split(\"&&\") : {}}")
-    @Value("#{{}}")
-    List<String> getGroups();
+    @Value("#{target.userGroups != null ? target.userGroups.split(\"&&\") : {}}")
+    List<String> getUserGroups();
     String getPhone();
     UserStatus getLocked();
 }

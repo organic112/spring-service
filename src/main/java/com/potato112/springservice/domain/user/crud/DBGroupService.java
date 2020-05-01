@@ -48,7 +48,7 @@ public class DBGroupService implements GroupService {
 
         // fetch entity
         Page<UserGroup> entityPage =  groupRepository.findAll(pageable);
-        
+
         // convert entity to specific dto
         Page<GroupOverviewResponseDto> dtoPage =  entityPage.map(group -> new GroupOverviewMapper().mapToVo(group));
         return dtoPage;

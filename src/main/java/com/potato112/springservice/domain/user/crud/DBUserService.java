@@ -70,7 +70,7 @@ public class DBUserService implements UserService {
                 searchVo.getEmail(),
                 searchVo.getFirstName(),
                 searchVo.getLastName(),
-                //searchVo.getGroups(),
+                searchVo.getGroups(),
                 searchVo.getPhone(),
                 searchVo.getLocked(),
                 pageable);
