@@ -5,6 +5,7 @@ import com.potato112.springservice.domain.common.search.OffsetQueryInfoVo;
 import com.potato112.springservice.domain.common.search.OffsetResponseVo;
 import com.potato112.springservice.domain.user.api.GroupDto;
 import com.potato112.springservice.domain.user.api.GroupPermissionDto;
+import com.potato112.springservice.domain.user.model.UserMapper;
 import com.potato112.springservice.domain.user.model.search.UserSpecification;
 import com.potato112.springservice.domain.user.model.views.UserFormParametersVo;
 import com.potato112.springservice.domain.user.model.search.UserSearchVo;
@@ -116,9 +117,12 @@ public class DBUserService implements UserService {
         return userDetailsAuthority;
     }
 
-
-    // TODO add the rest of methods
-
+    @Override
+    public UserVo updateUser(UserVo userDto) {
+        User user = new UserMapper().mapToEntity(userDto);
+        userRepository.save(user);
+        return userDto;
+    }
 
     @Override
     public UserFormParametersVo getUserFormParameters() {
@@ -136,4 +140,6 @@ public class DBUserService implements UserService {
         // FIXME
         return "TODO_RANDOM_HASHED_PASS";
     }
+
+    // TODO add the rest of methods
 }

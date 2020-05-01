@@ -61,6 +61,14 @@ public class UserApi {
         return createUserService.getUserParameters();
     }
 
+    @PutMapping
+    public UserVo update(@RequestBody @Valid UserVo userVo) {
+
+        return userService.updateUser(userVo);
+    }
+
+
+
     /*@PostMapping
     public String createUser(@RequestMapping @Valid UserVo user) {
         return userService.createUser(user);

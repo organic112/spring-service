@@ -2,6 +2,7 @@ package com.potato112.springservice.domain.user.crud;
 
 
 import com.potato112.springservice.domain.common.search.OffsetResponseVo;
+import com.potato112.springservice.domain.user.model.authorize.UserVo;
 import com.potato112.springservice.domain.user.model.views.UserFormParametersVo;
 import com.potato112.springservice.domain.user.model.search.UserSearchVo;
 import com.potato112.springservice.domain.user.model.authorize.UserDetailsAuthority;
@@ -25,6 +26,8 @@ public interface UserService {
     String generateRandomPass();
 
     String generateHashedPass(String newPassword);
+
+    UserVo updateUser(UserVo userDto);
 
     // void deleteUsers(Set<String> ids);
     // void resetPassword(String emailAddress);
