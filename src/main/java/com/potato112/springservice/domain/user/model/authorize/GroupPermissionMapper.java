@@ -1,17 +1,18 @@
 package com.potato112.springservice.domain.user.model.authorize;
 
 import com.potato112.springservice.domain.common.SysMapper;
+import com.potato112.springservice.domain.user.api.GroupPermissionDto;
 import com.potato112.springservice.repository.entities.auth.GroupPermission;
 import org.springframework.data.repository.CrudRepository;
 
 
-public class GroupPermissionMapper implements SysMapper<GroupPermission, GroupPermissionVO>  {
+public class GroupPermissionMapper implements SysMapper<GroupPermission, GroupPermissionDto>  {
 
 
     @Override
-    public GroupPermissionVO mapToVo(GroupPermission groupPermission) {
+    public GroupPermissionDto mapToVo(GroupPermission groupPermission) {
 
-        GroupPermissionVO groupPermissionVO = new GroupPermissionVO();
+        GroupPermissionDto groupPermissionVO = new GroupPermissionDto();
         groupPermissionVO.setId(groupPermission.getId());
         groupPermissionVO.setViewName(groupPermission.getViewName());
         groupPermissionVO.setCanCreate(groupPermission.isCanCreate());
@@ -22,12 +23,19 @@ public class GroupPermissionMapper implements SysMapper<GroupPermission, GroupPe
     }
 
     @Override
-    public GroupPermission mapToEntity(GroupPermissionVO modelVo) {
-        return null;
+    public GroupPermission mapToEntity(GroupPermissionDto modelVo) {
+
+        GroupPermission groupPermission = new GroupPermission();
+        groupPermission.setId(modelVo.getId());
+        groupPermission.setViewName(modelVo.getViewName());
+        groupPermission.setCanCreate(modelVo.isCanCreate());
+        groupPermission.setCanUpdate(modelVo.isCanUpdate());
+        groupPermission.setCanDelete(modelVo.isCanDelete());
+        return groupPermission;
     }
 
     @Override
-    public GroupPermission mapToEntity(GroupPermissionVO modelVo, CrudRepository<GroupPermission, String> crudRepository) {
+    public GroupPermission mapToEntity(GroupPermissionDto modelVo, CrudRepository<GroupPermission, String> crudRepository) {
         return null;
     }
 }

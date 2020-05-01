@@ -1,5 +1,6 @@
 package com.potato112.springservice.domain.user.model.authorize;
 
+import com.potato112.springservice.domain.user.api.GroupDto;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -45,7 +46,7 @@ public class UserVo {
 
     @Valid
     @Size(min = 1, message = "Please add at least one Group")
-    private List<UserGroupVO> userGroups;
+    private List<GroupDto> userGroups;
 
     @Size(max = 20)
     //@Pattern(regexp = "") TODO Add regex for phone number

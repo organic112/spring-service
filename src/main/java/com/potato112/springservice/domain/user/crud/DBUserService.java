@@ -3,6 +3,8 @@ package com.potato112.springservice.domain.user.crud;
 
 import com.potato112.springservice.domain.common.search.OffsetQueryInfoVo;
 import com.potato112.springservice.domain.common.search.OffsetResponseVo;
+import com.potato112.springservice.domain.user.api.GroupDto;
+import com.potato112.springservice.domain.user.api.GroupPermissionDto;
 import com.potato112.springservice.domain.user.model.search.UserSpecification;
 import com.potato112.springservice.domain.user.model.views.UserFormParametersVo;
 import com.potato112.springservice.domain.user.model.search.UserSearchVo;
@@ -83,21 +85,21 @@ public class DBUserService implements UserService {
 
         UserDetailsAuthority userDetailsAuthority = new UserDetailsAuthority();
 
-        GroupPermissionVO groupPermissionVO = new GroupPermissionVO();
+        GroupPermissionDto groupPermissionVO = new GroupPermissionDto();
         groupPermissionVO.setViewName(ViewName.USER_VIEW);
         groupPermissionVO.setCanCreate(true);
         groupPermissionVO.setCanUpdate(true);
         groupPermissionVO.setCanDelete(true);
 
-        GroupPermissionVO groupPermissionVO2 = new GroupPermissionVO();
+        GroupPermissionDto groupPermissionVO2 = new GroupPermissionDto();
         groupPermissionVO2.setViewName(ViewName.FOO_OVERVIEW_VIEW);
         groupPermissionVO2.setCanCreate(true);
         groupPermissionVO2.setCanUpdate(true);
         groupPermissionVO2.setCanDelete(true);
 
-        List<GroupPermissionVO> permissionVOS = Arrays.asList(groupPermissionVO, groupPermissionVO2);
+        List<GroupPermissionDto> permissionVOS = Arrays.asList(groupPermissionVO, groupPermissionVO2);
 
-        UserGroupVO userGroupVO = new UserGroupVO();
+        GroupDto userGroupVO = new GroupDto();
         userGroupVO.setGroupPermissions(permissionVOS);
 
         UserDetailsVO userDetailsVO = new UserDetailsVO();

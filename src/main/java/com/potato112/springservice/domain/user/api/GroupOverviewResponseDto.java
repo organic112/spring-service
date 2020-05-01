@@ -17,7 +17,7 @@ public class GroupOverviewResponseDto implements Serializable {
 
     private String id;
     private String groupName;
-    private List<GroupPermissionVO> groupPermissions = new ArrayList<>();
+    private List<GroupPermissionDto> groupPermissions = new ArrayList<>();
 
 
 

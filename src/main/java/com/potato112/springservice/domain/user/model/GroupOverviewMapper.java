@@ -4,8 +4,6 @@ import com.potato112.springservice.domain.common.SysMapper;
 import com.potato112.springservice.domain.user.api.GroupOverviewResponseDto;
 import com.potato112.springservice.domain.user.api.GroupPermissionDto;
 import com.potato112.springservice.domain.user.model.authorize.GroupPermissionMapper;
-import com.potato112.springservice.domain.user.model.authorize.GroupPermissionVO;
-import com.potato112.springservice.domain.user.model.authorize.UserGroupVO;
 import com.potato112.springservice.repository.entities.auth.GroupPermission;
 import com.potato112.springservice.repository.entities.auth.UserGroup;
 import org.springframework.data.repository.CrudRepository;
@@ -24,12 +22,12 @@ public class GroupOverviewMapper implements SysMapper<UserGroup, GroupOverviewRe
 
         List<GroupPermission> groupPermissions = userGroup.getGroupPermissions();
 
-        List<GroupPermissionVO> groupPermissionVOS = getGroupPermissionVOS(groupPermissions);
+        List<GroupPermissionDto> groupPermissionVOS = getGroupPermissionVOS(groupPermissions);
         userGroupVo.setGroupPermissions(groupPermissionVOS);
         return userGroupVo;
     }
 
-    private List<GroupPermissionVO> getGroupPermissionVOS(List<GroupPermission> groupPermissions) {
+    private List<GroupPermissionDto> getGroupPermissionVOS(List<GroupPermission> groupPermissions) {
 
         return groupPermissions.stream()
                 .map(groupPermission -> new GroupPermissionMapper().mapToVo(groupPermission))

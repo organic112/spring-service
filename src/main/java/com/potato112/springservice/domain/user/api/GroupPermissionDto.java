@@ -1,5 +1,6 @@
 package com.potato112.springservice.domain.user.api;
 
+import com.potato112.springservice.repository.entities.auth.ViewName;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;

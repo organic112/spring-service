@@ -2,9 +2,9 @@ package com.potato112.springservice.domain.group;
 
 
 import com.potato112.springservice.domain.common.search.OffsetResponseVo;
+import com.potato112.springservice.domain.user.api.GroupDto;
 import com.potato112.springservice.domain.user.api.GroupOverviewResponseDto;
 import com.potato112.springservice.domain.user.api.GroupService;
-import com.potato112.springservice.domain.user.model.authorize.UserVo;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -30,14 +30,13 @@ public class GroupApi {
        /* System.out.println("request in user api (with param)! grupName:" + grupName);
         Optional<GroupOverviewResponseDto> groupOp = groupService.getGroup(grupName);
         return groupOp.orElseThrow(() -> new RuntimeException("Groups Not Found"));*/
-       return null;
+        return null;
     }
 
     @PostMapping
-    public String createGroup(@RequestBody @Valid UserVo userVo) {
+    public String createGroup(@RequestBody @Valid GroupDto groupDto) {
 
-        // FIXME
-        return null; //createUserService.createUser(userVo);
+        return groupService.create(groupDto);
     }
 
     @GetMapping

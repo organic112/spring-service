@@ -1,5 +1,6 @@
 package com.potato112.springservice.domain.user.model.authorize;
 
+import com.potato112.springservice.domain.user.api.GroupDto;
 import com.potato112.springservice.domain.user.model.UserGroupMapper;
 import com.potato112.springservice.repository.entities.auth.User;
 import com.potato112.springservice.repository.entities.auth.UserGroup;
@@ -29,13 +30,13 @@ public class UserDetailsAuthorityMapper implements Function<User, UserDetailsAut
         userDetailsVO.setLastName(user.getLastName());
         userDetailsVO.setEmail(user.getEmail());
         userDetailsVO.setPassword(user.getPassword());
-        List<UserGroupVO> userGroups = getUserGroupsVO(user);
+        List<GroupDto> userGroups = getUserGroupsVO(user);
         userDetailsVO.setUserGroups(userGroups);
 
         return userDetailsVO;
     }
 
-    private List<UserGroupVO> getUserGroupsVO(User user) {
+    private List<GroupDto> getUserGroupsVO(User user) {
 
         // get groups
         List<UserGroup> userGroups = user.getUserGroupMappings().stream()
