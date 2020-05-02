@@ -1,7 +1,7 @@
 package com.potato112.springservice.domain.user.crud;
 
 import com.potato112.springservice.domain.user.model.views.UserFormParametersVo;
-import com.potato112.springservice.domain.user.model.authorize.UserVo;
+import com.potato112.springservice.domain.user.model.authorize.UserDto;
 
 
 /**
@@ -9,7 +9,7 @@ import com.potato112.springservice.domain.user.model.authorize.UserVo;
  */
 public interface CreateUserService {
 
-    String createUser(UserVo userVo);
+    String createUser(UserDto userDto);
 
     UserFormParametersVo getUserParameters();
 }

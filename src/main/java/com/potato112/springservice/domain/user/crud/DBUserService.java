@@ -50,7 +50,7 @@ public class DBUserService implements UserService {
     }
 
     @Override
-    public Optional<UserVo> getUser(String id) {
+    public Optional<UserDto> getUser(String id) {
 
         return userRepository.findById(id).map(user -> new UserMapper().mapToVo(user));
     }
@@ -87,6 +87,26 @@ public class DBUserService implements UserService {
         return page;
     }
 
+    @Override
+    public UserFormParametersVo getUserFormParameters() {
+        return null;
+    }
+
+    @Override
+    public String generateRandomPass() {
+        // FIXME
+        return "TODO_RANDOM_PASS_STRING";
+    }
+
+    @Override
+    public String generateHashedPass(String newPassword) {
+        // FIXME
+        return "TODO_RANDOM_HASHED_PASS";
+    }
+
+    // TODO add the rest of methods
+
+
     private UserDetailsAuthority getMockedUserAuthorityVo(){
 
         UserDetailsAuthority userDetailsAuthority = new UserDetailsAuthority();
@@ -121,30 +141,4 @@ public class DBUserService implements UserService {
 
         return userDetailsAuthority;
     }
-
-    @Override
-    public UserVo updateUser(UserVo userDto) {
-        User user = new UserMapper().mapToEntity(userDto);
-        userRepository.save(user);
-        return userDto;
-    }
-
-    @Override
-    public UserFormParametersVo getUserFormParameters() {
-        return null;
-    }
-
-    @Override
-    public String generateRandomPass() {
-        // FIXME
-        return "TODO_RANDOM_PASS_STRING";
-    }
-
-    @Override
-    public String generateHashedPass(String newPassword) {
-        // FIXME
-        return "TODO_RANDOM_HASHED_PASS";
-    }
-
-    // TODO add the rest of methods
 }

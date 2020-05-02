@@ -31,10 +31,17 @@ public class UserCRUDService implements JpaRepository<User, String> {
     }
 
     @Override
-    public <S extends User> S save(S s) {
-        em.persist(s);
-        //em.flush();
-        return null;
+    public <S extends User> S save(S entity) {
+
+        System.out.println("my Crud service implementation");
+
+        if (null == entity.getId()) {
+            this.em.persist(entity);
+            this.em.flush();
+            return entity;
+        } else {
+            return this.em.merge(entity);
+        }
     }
 
     public void update(User transactionEntity) {

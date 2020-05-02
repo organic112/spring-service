@@ -17,7 +17,17 @@ public class DatabaseInterceptor {
 
     @PreUpdate
     public void preUpdate(final Object entity) {
-        // FIXME
+
+        BaseTable baseTable = checkEntityAndCastToBaseTable(entity);
+        if(null == baseTable){
+            return;
+        }
+
+        LocalDateTime updateDate= baseTable.getCreateDate();
+
+        if(Objects.isNull(updateDate)){
+            baseTable.setUpdateDate(updateDate);
+        }
     }
 
     @PrePersist

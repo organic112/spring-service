@@ -34,7 +34,7 @@ public class UserGroupCRUDService implements JpaRepository<UserGroup, String> {
     public <S extends UserGroup> S save(S s) {
         em.persist(s);
         //em.flush();
-        return null;
+        return s;
     }
 
     public void update(UserGroup transactionEntity) {

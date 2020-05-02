@@ -15,7 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @EqualsAndHashCode
-public class UserVo {
+public class UserDto {
 
     public static final class AttributeName {
 

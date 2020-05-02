@@ -2,7 +2,7 @@ package com.potato112.springservice.domain.user.crud;
 
 
 import com.potato112.springservice.domain.user.model.UserMapper;
-import com.potato112.springservice.domain.user.model.authorize.UserVo;
+import com.potato112.springservice.domain.user.model.authorize.UserDto;
 import com.potato112.springservice.repository.entities.auth.User;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -27,13 +27,13 @@ public abstract class SaveUserService {
     /**
      * Create or update existing user
      */
-    protected UserVo save(UserVo userVo) {
+    protected UserDto save(UserDto userDto) {
 
         UserMapper userMapper = new UserMapper();
-        User user = userMapper.mapToEntity(userVo);
+        User user = userMapper.mapToEntity(userDto);
 
         User saved;
-        if (userVo.getId() == null) {
+        if (userDto.getId() == null) {
 
             log.info("create new user (no id)");
             saved = createNewUser(user);
@@ -48,7 +48,10 @@ public abstract class SaveUserService {
 
         User saved;
         Optional<User> existingUserOptional = userRepository.findById(user.getId());
-        existingUserOptional.ifPresent(existingUser -> existingUser.setPassword(existingUser.getPassword()));
+
+        existingUserOptional.ifPresent(value -> System.out.println("Fetched existing user " + value.getId()));
+
+        existingUserOptional.ifPresent(existingUser -> user.setPassword(existingUser.getPassword()));
         // FIXME updateGroup
         saved = userRepository.save(user);
         return saved;

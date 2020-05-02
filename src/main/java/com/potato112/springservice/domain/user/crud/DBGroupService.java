@@ -8,7 +8,7 @@ import com.potato112.springservice.domain.user.api.GroupDto;
 import com.potato112.springservice.domain.user.api.GroupOverviewResponseDto;
 import com.potato112.springservice.domain.user.api.GroupService;
 import com.potato112.springservice.domain.user.model.GroupOverviewMapper;
-import com.potato112.springservice.domain.user.model.UserGroupMapper;
+import com.potato112.springservice.domain.user.model.GroupMapper;
 import com.potato112.springservice.repository.entities.auth.UserGroup;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,8 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -30,7 +29,7 @@ public class DBGroupService implements GroupService {
     @Override
     public String create(GroupDto groupDto) {
 
-        UserGroupMapper userGroupMapper = new UserGroupMapper();
+        GroupMapper userGroupMapper = new GroupMapper();
 
         UserGroup userGroup = userGroupMapper.mapToEntity(groupDto);
         groupRepository.save(userGroup);
@@ -61,5 +60,19 @@ public class DBGroupService implements GroupService {
         // convert entity to specific dto
         Page<GroupOverviewResponseDto> dtoPage =  entityPage.map(group -> new GroupOverviewMapper().mapToVo(group));
         return dtoPage;
+    }
+
+    @Override
+    public Optional<GroupDto> getGroup(String id) {
+
+        System.out.println("Try fetch group with id: " + id);
+
+        return groupRepository.findById(id).map(group -> new GroupMapper().mapToVo(group));
+    }
+
+    // move to extracted Update Service
+    @Override
+    public GroupDto update(GroupDto groupDto) {
+        return groupDto;
     }
 }

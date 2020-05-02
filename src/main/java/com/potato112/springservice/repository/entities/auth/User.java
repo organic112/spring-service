@@ -11,6 +11,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @NamedQueries({
@@ -74,7 +75,7 @@ public class User extends BaseEntity {
     private LocalDate lastLoggedInDate;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private List<UserGroupMapping> userGroupMappings;
+    private List<UserGroupMapping> userGroupMappings = new ArrayList<>();
 
 
 }

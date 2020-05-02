@@ -11,7 +11,7 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class UserGroupMapper implements SysMapper<UserGroup, GroupDto> {
+public class GroupMapper implements SysMapper<UserGroup, GroupDto> {
 
     @Override
     public GroupDto mapToVo(UserGroup userGroup) {

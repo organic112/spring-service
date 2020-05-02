@@ -5,12 +5,14 @@ import com.potato112.springservice.domain.common.search.OffsetResponseVo;
 import com.potato112.springservice.domain.user.api.GroupDto;
 import com.potato112.springservice.domain.user.api.GroupOverviewResponseDto;
 import com.potato112.springservice.domain.user.api.GroupService;
+import com.potato112.springservice.domain.user.model.authorize.UserDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping(value = GroupApi.ENDPOINT, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -23,7 +25,7 @@ public class GroupApi {
     //private final CreateUserService createUserService;
 
 
-    @GetMapping(value = "/{groupname}")
+    @GetMapping(value = "/name/{groupname}")
     public GroupOverviewResponseDto getGroupByName(@PathVariable("groupname") String groupName) {
 
         // FIXME
@@ -44,4 +46,18 @@ public class GroupApi {
         GroupSearchDto groupSearchDto = new GroupSearchDto(allParams);
         return groupService.getGroups(groupSearchDto);
     }
+
+    @GetMapping(value = "/{groupId}")
+    public GroupDto getGroup(@PathVariable String groupId){
+
+        return groupService.getGroup(groupId).orElseThrow(() -> new NoSuchElementException("Group with current id not exists"));
+    }
+
+    @PutMapping
+    public GroupDto update(@RequestBody @Valid GroupDto groupDto) {
+
+        // updateUserService.save(userDto);
+        return groupDto;
+    }
+
 }

@@ -1,7 +1,7 @@
 package com.potato112.springservice.domain.user.crud;
 
 import com.potato112.springservice.domain.user.model.views.UserFormParametersVo;
-import com.potato112.springservice.domain.user.model.authorize.UserVo;
+import com.potato112.springservice.domain.user.model.authorize.UserDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -17,15 +17,18 @@ public class CreateUserDatabaseService extends SaveUserService implements Create
     }
 
     @Override
-    public String createUser(UserVo userVo) {
+    public String createUser(UserDto userDto) {
 
         log.info("FIXME implement -> create user in db with");
-        log.info("email:"+userVo.getEmail());
-        log.info("firstName:"+userVo.getFirstName());
-        log.info("lastName:"+userVo.getLastName());
+        log.info("email:"+ userDto.getEmail());
+        log.info("firstName:"+ userDto.getFirstName());
+        log.info("lastName:"+ userDto.getLastName());
 
         //TODO add user validator
-        UserVo saved = save(userVo);
+        UserDto saved = save(userDto);
+
+        System.out.println("CREATED user id: " + saved.getId());
+
         return saved.getId();
     }
 
