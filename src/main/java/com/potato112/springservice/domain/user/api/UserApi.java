@@ -9,12 +9,14 @@ import com.potato112.springservice.domain.user.model.views.UserOverviewResponseV
 import com.potato112.springservice.domain.user.model.authorize.UserVo;
 import com.potato112.springservice.domain.user.crud.CreateUserService;
 import com.potato112.springservice.domain.user.crud.UserService;
+import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
@@ -52,6 +54,12 @@ public class UserApi {
 
         UserSearchVo userSearchVo = new UserSearchVo(allParams);
         return userService.getUsers(userSearchVo);
+    }
+
+    @GetMapping(value = "/{userId}")
+    public UserVo getUser(@PathVariable String userId){
+
+        return userService.getUser(userId).orElseThrow(() -> new NoSuchElementException("user with current id not exists"));
     }
 
     @GetMapping(value = "/create-parameters")

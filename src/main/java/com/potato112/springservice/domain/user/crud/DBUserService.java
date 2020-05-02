@@ -49,6 +49,11 @@ public class DBUserService implements UserService {
         return userRepository.findOne(userSpecification);
     }
 
+    @Override
+    public Optional<UserVo> getUser(String id) {
+
+        return userRepository.findById(id).map(user -> new UserMapper().mapToVo(user));
+    }
 
     @Override
     public OffsetResponseVo<UserOverviewResponseVo> getUsers(UserSearchVo searchVo) {

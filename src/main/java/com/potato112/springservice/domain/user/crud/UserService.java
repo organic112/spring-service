@@ -29,6 +29,8 @@ public interface UserService {
 
     UserVo updateUser(UserVo userDto);
 
+    Optional<UserVo> getUser(String id);
+
     // void deleteUsers(Set<String> ids);
     // void resetPassword(String emailAddress);
     // String generateRandomPassword();
