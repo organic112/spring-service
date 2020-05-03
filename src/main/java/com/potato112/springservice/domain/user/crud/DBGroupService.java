@@ -55,10 +55,10 @@ public class DBGroupService implements GroupService {
     private Page<GroupOverviewResponseDto> getGroupsOverviewItems(Pageable pageable, GroupSearchDto searchDto) {
 
         // fetch entity
-        Page<UserGroup> entityPage =  groupRepository.findAll(pageable);
+        Page<UserGroup> entityPage = groupRepository.findAll(pageable);
 
         // convert entity to specific dto
-        Page<GroupOverviewResponseDto> dtoPage =  entityPage.map(group -> new GroupOverviewMapper().mapToVo(group));
+        Page<GroupOverviewResponseDto> dtoPage = entityPage.map(group -> new GroupOverviewMapper().mapToVo(group));
         return dtoPage;
     }
 
@@ -73,6 +73,13 @@ public class DBGroupService implements GroupService {
     // move to extracted Update Service
     @Override
     public GroupDto update(GroupDto groupDto) {
+
+        System.out.println("group name" + groupDto.getGroupName());
+        System.out.println("group permissions size" + groupDto.getGroupPermissions().size());
+
+
+        UserGroup userGroup = groupRepository.save(new GroupMapper().mapToEntity(groupDto));
+        groupRepository.save(userGroup);
         return groupDto;
     }
 }

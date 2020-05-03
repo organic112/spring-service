@@ -35,17 +35,19 @@ public class GroupMapper implements SysMapper<UserGroup, GroupDto> {
     }
 
     @Override
-    public UserGroup mapToEntity(GroupDto modelVo) {
+    public UserGroup mapToEntity(GroupDto groupDto) {
 
         UserGroup userGroup = new UserGroup();
-        userGroup.setGroupName(modelVo.getGroupName());
-        userGroup.setId(modelVo.getId());
+        userGroup.setGroupName(groupDto.getGroupName());
+        userGroup.setId(groupDto.getId());
 
-        List<GroupPermissionDto> groupPermissions = modelVo.getGroupPermissions();
+        List<GroupPermissionDto> groupPermissions = groupDto.getGroupPermissions();
 
         List<GroupPermission> groupPermissionEntities = groupPermissions.stream()
                 .map(permissionDto -> new GroupPermissionMapper().mapToEntity(permissionDto))
                 .collect(Collectors.toList());
+
+        groupPermissionEntities.forEach(groupPermission -> groupPermission.setUserGroup(userGroup));
 
         userGroup.setGroupPermissions(groupPermissionEntities);
         return userGroup;
