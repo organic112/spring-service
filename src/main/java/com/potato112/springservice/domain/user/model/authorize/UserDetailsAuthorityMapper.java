@@ -17,23 +17,23 @@ public class UserDetailsAuthorityMapper implements Function<User, UserDetailsAut
     public UserDetailsAuthority apply(@NotNull User user) {
 
         UserDetailsAuthority userDetailsAuthority = new UserDetailsAuthority();
-        userDetailsAuthority.setUserDetailsVO(mapToUserDetailsVo(user));
+        userDetailsAuthority.setUserDetailsDto(mapToUserDetailsVo(user));
         userDetailsAuthority.setEnabled(UserStatus.ENABLED == user.getLocked());
         return userDetailsAuthority;
     }
 
-    private UserDetailsVO mapToUserDetailsVo(User user) {
+    private UserDetailsDto mapToUserDetailsVo(User user) {
 
-        UserDetailsVO userDetailsVO = new UserDetailsVO();
-        userDetailsVO.setId(user.getId());
-        userDetailsVO.setFirstName(user.getFirstName());
-        userDetailsVO.setLastName(user.getLastName());
-        userDetailsVO.setEmail(user.getEmail());
-        userDetailsVO.setPassword(user.getPassword());
+        UserDetailsDto userDetailsDto = new UserDetailsDto();
+        userDetailsDto.setId(user.getId());
+        userDetailsDto.setFirstName(user.getFirstName());
+        userDetailsDto.setLastName(user.getLastName());
+        userDetailsDto.setEmail(user.getEmail());
+        userDetailsDto.setPassword(user.getPassword());
         List<GroupDto> userGroups = getUserGroupsVO(user);
-        userDetailsVO.setUserGroups(userGroups);
+        userDetailsDto.setUserGroups(userGroups);
 
-        return userDetailsVO;
+        return userDetailsDto;
     }
 
     private List<GroupDto> getUserGroupsVO(User user) {

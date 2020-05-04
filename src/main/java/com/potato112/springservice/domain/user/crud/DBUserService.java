@@ -128,16 +128,16 @@ public class DBUserService implements UserService {
         GroupDto userGroupVO = new GroupDto();
         userGroupVO.setGroupPermissions(permissionVOS);
 
-        UserDetailsVO userDetailsVO = new UserDetailsVO();
-        userDetailsVO.setEmail("admin"); //test@email.com FIXME @ causes problem in argument
-        userDetailsVO.setPassword("98ACDA0612B5263009C0E9F605F6844B8DAFF5AE");
-        userDetailsVO.setFirstName("admin");
-        userDetailsVO.setLastName("admin");
-        userDetailsVO.setSelectedOrganizationId("aaabbbcccddd"); // FIXME
-        userDetailsVO.setUserGroups(Arrays.asList(userGroupVO));
+        UserDetailsDto userDetailsDto = new UserDetailsDto();
+        userDetailsDto.setEmail("admin"); //test@email.com FIXME @ causes problem in argument
+        userDetailsDto.setPassword("98ACDA0612B5263009C0E9F605F6844B8DAFF5AE");
+        userDetailsDto.setFirstName("admin");
+        userDetailsDto.setLastName("admin");
+        userDetailsDto.setSelectedOrganizationId("aaabbbcccddd"); // FIXME
+        userDetailsDto.setUserGroups(Arrays.asList(userGroupVO));
 
-        userDetailsAuthority.setUserDetailsVO(userDetailsVO);
-        log.info("Try for user login(e-mail): " + userDetailsVO.getEmail());
+        userDetailsAuthority.setUserDetailsDto(userDetailsDto);
+        log.info("Try for user login(e-mail): " + userDetailsDto.getEmail());
 
         return userDetailsAuthority;
     }

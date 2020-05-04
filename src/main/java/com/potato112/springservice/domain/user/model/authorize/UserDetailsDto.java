@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @EqualsAndHashCode
-public class UserDetailsVO {
+public class UserDetailsDto {
 
     private String id;
     private String firstName;
