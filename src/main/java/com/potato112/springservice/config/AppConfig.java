@@ -1,6 +1,7 @@
 package com.potato112.springservice.config;
 
 import com.potato112.springservice.domain.user.model.authorize.UserStatus;
+import com.potato112.springservice.jms.bulkaction.BulkActionExecutor;
 import com.potato112.springservice.repository.entities.auth.*;
 import com.potato112.springservice.repository.interfaces.crud.CRUDService;
 import com.potato112.springservice.repository.interfaces.crud.CRUDServiceBean;
@@ -9,11 +10,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jms.annotation.EnableJms;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
+@EnableAsync
+@EnableJms
 @Configuration
 @EnableWebSecurity
 @ComponentScan({"com.potato112.springservice"})
@@ -28,6 +34,14 @@ public class AppConfig implements CommandLineRunner {
     @Autowired
     private CRUDService<UserGroupMapping> mappingCRUDService;
 
+    @Autowired
+    private BulkActionExecutor bulkActionExecutor;
+
+    @PostConstruct
+    public void init() {
+
+
+    }
 
 
     @Override

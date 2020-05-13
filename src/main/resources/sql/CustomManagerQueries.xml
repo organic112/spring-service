@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<queries>
+    <query id ="select.rentalCars">
+        SELECT
+            car.car_id,
+            car.brand,
+            car.color,
+            car.payloadkg,
+            car.price_per_hour
+        FROM `demo-db`.rental_car car
+        WHERE car.BRAND IN ( :brandNames )
+    </query>
+    <query id ="insert.rentalCar">
+        INSERT INTO `demo-db`.rental_car (
+        car_id,
+        brand,
+        color,
+        payloadkg,
+        price_per_hour
+        ) VALUES (
+        TO_BASE64(UUID()),
+        ?,
+        ?,
+        ?,
+        ?
+        )
+    </query>
+
+    <query id ="select.rentalCars.withoutSchemaInQuery">
+        SELECT
+        car.car_id,
+        car.brand,
+        car.color,
+        car.payloadkg,
+        car.price_per_hour
+        FROM rental_car car
+        WHERE car.BRAND IN ( :brandNames )
+    </query>
+    <query id ="select.docLock">
+        SELECT
+            DOC_LOCKS_ID,
+            CREATE_DATE,
+            CREATE_USER,
+            UPDATE_DATE,
+            UPDATE_USER,
+            DOC_CODE,
+            DOC_ID,
+            DOC_TYPE,
+            LOGIN
+        FROM `demo-db`.doc_locks locks WHERE locks.DOC_ID = ?
+    </query>
+    <query id ="insert.docLock">
+        INSERT INTO `demo-db`.doc_locks (
+            DOC_LOCKS_ID,
+            CREATE_DATE,
+            CREATE_USER,
+            DOC_CODE,
+            DOC_ID,
+            DOC_TYPE,
+            LOGIN
+        ) VALUES (
+            TO_BASE64(UUID()),
+            ?,
+            'JDBC-QUERY',
+            ?,
+            ?,
+            ?,
+            'JDBC-QUERY'
+        )
+    </query>
+    <query id = "delete.docLock">
+        DELETE FROM `demo-db`.doc_locks locks WHERE locks.DOC_ID = ?
+    </query>
+</queries>
