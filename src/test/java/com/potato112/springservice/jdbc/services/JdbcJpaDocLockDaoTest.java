@@ -32,7 +32,7 @@ import java.time.LocalDateTime;
 @EnableTransactionManagement
 @Rollback
 @SpringBootTest
-public class JdbcDocLockDaoTest {
+public class JdbcJpaDocLockDaoTest {
 
     @Autowired
     private JdbcDocLockDao jdbcDocLockDao;

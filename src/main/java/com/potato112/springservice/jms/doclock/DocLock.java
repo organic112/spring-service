@@ -5,6 +5,7 @@ import com.potato112.springservice.jms.bulkaction.model.enums.SysDocumentType;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(schema = "demo-db", name = "doc_locks")
@@ -22,9 +23,10 @@ import javax.persistence.*;
 public class DocLock extends BaseEntity {
 
     @Id
-    @Column(name = "doc_locks_id", length = 50)
-    @GeneratedValue(generator = "seq_id")
-    @GenericGenerator(name = "seq_id", strategy = "identity")
+    @NotNull
+    @Column(name = "doc_locks_id", length = 80)
+    @GeneratedValue(generator="system-uuid") // auto generated as String to Varchar
+    @GenericGenerator(name="system-uuid", strategy = "uuid")
     private String id;
 
     @Column(nullable = false)

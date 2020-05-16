@@ -14,18 +14,32 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+/**
+ * Part doc lock mechanism intended to be used in parallel
+ */
 @Repository
 @Transactional(propagation = Propagation.REQUIRED)
-public class DocLockDao extends CRUDServiceBean<DocLock> {
+public class JpaDocLockDao extends CRUDServiceBean<DocLock> {
 
     // @Autowired
     // UserLoginManager TODO implemet this
 
+
+    // TODO implement, but check another impl of DocLockDAO !
+
     @Autowired
     private CRUDService<String> stringCRUDService;
 
+    /**
+     * Creates document lock
+     */
+    public DocLock lockDocument(DocLock docLock) {
 
-    // TODO implement, but check another impl of DocLockDAO !
+        validateDocLockParameter(docLock);
+        removeDocumentLock(docLock);
+        return create(docLock);
+    }
 
     public void removeDocumentLock(DocLock docLock) {
         if (!contains(docLock)) {
@@ -88,7 +102,7 @@ public class DocLockDao extends CRUDServiceBean<DocLock> {
         Map<String, Object> params = new HashMap<>();
         params.put("documentType", docLock.getDocumentType());
         params.put("documentId", docLock.getDocId());
-        List<DocLock> locks = findWithNamedQuery("DocLock.findDocLock");
+        List<DocLock> locks = findWithNamedQuery("DocLock.findDocLock", params);
         return locks;
     }
 
@@ -114,6 +128,7 @@ public class DocLockDao extends CRUDServiceBean<DocLock> {
     }
 
     private long countLocks(DocLock docLock) {
+
         Map<String, Object> params = new HashMap<>();
         params.put("documentType", docLock.getDocumentType());
         params.put("documentId", docLock.getDocId());
