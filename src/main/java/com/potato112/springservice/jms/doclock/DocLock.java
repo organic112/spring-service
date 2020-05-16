@@ -36,7 +36,7 @@ public class DocLock extends BaseEntity {
     @Column(name = "doc_type", nullable = false, length = 30)
     private SysDocumentType documentType;
 
-    @Column(name = "doc_id", nullable = false, length = 30)
+    @Column(name = "doc_id", nullable = false, length = 80)
     private String docId;
 
     @Column(name = "doc_code", nullable = false, length = 50)

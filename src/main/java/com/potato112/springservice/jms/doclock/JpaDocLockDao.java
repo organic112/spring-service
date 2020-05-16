@@ -24,8 +24,6 @@ public class JpaDocLockDao extends CRUDServiceBean<DocLock> {
 
     // @Autowired
     // UserLoginManager TODO implemet this
-
-
     // TODO implement, but check another impl of DocLockDAO !
 
     @Autowired

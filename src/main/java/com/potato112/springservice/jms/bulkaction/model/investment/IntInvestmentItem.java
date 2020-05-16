@@ -7,7 +7,7 @@ import com.potato112.springservice.jms.bulkaction.model.interfaces.Lockable;
 public class IntInvestmentItem extends BaseInterfaceTable implements Lockable {
 
     private String id;
-    private InvestmentDocument investmentDocument;
+    private Investment investment;
     private InvestmentStatus investmentStatus;
     private Integer clientNumber;
 
@@ -19,12 +19,12 @@ public class IntInvestmentItem extends BaseInterfaceTable implements Lockable {
         this.id = id;
     }
 
-    public InvestmentDocument getInvestmentDocument() {
-        return investmentDocument;
+    public Investment getInvestment() {
+        return investment;
     }
 
-    public void setInvestmentDocument(InvestmentDocument investmentDocument) {
-        this.investmentDocument = investmentDocument;
+    public void setInvestment(Investment investment) {
+        this.investment = investment;
     }
 
     public InvestmentStatus getInvestmentStatus() {
@@ -46,7 +46,7 @@ public class IntInvestmentItem extends BaseInterfaceTable implements Lockable {
     @Override
     public String getCode() {
 
-        String code = investmentDocument.getCode();
+        String code = investment.getCode();
         Integer clientNumber = getClientNumber();
         return code.concat(" - ").concat(clientNumber.toString());
     }

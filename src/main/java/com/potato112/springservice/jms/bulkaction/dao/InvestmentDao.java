@@ -2,7 +2,7 @@ package com.potato112.springservice.jms.bulkaction.dao;
 
 import com.potato112.springservice.jms.bulkaction.model.enums.InvestmentStatus;
 import com.potato112.springservice.jms.bulkaction.model.investment.IntInvestmentItem;
-import com.potato112.springservice.jms.bulkaction.model.investment.InvestmentDocument;
+import com.potato112.springservice.jms.bulkaction.model.investment.Investment;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,16 +16,16 @@ public class InvestmentDao {
 
     //TODO implement as real DAO
     private Map<String, IntInvestmentItem> repositoryInvestmentItemMap = new HashMap<>();
-    private List<InvestmentDocument> investmentDocumentList = new ArrayList<>();
+    private List<Investment> investmentList = new ArrayList<>();
 
     public IntInvestmentItem getInvestmentById(String id) {
         init();
         return repositoryInvestmentItemMap.get(id);
     }
 
-    public InvestmentDocument getInvestmentDocumentById(String id) {
+    public Investment getInvestmentDocumentById(String id) {
         init();
-        return investmentDocumentList.stream().filter(doc -> doc.getId().equals(id)).findFirst().get();
+        return investmentList.stream().filter(doc -> doc.getId().equals(id)).findFirst().get();
     }
 
     private void init() {
@@ -47,14 +47,14 @@ public class InvestmentDao {
         intInvestmentItem.setClientNumber(1000 + nuber);
         intInvestmentItem.setInvestmentStatus(InvestmentStatus.IMPORTED);
 
-        InvestmentDocument investmentDocument = new InvestmentDocument();
+        Investment investment = new Investment();
         Integer docNum = 55 + nuber;
         Integer carNum = 69 + docNum;
-        investmentDocument.setId(docNum.toString());
-        investmentDocument.setCarNumber(carNum.toString());
+        investment.setId(docNum.toString());
+        investment.setInvestmentNumber(carNum.toString());
 
-        investmentDocumentList.add(investmentDocument);
+        investmentList.add(investment);
 
-        intInvestmentItem.setInvestmentDocument(investmentDocument);
+        intInvestmentItem.setInvestment(investment);
     }
 }

@@ -6,7 +6,7 @@ import com.potato112.springservice.jms.bulkaction.model.enums.InvestmentStatus;
 import com.potato112.springservice.jms.bulkaction.model.exception.StatusManagerException;
 import com.potato112.springservice.jms.bulkaction.model.exception.checked.CustomExplicitBussiesException;
 import com.potato112.springservice.jms.bulkaction.model.investment.IntInvestmentItem;
-import com.potato112.springservice.jms.bulkaction.model.investment.InvestmentDocument;
+import com.potato112.springservice.jms.bulkaction.model.investment.Investment;
 import com.potato112.springservice.jms.bulkaction.model.investment.InvestmentProduct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,11 +37,11 @@ public class InvestmentAmortizationProcessor {
 
         try {
 
-            InvestmentDocument document = intInvestmentItem.getInvestmentDocument();
+            Investment document = intInvestmentItem.getInvestment();
             String investmentId = document.getId();
 
             // Fetch investment document from DB to get persistence context
-            InvestmentDocument investmentDocument = investmentDao.getInvestmentDocumentById(investmentId);
+            Investment investment = investmentDao.getInvestmentDocumentById(investmentId);
 
             // some business logic, create objects etc.
             InvestmentProduct investmentProduct = new InvestmentProduct();
