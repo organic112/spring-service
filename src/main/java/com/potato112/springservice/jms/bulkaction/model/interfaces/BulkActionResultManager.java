@@ -22,8 +22,8 @@ public interface BulkActionResultManager {
      * sets proper status
      * sets proper message based on result
      */
-
     void completeBulkAction(String bulkActionResultId, BulkActionsRunResultVo bulkActionsRunResultVo);
+
 
     void completeBulkAction(String bulkActionResultId, BulkActionStatus bulkActionStatus, String bulkActionMessage);
 

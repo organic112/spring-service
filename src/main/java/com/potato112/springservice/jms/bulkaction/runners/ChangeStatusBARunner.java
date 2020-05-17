@@ -10,6 +10,8 @@ import com.potato112.springservice.jms.bulkaction.model.results.BulkActionFuture
 import com.potato112.springservice.jms.bulkaction.model.results.BulkActionsRunResultVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +28,7 @@ public abstract class ChangeStatusBARunner<OBJTYPE extends SysDocument, STATUS e
 
     protected abstract AsyncStatusChanger<OBJTYPE, STATUS> getStatusChanger();
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public BulkActionsRunResultVo run(final BulkActionInit bulkActionInit) {
 
         @SuppressWarnings("unchecked")
@@ -82,6 +85,7 @@ public abstract class ChangeStatusBARunner<OBJTYPE extends SysDocument, STATUS e
         return statusChanger.processSingleItemAsync(id, castInit(bulkActionInit), this);
     }
 
+    @Transactional(propagation = Propagation.MANDATORY)
     protected void changeStatusOfSingleDocument(final OBJTYPE document, final ChangeStatusBAInit<OBJTYPE, STATUS> bulkActionInit) {
 
         final String loggedUser = bulkActionInit.getLoggedUser();

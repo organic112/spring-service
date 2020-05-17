@@ -1,11 +1,11 @@
 package com.potato112.springservice.jms.bulkaction.runners;
 
-import com.potato112.springservice.jms.bulkaction.model.exception.AlreadyLockedException;
 import com.potato112.springservice.jms.bulkaction.model.exception.StatusManagerException;
 import com.potato112.springservice.jms.bulkaction.model.exception.checked.CustomExplicitBussiesException;
 import com.potato112.springservice.jms.bulkaction.model.interfaces.BulkActionInit;
 import com.potato112.springservice.jms.bulkaction.model.interfaces.SysDocument;
 import com.potato112.springservice.jms.bulkaction.model.results.BulkActionFutureResultVo;
+import com.potato112.springservice.jms.doclock.AlreadyLockedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;

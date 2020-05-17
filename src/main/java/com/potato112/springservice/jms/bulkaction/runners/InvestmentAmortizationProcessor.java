@@ -33,7 +33,7 @@ public class InvestmentAmortizationProcessor {
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public String processInvestmentsAndCreateAmortizationRecords(IntInvestmentItem intInvestmentItem, InvestmentStatus newStatus) {
 
-        LOGGER.info("Starting amortization processing...");
+        LOGGER.info("Starting amortization processing in ...");
 
         try {
 

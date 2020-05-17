@@ -1,6 +1,7 @@
 package com.potato112.springservice.jms.bulkaction.services;
 
 
+import com.potato112.springservice.jms.bulkaction.model.enums.InvestmentStatus;
 import com.potato112.springservice.jms.bulkaction.model.init.InvestmentChangeStatusBAInit;
 import com.potato112.springservice.jms.bulkaction.model.interfaces.BulkActionResultManager;
 import com.potato112.springservice.jms.bulkaction.model.results.BulkActionsRunResultVo;
@@ -16,15 +17,17 @@ public class InvestmentChangeStatusMDC extends AbstractBulkActionMDC<InvestmentC
     private static final String DESTINATION_NAME = "investmentChangeStatusBulkAction";
     private static final String FACTORY_BEAN_NAME = "customFactory";
 
+    // simple  processing runner
+    private final InvestmentChangeStatusBARunner investmentChangeStatusBARunner;
+    // sophisticated processing runner
     private final InvestmentAmortizationBARunner investmentAmortizationBARunner;
 
-    public InvestmentChangeStatusMDC(BulkActionResultManager bulkActionResultManager, InvestmentAmortizationBARunner investmentAmortizationBARunner) {
+    public InvestmentChangeStatusMDC(BulkActionResultManager bulkActionResultManager, InvestmentAmortizationBARunner investmentAmortizationBARunner,
+                                     InvestmentChangeStatusBARunner investmentChangeStatusBARunner) {
         super(bulkActionResultManager);
         this.investmentAmortizationBARunner = investmentAmortizationBARunner;
+        this.investmentChangeStatusBARunner = investmentChangeStatusBARunner;
     }
-
-    //@Autowired FIXME add alternative runner
-    //private InvestmentChangeStatusRunner investmentChangeStatusRunner;
 
     @JmsListener(destination = DESTINATION_NAME, containerFactory = FACTORY_BEAN_NAME)
     @Override
@@ -35,6 +38,12 @@ public class InvestmentChangeStatusMDC extends AbstractBulkActionMDC<InvestmentC
     @Override
     protected BulkActionsRunResultVo runBulkAction(InvestmentChangeStatusBAInit bulkActionInit) {
 
-        return investmentAmortizationBARunner.run(bulkActionInit);
+        if (bulkActionInit.getTargetStatus().equals(InvestmentStatus.PROCESSED)) {
+            System.out.println("ECHO02 received message runs sophisticated processing change status runner");
+            return investmentAmortizationBARunner.run(bulkActionInit);
+        } else {
+            System.out.println("ECHO01 received message runs simple change status runner");
+            return investmentChangeStatusBARunner.run(bulkActionInit);
+        }
     }
 }

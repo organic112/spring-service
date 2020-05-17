@@ -11,6 +11,7 @@ import com.potato112.springservice.jms.bulkaction.services.InvestmentStatusManag
 import org.springframework.stereotype.Component;
 
 /**
+ * Extends ChangeStatusBARunner (common BA operations flow)
  * Handles sophisticated status change:
  *  - business logic with exceptions and messages
  *  - db operations  / transaction management, conditional rollbacks etc.

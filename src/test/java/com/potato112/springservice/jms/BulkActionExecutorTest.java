@@ -32,21 +32,79 @@ public class BulkActionExecutorTest {
     @Autowired
     private BulkActionManager bulkActionInitiator;
 
-    /**
-     * should send and receive bulk action message
+    /*
+    BULK ACTION EXECUTION FLOW (sophisticated processing path)
+    1. BulkActionExecutor (this service may represent UI component or API endpoint - triggering BA)
+        - with ExecutorService (provided java concurrent executor)
+        - with BulkActionRunner
+		    - creates BulkActionInit
+		    - uses BulkActionManager and initiates bulk action
+
+    2. BulkActionManager
+	    - initiates bulk action (BulkActionInit, JMS destinationName)
+	    - creates bulk action result in database
+	    - sends BA message to JMS:
+		    - message contains database resultId
+		    - provides BA type
+		    - provides init user login
+
+    3a.(ASYNC) dedicated destination MDC(Message Driven Component) e.g. InvestmentChangeStatusMDC
+	    - recives BA message
+	    - uses dedicated Runner e.g. InvestmentAmortizationBARunner
+	    - using runner executes run on BulkActionInit from message
+	    (returns BulkActionsRunResultVo contains List<BulkActionFutureResultVo>)
+
+    3b.(ASYNC) dedicated Runner e.g. InvestmentAmortizationBARunner (processes single BA item)
+	    - fetches Investment object form DB wrapped in IntInvestmentItem
+	    - uses InvestmentStatusManager to change status
+
+    3c.(ASYNC) InvestmentStatusManager
+	    - executes InvestmentAmortizationProcessor (transaction Propagation.NOT_SUPPORTED)
+		    - executes ProductProcrssor.processProduct()  (transaction Propagation.REQUIRES_NEW)
+			    - may be stopped by bussiness Exceptions (transaction rollback)
+			    - bussines Exceptions are handled and result is fetched
+			    - based on result BA exception may be rethrown
+
+    4. BulkActionManager collects BA results
+	    - gets BulkActionResults from DAO by Id
+	    - gets data from BulkActionsRunResultVo
+	    - updates BulkActionResults with BulkActionsRunResultVo(BulkActionFutureResultVo list)
+	    - persists updated BulkActionResults in database
      */
     @Test
-    public void shouldRunInvestmentChangeStatusBulkAction() {
+    public void shouldRunSophisticatedInvestmentChangeStatusBulkAction() {
 
         SysStatus targetStatus = InvestmentStatus.PROCESSED;
         Set<String> documentIds = new HashSet<>();
         documentIds.add("1");
         documentIds.add("2");
         documentIds.add("3");
+        documentIds.add("4");  // 4 not existing in mocked db DAO - this will fail
+
         String cancelationMessage = "";
         String loggedUser = "testUserFromExecutor";
         BulkActionInit bulkActionInit = new InvestmentChangeStatusBAInit(targetStatus, documentIds, cancelationMessage, loggedUser);
 
+        bulkActionInitiator.initiateBulkAction(bulkActionInit);
+    }
+
+    /**
+     * TODO simple BA status change
+     */
+    @Test
+    public void shouldRunSimpleInvestmentChangeStatusBulkAction() {
+
+        SysStatus targetStatus = InvestmentStatus.CLOSED;
+        Set<String> documentIds = new HashSet<>();
+        documentIds.add("1");
+        documentIds.add("2");
+        documentIds.add("3");
+
+        String cancelationMessage = "";
+        String loggedUser = "testUserFromExecutor";
+
+        // FIXME Changle to simple bulk action
+        BulkActionInit bulkActionInit = new InvestmentChangeStatusBAInit(targetStatus, documentIds, cancelationMessage, loggedUser);
         bulkActionInitiator.initiateBulkAction(bulkActionInit);
     }
 

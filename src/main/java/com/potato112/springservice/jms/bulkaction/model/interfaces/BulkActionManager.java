@@ -1,7 +1,9 @@
 package com.potato112.springservice.jms.bulkaction.model.interfaces;
 
 import com.potato112.springservice.jms.bulkaction.model.entity.BulkActionResult;
+import com.potato112.springservice.jms.bulkaction.model.entity.BulkActionResultMessage;
 import com.potato112.springservice.jms.bulkaction.model.enums.BulkActionStatus;
+import com.potato112.springservice.jms.bulkaction.model.results.BulkActionFutureResultVo;
 import com.potato112.springservice.jms.bulkaction.model.results.BulkActionsRunResultVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Component;
 import javax.jms.JMSException;
 import javax.jms.ObjectMessage;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class BulkActionManager implements BulkActionInitiator, BulkActionResultManager {
@@ -111,29 +115,63 @@ public class BulkActionManager implements BulkActionInitiator, BulkActionResultM
         bulkActionResult.setEndProcessingDateTime(LocalDateTime.now());
     }
 
+    /**
+     * Completes bulk action
+     *
+     */
     @Override
     public void completeBulkAction(String bulkActionResultId, BulkActionsRunResultVo bulkActionsRunResultVo) {
 
         bulkActionsRunResultVo.getResultList(); // TODO concat to one message and set as bulkActionMessage
-        // get Bulk action by id BulkActionResult bar = dao.getBulkActionResultById(id)
-        // setStatus(bulkActionStatus)
-        // setEndProcessingDate(new Date())
-        // setDetails(bulkActionMessage)
 
+        // FIXME get bulk action from db, update and persist
+        //BulkActionResult bulkActionResult = dao.getBulkAction(bulkActionResultId)
+        BulkActionResult bulkActionResult = new BulkActionResult();
+        boolean bulkActionSuccess = bulkActionsRunResultVo.getSuccess();
+        bulkActionResult.setBulkActionStatus(convertStatus(bulkActionSuccess));
+        bulkActionResult.setEndProcessingDateTime(LocalDateTime.now());
+        bulkActionResult.setProcessingDetails(bulkActionsRunResultVo.getDetails());
 
+        List<BulkActionResultMessage> resultMessages = bulkActionsRunResultVo.getResultList().stream()
+                .map(this::convertSingleResultMessage)
+                .collect(Collectors.toList());
+
+        resultMessages.forEach( message ->{
+            bulkActionResult.getResultMessages().add(message);
+            message.setBulkActionResult(bulkActionResult);
+        });
+
+        // FIXME (now just presents results without persistence
         bulkActionsRunResultVo.getResultList().forEach(result -> {
-
             String cause = "";
             if (null != result.getException()) {
                 cause = result.getException().getMessage();
             }
-
             String message = "FINAL Single action - is success: " + result.isSuccess() + " | cause: " + cause + " | details: "
                     + result.getResultDetails() + " | single document code: " + result.getProcessedObjectCode();
             LOGGER.info(message);
         });
     }
 
+    private BulkActionResultMessage convertSingleResultMessage(BulkActionFutureResultVo resultVo){
+
+        BulkActionResultMessage singleResultMessage  = new BulkActionResultMessage();
+        String detailMessage =  String.join(" ", resultVo.getProcessedObjectCode(), resultVo.getResultDetails());
+        singleResultMessage.setBulkActionStatus(convertStatus(resultVo.isSuccess()));
+        singleResultMessage.setMessageContent(detailMessage);
+        return singleResultMessage;
+    }
+
+    private BulkActionStatus convertStatus(boolean bulkActionSuccess) {
+        if(bulkActionSuccess)
+            return BulkActionStatus.FINISHED_SUCCESS;
+        else
+            return BulkActionStatus.FINISHED_ERROR;
+    }
+
+    /**
+     * FIXME: Actually this part not executed: check why, what case should it handle
+     */
     @Override
     public void completeBulkAction(String bulkActionResultId, BulkActionStatus bulkActionStatus, String bulkActionMessage) {
 

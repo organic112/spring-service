@@ -3,12 +3,14 @@ package com.potato112.springservice.jms.bulkaction.runners;
 import com.potato112.springservice.jms.bulkaction.model.init.ChangeStatusBAInit;
 import com.potato112.springservice.jms.bulkaction.model.interfaces.SysDocument;
 import com.potato112.springservice.jms.bulkaction.model.interfaces.SysStatus;
+import org.springframework.stereotype.Component;
 
 /**
  * Async operation of this class executes 'business logic' that changes status of processed Item document
  * This class provides default implementation of runner usage.
  */
-public abstract class AsyncStatusChanger<OBJTYPE extends SysDocument, STATUS extends SysStatus>
+@Component
+public class AsyncStatusChanger<OBJTYPE extends SysDocument, STATUS extends SysStatus>
         extends AbstractAsyncBAProcessor<OBJTYPE, ChangeStatusBAInit<OBJTYPE, STATUS>, ChangeStatusBARunner<OBJTYPE, STATUS>> {
 
     @Override

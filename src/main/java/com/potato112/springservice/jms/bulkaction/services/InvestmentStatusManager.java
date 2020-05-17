@@ -1,7 +1,7 @@
 package com.potato112.springservice.jms.bulkaction.services;
 
 import com.potato112.springservice.jms.bulkaction.model.enums.InvestmentStatus;
-import com.potato112.springservice.jms.bulkaction.model.exception.AlreadyLockedException;
+import com.potato112.springservice.jms.doclock.AlreadyLockedException;
 import com.potato112.springservice.jms.bulkaction.model.exception.StatusManagerException;
 import com.potato112.springservice.jms.bulkaction.model.init.ChangeStatusParams;
 import com.potato112.springservice.jms.bulkaction.model.interfaces.StatusManager;
@@ -43,6 +43,8 @@ public class InvestmentStatusManager implements StatusManager<IntInvestmentItem,
 
         LOGGER.info("Change status start...");
 
+        System.out.println("ECHO01 Simple status change...");
+
         IntInvestmentItem investmentItem = params.getDocument();
 
         InvestmentStatus newStatus = params.getNewStatus();
@@ -60,7 +62,7 @@ public class InvestmentStatusManager implements StatusManager<IntInvestmentItem,
         // set new status
 
         // to have failure, change this status to different than target status
-        intInvestmentItem.setInvestmentStatus(InvestmentStatus.PROCESSED);
+        intInvestmentItem.setInvestmentStatus(newStatus);
         // update item in dB
         // remove item lock
 
@@ -90,6 +92,8 @@ public class InvestmentStatusManager implements StatusManager<IntInvestmentItem,
      */
     public void changeAmortizationProcessingStatus(IntInvestmentItem intInvestmentItem, InvestmentStatus newStatus) {
 
+        System.out.println("ECHO02 Sophisticated status change in processor...");
+
         String processingMessage = investmentAmortizationProcessor.processInvestmentsAndCreateAmortizationRecords(intInvestmentItem, newStatus);
 
         validateProcessingResult(processingMessage, intInvestmentItem);
@@ -97,7 +101,7 @@ public class InvestmentStatusManager implements StatusManager<IntInvestmentItem,
 
     private void validateProcessingResult(String message, IntInvestmentItem intInvestmentItem) {
 
-        if (!intInvestmentItem.getInvestmentStatus().equals(InvestmentStatus.PROCESSED)) {
+        if (intInvestmentItem.getInvestmentStatus().equals(InvestmentStatus.NOT_PROCESSED)) {
             throw new StatusManagerException(message);
         }
     }
