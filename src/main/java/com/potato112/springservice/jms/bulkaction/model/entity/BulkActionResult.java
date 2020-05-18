@@ -5,6 +5,7 @@ import com.potato112.springservice.jms.bulkaction.model.enums.BulkActionType;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +22,10 @@ import java.util.List;
 public class BulkActionResult extends BaseEntity {
 
     @Id
-    @Column(name = "bulkactions_id", length = 50)
-    @GeneratedValue(generator = "seq_id")
-    @GenericGenerator(name = "seq_id", strategy = "identity")
+    @NotNull
+    @Column(name = "bulkactions_id", length = 80)
+    @GeneratedValue(generator="system-uuid") // auto generated as String to Varchar
+    @GenericGenerator(name="system-uuid", strategy = "uuid")
     private String id;
 
     @Enumerated(EnumType.STRING)
@@ -36,7 +38,7 @@ public class BulkActionResult extends BaseEntity {
     private LocalDateTime endProcessingDateTime;
     private String processingDetails;
     private Boolean isDeleted = false;
-//mappedBy = "bulkActionResult",
+     //mappedBy = "bulkActionResult",
     @OneToMany(mappedBy = "bulkActionResult", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BulkActionResultMessage> resultMessages = new ArrayList<>();
 

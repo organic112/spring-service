@@ -69,7 +69,6 @@ public class InvestmentStatusManager implements StatusManager<IntInvestmentItem,
         validateProcessingResult("FIXME processing message from status manager ", intInvestmentItem);
         System.out.println("STATUS MANAGER: DOCUMENT PROCESSED - STATUS CHANGED: old: " + intInvestmentItem.getInvestmentStatus()
                 + " new:" + newStatus);
-
     }
 
     private boolean isLegalStatusChange(IntInvestmentItem intInvestmentItem, InvestmentStatus newStatus) {

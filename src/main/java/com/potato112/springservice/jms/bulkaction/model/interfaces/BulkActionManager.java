@@ -1,5 +1,6 @@
 package com.potato112.springservice.jms.bulkaction.model.interfaces;
 
+import com.potato112.springservice.jms.bulkaction.dao.BulkActionResultDao;
 import com.potato112.springservice.jms.bulkaction.model.entity.BulkActionResult;
 import com.potato112.springservice.jms.bulkaction.model.entity.BulkActionResultMessage;
 import com.potato112.springservice.jms.bulkaction.model.enums.BulkActionStatus;
@@ -23,17 +24,19 @@ public class BulkActionManager implements BulkActionInitiator, BulkActionResultM
     private static final Logger LOGGER = LoggerFactory.getLogger(BulkActionManager.class);
     private static final String RESULT_PROPERTY = "RESULT_ID";
 
-    // @Autowire
-    // BulkActionDAO
+    private BulkActionResultDao bulkActionResultDao;
+
+
     // UserManager
     private static final String DESTINATION_NAME = "investmentChangeStatusBulkAction";
 
     private final ApplicationContext applicationContext;
     private final JmsTemplate jmsTemplate;
 
-    public BulkActionManager(ApplicationContext applicationContext, JmsTemplate jmsTemplate) {
+    public BulkActionManager(ApplicationContext applicationContext, JmsTemplate jmsTemplate, BulkActionResultDao bulkActionResultDao) {
         this.applicationContext = applicationContext;
         this.jmsTemplate = jmsTemplate;
+        this.bulkActionResultDao = bulkActionResultDao;
     }
 
     @Override
@@ -82,8 +85,10 @@ public class BulkActionManager implements BulkActionInitiator, BulkActionResultM
     }
 
     private String createBulkActionResultInDatabase(BulkActionInit bulkActionInit) {
-        // Implement DAO and FIXME
-        return "fixmeId";
+
+        BulkActionResult bulkActionResult = new BulkActionResult();
+        bulkActionResultDao.create(bulkActionResult);
+        return bulkActionResult.getId();
     }
 
     private void validateBAInit(final BulkActionInit bulkActionInit) {
@@ -99,11 +104,7 @@ public class BulkActionManager implements BulkActionInitiator, BulkActionResultM
     @Override
     public BulkActionResult getBulkActionResultById(String id) {
 
-        // get Bulk action by id BulkActionResult bar = dao.getBulkActionResultById(id)
-        // FIXME implement DAO
-        BulkActionResult bulkActionResult = new BulkActionResult();
-
-        return bulkActionResult;
+        return bulkActionResultDao.find(BulkActionResult.class, id);
     }
 
     @Override
@@ -122,11 +123,7 @@ public class BulkActionManager implements BulkActionInitiator, BulkActionResultM
     @Override
     public void completeBulkAction(String bulkActionResultId, BulkActionsRunResultVo bulkActionsRunResultVo) {
 
-        bulkActionsRunResultVo.getResultList(); // TODO concat to one message and set as bulkActionMessage
-
-        // FIXME get bulk action from db, update and persist
-        //BulkActionResult bulkActionResult = dao.getBulkAction(bulkActionResultId)
-        BulkActionResult bulkActionResult = new BulkActionResult();
+        BulkActionResult bulkActionResult = getBulkActionResultById(bulkActionResultId);
         boolean bulkActionSuccess = bulkActionsRunResultVo.getSuccess();
         bulkActionResult.setBulkActionStatus(convertStatus(bulkActionSuccess));
         bulkActionResult.setEndProcessingDateTime(LocalDateTime.now());
@@ -141,7 +138,11 @@ public class BulkActionManager implements BulkActionInitiator, BulkActionResultM
             message.setBulkActionResult(bulkActionResult);
         });
 
-        // FIXME (now just presents results without persistence
+        bulkActionResultDao.update(bulkActionResult);
+        logProcessingResult(bulkActionsRunResultVo);
+    }
+
+    private void logProcessingResult(BulkActionsRunResultVo bulkActionsRunResultVo){
         bulkActionsRunResultVo.getResultList().forEach(result -> {
             String cause = "";
             if (null != result.getException()) {
