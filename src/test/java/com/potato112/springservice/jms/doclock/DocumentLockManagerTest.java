@@ -2,7 +2,7 @@ package com.potato112.springservice.jms.doclock;
 
 import com.potato112.springservice.config.AppConfig;
 import com.potato112.springservice.jms.bulkaction.model.enums.InvestmentStatus;
-import com.potato112.springservice.jms.bulkaction.model.investment.Investment;
+import com.potato112.springservice.jms.bulkaction.model.investment.InvestmentDocument;
 import com.potato112.springservice.repository.interfaces.crud.CRUDServiceBean;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class DocumentLockManagerTest {
 
     @Autowired
-    private CRUDServiceBean<Investment> crudServiceBean;
+    private CRUDServiceBean<InvestmentDocument> crudServiceBean;
 
     @Autowired
     private DocumentLockManager documentLockManager;
@@ -36,14 +36,14 @@ public class DocumentLockManagerTest {
     @Test
     public void shouldCreateDocumentLock() {
         // given
-        Investment investment = new Investment();
-        investment.setInvestmentNumber("INV001-TEST01");
-        investment.setInvestmentStatus(InvestmentStatus.IMPORTED);
-        crudServiceBean.create(investment);
-        System.out.println("document id:" + investment.getDocumentId());
+        InvestmentDocument investmentDocument = new InvestmentDocument();
+        investmentDocument.setInvestmentNumber("INV001-TEST01");
+        investmentDocument.setInvestmentStatus(InvestmentStatus.IMPORTED);
+        crudServiceBean.create(investmentDocument);
+        System.out.println("document id:" + investmentDocument.getDocumentId());
         // when
-        DocLock docLock = documentLockManager.lockDocument(investment);
-        boolean isLocked = documentLockManager.isDocumentLocked(investment);
+        DocLock docLock = documentLockManager.lockDocument(investmentDocument);
+        boolean isLocked = documentLockManager.isDocumentLocked(investmentDocument);
         // then
         Assertions.assertNotEquals(null, docLock.getId());
         Assertions.assertNotEquals(false, isLocked);
@@ -52,32 +52,32 @@ public class DocumentLockManagerTest {
     @Test
     public void shouldCreateAndRemoveDocumentLock() {
         // given
-        Investment investment = new Investment();
-        investment.setInvestmentNumber("INV001-TEST01");
-        investment.setInvestmentStatus(InvestmentStatus.IMPORTED);
-        crudServiceBean.create(investment);
+        InvestmentDocument investmentDocument = new InvestmentDocument();
+        investmentDocument.setInvestmentNumber("INV001-TEST01");
+        investmentDocument.setInvestmentStatus(InvestmentStatus.IMPORTED);
+        crudServiceBean.create(investmentDocument);
         // when
-        DocLock docLock = documentLockManager.lockDocument(investment);
+        DocLock docLock = documentLockManager.lockDocument(investmentDocument);
         Assertions.assertNotEquals(null, docLock);
-        documentLockManager.unlockDocument(investment);
+        documentLockManager.unlockDocument(investmentDocument);
         // then
-        boolean isLocked = documentLockManager.isDocumentLocked(investment);
+        boolean isLocked = documentLockManager.isDocumentLocked(investmentDocument);
         Assertions.assertEquals(false, isLocked);
     }
 
     @Test(expected = AlreadyLockedException.class)
     public void shouldThrowAlreadyLockExceptionWhenSecondLockAttemptOnLockedDocument() {
         // given
-        Investment investment = new Investment();
-        investment.setInvestmentNumber("INV001-TEST01");
-        investment.setInvestmentStatus(InvestmentStatus.IMPORTED);
-        crudServiceBean.create(investment);
+        InvestmentDocument investmentDocument = new InvestmentDocument();
+        investmentDocument.setInvestmentNumber("INV001-TEST01");
+        investmentDocument.setInvestmentStatus(InvestmentStatus.IMPORTED);
+        crudServiceBean.create(investmentDocument);
         // when
-        System.out.println("document id:" + investment.getDocumentId());
-        DocLock docLock = documentLockManager.lockDocument(investment);
+        System.out.println("document id:" + investmentDocument.getDocumentId());
+        DocLock docLock = documentLockManager.lockDocument(investmentDocument);
         System.out.println("docLock: " + docLock.getDocId() + " - " + docLock.getLogin());
         // then (second attempt on lock)
-        documentLockManager.lockDocument(investment);
+        documentLockManager.lockDocument(investmentDocument);
         Assertions.assertNotEquals(null, docLock.getId());
     }
 }

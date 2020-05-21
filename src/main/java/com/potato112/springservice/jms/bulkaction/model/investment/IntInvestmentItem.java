@@ -3,13 +3,41 @@ package com.potato112.springservice.jms.bulkaction.model.investment;
 import com.potato112.springservice.jms.bulkaction.model.enums.InvestmentStatus;
 import com.potato112.springservice.jms.bulkaction.model.enums.SysDocumentType;
 import com.potato112.springservice.jms.bulkaction.model.interfaces.Lockable;
+import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+@NamedQueries({
+        @NamedQuery(
+                name = "getAllInvestmentItems",
+                query = "select inv from IntInvestmentItem inv order by inv.itemNumber DESC"
+        )
+})
+@Entity
+@Table(schema = "demo-db", name = "int_investment_item")
 public class IntInvestmentItem extends BaseInterfaceTable implements Lockable {
 
+    @Id
+    @NotNull
+    @Column(name = "int_investment_item_id", length = 80)
+    @GeneratedValue(generator="system-uuid")
+    @GenericGenerator(name="system-uuid", strategy = "uuid")
     private String id;
-    private Investment investment;
+
+    @ManyToOne
+    @JoinColumn(name = "investment_id")
+    private InvestmentDocument investmentDocument;
+
+    @Column(name = "item_number")
+    private String itemNumber;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "investment_status", nullable = false, length = 30)
     private InvestmentStatus investmentStatus;
-    private Integer clientNumber;
+
+    @Column(name = "product_number")
+    private Integer productNumber;
+
 
     public String getId() {
         return id;
@@ -17,14 +45,6 @@ public class IntInvestmentItem extends BaseInterfaceTable implements Lockable {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public Investment getInvestment() {
-        return investment;
-    }
-
-    public void setInvestment(Investment investment) {
-        this.investment = investment;
     }
 
     public InvestmentStatus getInvestmentStatus() {
@@ -35,19 +55,19 @@ public class IntInvestmentItem extends BaseInterfaceTable implements Lockable {
         this.investmentStatus = investmentStatus;
     }
 
-    public Integer getClientNumber() {
-        return clientNumber;
+    public Integer getProductNumber() {
+        return productNumber;
     }
 
-    public void setClientNumber(Integer clientNumber) {
-        this.clientNumber = clientNumber;
+    public void setProductNumber(Integer clientNumber) {
+        this.productNumber = clientNumber;
     }
 
     @Override
     public String getCode() {
 
-        String code = investment.getCode();
-        Integer clientNumber = getClientNumber();
+        String code = itemNumber;
+        Integer clientNumber = getProductNumber();
         return code.concat(" - ").concat(clientNumber.toString());
     }
 
@@ -69,5 +89,21 @@ public class IntInvestmentItem extends BaseInterfaceTable implements Lockable {
     @Override
     public void setUpdateUser() {
 
+    }
+
+    public InvestmentDocument getInvestmentDocument() {
+        return investmentDocument;
+    }
+
+    public void setInvestmentDocument(InvestmentDocument investmentDocument) {
+        this.investmentDocument = investmentDocument;
+    }
+
+    public String getItemNumber() {
+        return itemNumber;
+    }
+
+    public void setItemNumber(String itemNumber) {
+        this.itemNumber = itemNumber;
     }
 }

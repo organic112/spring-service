@@ -33,6 +33,9 @@ public class InvestmentAmortizationBARunner extends ChangeStatusBARunner {
 
         IntInvestmentItem investmentItem = investmentDao.getInvestmentById(id);   // !!
         ///investmentItem.setLoggedUser(loggedUser);
+
+        System.out.println("ECHO_IA01 fetched investment item:" + investmentItem.getDocumentId());
+
         investmentStatusManager.changeAmortizationProcessingStatus(investmentItem, newInvestmentStatus); // fails here null pointer
     }
 

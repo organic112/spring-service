@@ -2,6 +2,9 @@ package com.potato112.springservice.config;
 
 import com.potato112.springservice.domain.user.model.authorize.UserStatus;
 import com.potato112.springservice.jms.bulkaction.BulkActionExecutor;
+import com.potato112.springservice.jms.bulkaction.model.enums.InvestmentStatus;
+import com.potato112.springservice.jms.bulkaction.model.investment.IntInvestmentItem;
+import com.potato112.springservice.jms.bulkaction.model.investment.InvestmentDocument;
 import com.potato112.springservice.repository.entities.auth.*;
 import com.potato112.springservice.repository.interfaces.crud.CRUDService;
 import com.potato112.springservice.repository.interfaces.crud.CRUDServiceBean;
@@ -33,6 +36,9 @@ public class AppConfig implements CommandLineRunner {
 
     @Autowired
     private CRUDService<UserGroupMapping> mappingCRUDService;
+
+    @Autowired
+    private CRUDService<InvestmentDocument> investmentCRUDService;
 
     @Autowired
     private BulkActionExecutor bulkActionExecutor;
@@ -94,6 +100,79 @@ public class AppConfig implements CommandLineRunner {
         userGroupMapping.setUser(user);
         userGroupMapping.setUserGroup(userGroup1);
         mappingCRUDService.create(userGroupMapping);
+
+        InvestmentDocument investmentDocument = new InvestmentDocument();
+        InvestmentDocument investmentDocument2 = new InvestmentDocument();
+        InvestmentDocument investmentDocument3 = new InvestmentDocument();
+
+        List<IntInvestmentItem> itemList1 = new ArrayList<>();
+        IntInvestmentItem intInvestmentItem1 = new IntInvestmentItem();
+        intInvestmentItem1.setInvestmentStatus(InvestmentStatus.IMPORTED);
+        intInvestmentItem1.setProductNumber(125484);
+        intInvestmentItem1.setItemNumber("ITEM-01A");
+        intInvestmentItem1.setInvestmentDocument(investmentDocument);
+
+        itemList1.add(intInvestmentItem1);
+        IntInvestmentItem intInvestmentItem2 = new IntInvestmentItem();
+        intInvestmentItem2.setInvestmentStatus(InvestmentStatus.IMPORTED);
+        intInvestmentItem2.setProductNumber(125485);
+        intInvestmentItem2.setItemNumber("ITEM-02A");
+        intInvestmentItem2.setInvestmentDocument(investmentDocument);
+        itemList1.add(intInvestmentItem2);
+        IntInvestmentItem intInvestmentItem3 = new IntInvestmentItem();
+        intInvestmentItem3.setInvestmentStatus(InvestmentStatus.IMPORTED);
+        intInvestmentItem3.setProductNumber(125486);
+        intInvestmentItem3.setItemNumber("ITEM-03A");
+        intInvestmentItem3.setInvestmentDocument(investmentDocument);
+        itemList1.add(intInvestmentItem3);
+
+        List<IntInvestmentItem> itemList2 = new ArrayList<>();
+        IntInvestmentItem intInvestmentItem4 = new IntInvestmentItem();
+        intInvestmentItem4.setInvestmentStatus(InvestmentStatus.IMPORTED);
+        intInvestmentItem4.setProductNumber(125487);
+        intInvestmentItem4.setItemNumber("ITEM-04A");
+        intInvestmentItem4.setInvestmentDocument(investmentDocument2);
+        itemList2.add(intInvestmentItem4);
+
+        IntInvestmentItem intInvestmentItem5 = new IntInvestmentItem();
+        intInvestmentItem5.setInvestmentStatus(InvestmentStatus.IMPORTED);
+        intInvestmentItem5.setProductNumber(125488);
+        intInvestmentItem5.setItemNumber("ITEM-05A");
+        intInvestmentItem5.setInvestmentDocument(investmentDocument2);
+        itemList2.add(intInvestmentItem5);
+
+        IntInvestmentItem intInvestmentItem6 = new IntInvestmentItem();
+        intInvestmentItem6.setInvestmentStatus(InvestmentStatus.IMPORTED);
+        intInvestmentItem6.setProductNumber(125489);
+        intInvestmentItem6.setItemNumber("ITEM-06A");
+        intInvestmentItem6.setInvestmentDocument(investmentDocument2);
+        itemList2.add(intInvestmentItem6);
+
+        List<IntInvestmentItem> itemList3 = new ArrayList<>();
+        IntInvestmentItem intInvestmentItem7 = new IntInvestmentItem();
+        intInvestmentItem7.setInvestmentStatus(InvestmentStatus.IMPORTED);
+        intInvestmentItem7.setProductNumber(125410);
+        intInvestmentItem7.setItemNumber("ITEM-07A");
+        intInvestmentItem7.setInvestmentDocument(investmentDocument3);
+        itemList3.add(intInvestmentItem7);
+
+        // create 3 Investments for bulk action processing
+
+        investmentDocument.setInvestmentStatus(InvestmentStatus.IMPORTED);
+        investmentDocument.setInvestmentNumber("INV_001");
+        investmentDocument.setInvestmentItemList(itemList1);
+        investmentCRUDService.create(investmentDocument);
+
+        investmentDocument2.setInvestmentStatus(InvestmentStatus.IMPORTED);
+        investmentDocument2.setInvestmentNumber("INV_002");
+        investmentDocument2.setInvestmentItemList(itemList2);
+        investmentCRUDService.create(investmentDocument2);
+
+        investmentDocument3.setInvestmentStatus(InvestmentStatus.IMPORTED);
+        investmentDocument3.setInvestmentNumber("INV_003");
+        investmentDocument3.setInvestmentItemList(itemList3);
+
+        investmentCRUDService.create(investmentDocument3);
 
         System.out.println("RUNNING SPRING INTEGRATION TESTS MODE...");
     }

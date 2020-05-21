@@ -1,34 +1,54 @@
 package com.potato112.springservice.jms.bulkaction.dao;
 
-import com.potato112.springservice.jms.bulkaction.model.enums.InvestmentStatus;
 import com.potato112.springservice.jms.bulkaction.model.investment.IntInvestmentItem;
-import com.potato112.springservice.jms.bulkaction.model.investment.Investment;
+import com.potato112.springservice.jms.bulkaction.model.investment.InvestmentDocument;
+import com.potato112.springservice.repository.interfaces.crud.CRUDService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 @Service
 public class InvestmentDao {
 
+    private CRUDService<IntInvestmentItem> intInvestmentItemCRUDService;
+    private CRUDService<InvestmentDocument> investmentDocumentCRUDService;
+
+    public InvestmentDao(CRUDService<IntInvestmentItem> intInvestmentItemCRUDService, CRUDService<InvestmentDocument> investmentDocumentCRUDService) {
+        this.intInvestmentItemCRUDService = intInvestmentItemCRUDService;
+        this.investmentDocumentCRUDService = investmentDocumentCRUDService;
+    }
 
     //TODO implement as real DAO
-    private Map<String, IntInvestmentItem> repositoryInvestmentItemMap = new HashMap<>();
-    private List<Investment> investmentList = new ArrayList<>();
+/*    private Map<String, IntInvestmentItem> repositoryInvestmentItemMap = new HashMap<>();
+    private List<InvestmentDocument> investmentDocumentList = new ArrayList<>();*/
 
     public IntInvestmentItem getInvestmentById(String id) {
-        init();
-        return repositoryInvestmentItemMap.get(id);
+        //init();
+        return intInvestmentItemCRUDService.find(IntInvestmentItem.class, id);
     }
 
-    public Investment getInvestmentDocumentById(String id) {
-        init();
-        return investmentList.stream().filter(doc -> doc.getId().equals(id)).findFirst().get();
+    public InvestmentDocument getInvestmentDocumentById(String id) {
+        //init();
+        return investmentDocumentCRUDService.find(InvestmentDocument.class, id);
     }
 
-    private void init() {
+    public List<InvestmentDocument> getAllInvestmentDocuments() {
+
+        return investmentDocumentCRUDService.findWithNamedQuery("getAllInvestmentDocuments");
+    }
+
+    public List<IntInvestmentItem> getAllInvestmentItems() {
+
+        return intInvestmentItemCRUDService.findWithNamedQuery("getAllInvestmentItems");
+    }
+
+    public void update(IntInvestmentItem item){
+
+        intInvestmentItemCRUDService.update(item);
+    }
+
+    /*private void init() {
         IntInvestmentItem item1 = new IntInvestmentItem();
         IntInvestmentItem item2 = new IntInvestmentItem();
         IntInvestmentItem item3 = new IntInvestmentItem();
@@ -44,17 +64,17 @@ public class InvestmentDao {
 
     private void createInvestementItem(IntInvestmentItem intInvestmentItem, Integer nuber) {
         intInvestmentItem.setId(nuber.toString());
-        intInvestmentItem.setClientNumber(1000 + nuber);
+        intInvestmentItem.setProductNumber(1000 + nuber);
         intInvestmentItem.setInvestmentStatus(InvestmentStatus.IMPORTED);
 
-        Investment investment = new Investment();
+        InvestmentDocument investmentDocument = new InvestmentDocument();
         Integer docNum = 55 + nuber;
         Integer carNum = 69 + docNum;
-        investment.setId(docNum.toString());
-        investment.setInvestmentNumber(carNum.toString());
+        investmentDocument.setId(docNum.toString());
+        investmentDocument.setInvestmentNumber(carNum.toString());
 
-        investmentList.add(investment);
+        investmentDocumentList.add(investmentDocument);
 
-        intInvestmentItem.setInvestment(investment);
-    }
+        intInvestmentItem.setInvestmentDocument(investmentDocument);
+    }*/
 }

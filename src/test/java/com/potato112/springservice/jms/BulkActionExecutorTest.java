@@ -2,11 +2,14 @@ package com.potato112.springservice.jms;
 
 import com.potato112.springservice.config.AppConfig;
 import com.potato112.springservice.jms.bulkaction.BulkActionExecutor;
+import com.potato112.springservice.jms.bulkaction.dao.InvestmentDao;
 import com.potato112.springservice.jms.bulkaction.model.enums.InvestmentStatus;
 import com.potato112.springservice.jms.bulkaction.model.init.InvestmentChangeStatusBAInit;
 import com.potato112.springservice.jms.bulkaction.model.interfaces.BulkActionInit;
 import com.potato112.springservice.jms.bulkaction.model.interfaces.BulkActionManager;
 import com.potato112.springservice.jms.bulkaction.model.interfaces.SysStatus;
+import com.potato112.springservice.jms.bulkaction.model.investment.IntInvestmentItem;
+import com.potato112.springservice.jms.bulkaction.model.investment.InvestmentDocument;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @RunWith(SpringRunner.class)
@@ -31,6 +35,9 @@ public class BulkActionExecutorTest {
 
     @Autowired
     private BulkActionManager bulkActionInitiator;
+
+    @Autowired
+    private InvestmentDao investmentDao;
 
     /*
     BULK ACTION EXECUTION FLOW (sophisticated processing path)
@@ -75,15 +82,15 @@ public class BulkActionExecutorTest {
     public void shouldRunSophisticatedInvestmentChangeStatusBulkAction() {
 
         SysStatus targetStatus = InvestmentStatus.PROCESSED;
-        Set<String> documentIds = new HashSet<>();
-        documentIds.add("1");
-        documentIds.add("2");
-        documentIds.add("3");
-        documentIds.add("4");  // 4 not existing in mocked db DAO - this will fail
+        // selected ids
+        Set<String> selectedDocumentIds = new HashSet<>();
+        List<IntInvestmentItem> investmentDocumentList = investmentDao.getAllInvestmentItems();
+        investmentDocumentList.forEach(inv -> selectedDocumentIds.add(inv.getId()));
+        selectedDocumentIds.add("not_existing"); // this will fail
 
         String cancelationMessage = "";
         String loggedUser = "testUserFromExecutor";
-        BulkActionInit bulkActionInit = new InvestmentChangeStatusBAInit(targetStatus, documentIds, cancelationMessage, loggedUser);
+        BulkActionInit bulkActionInit = new InvestmentChangeStatusBAInit(targetStatus, selectedDocumentIds, cancelationMessage, loggedUser);
 
         bulkActionInitiator.initiateBulkAction(bulkActionInit);
     }
@@ -95,16 +102,15 @@ public class BulkActionExecutorTest {
     public void shouldRunSimpleInvestmentChangeStatusBulkAction() {
 
         SysStatus targetStatus = InvestmentStatus.CLOSED;
-        Set<String> documentIds = new HashSet<>();
-        documentIds.add("1");
-        documentIds.add("2");
-        documentIds.add("3");
+        Set<String> selectedDocumentIds = new HashSet<>();
+        List<InvestmentDocument> investmentDocumentList = investmentDao.getAllInvestmentDocuments();
+        investmentDocumentList.forEach(inv -> selectedDocumentIds.add(inv.getId()));
 
         String cancelationMessage = "";
         String loggedUser = "testUserFromExecutor";
 
         // FIXME Changle to simple bulk action
-        BulkActionInit bulkActionInit = new InvestmentChangeStatusBAInit(targetStatus, documentIds, cancelationMessage, loggedUser);
+        BulkActionInit bulkActionInit = new InvestmentChangeStatusBAInit(targetStatus, selectedDocumentIds, cancelationMessage, loggedUser);
         bulkActionInitiator.initiateBulkAction(bulkActionInit);
     }
 

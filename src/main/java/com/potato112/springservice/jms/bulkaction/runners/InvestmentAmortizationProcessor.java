@@ -6,7 +6,7 @@ import com.potato112.springservice.jms.bulkaction.model.enums.InvestmentStatus;
 import com.potato112.springservice.jms.bulkaction.model.exception.StatusManagerException;
 import com.potato112.springservice.jms.bulkaction.model.exception.checked.CustomExplicitBussiesException;
 import com.potato112.springservice.jms.bulkaction.model.investment.IntInvestmentItem;
-import com.potato112.springservice.jms.bulkaction.model.investment.Investment;
+import com.potato112.springservice.jms.bulkaction.model.investment.InvestmentDocument;
 import com.potato112.springservice.jms.bulkaction.model.investment.InvestmentProduct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,19 +37,26 @@ public class InvestmentAmortizationProcessor {
 
         try {
 
-            Investment document = intInvestmentItem.getInvestment();
-            String investmentId = document.getId();
+           InvestmentDocument document = intInvestmentItem.getInvestmentDocument();
+           String investmentId = document.getId();
 
             // Fetch investment document from DB to get persistence context
-            Investment investment = investmentDao.getInvestmentDocumentById(investmentId);
+            InvestmentDocument investmentDocument = investmentDao.getInvestmentDocumentById(investmentId);
+            investmentDocument.setInvestmentStatus(InvestmentStatus.PROCESSED);
+
+            intInvestmentItem.setInvestmentDocument(investmentDocument);
+
 
             // some business logic, create objects etc.
             InvestmentProduct investmentProduct = new InvestmentProduct();
 
             productProcessor.processProduct(investmentProduct, newStatus);
             investmentProduct.setInvestmentProductStatus(InvestmentProductStatus.PROCESSED);
+
             // NOTE to have failure logic should set status to <> PROCESSED
             intInvestmentItem.setInvestmentStatus(InvestmentStatus.PROCESSED);
+            investmentDao.update(intInvestmentItem);
+
             LOGGER.info("Amortization processing ended");
 
         } catch (CustomExplicitBussiesException e) {
