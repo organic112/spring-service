@@ -1,5 +1,6 @@
 package com.potato112.springservice.domain.user.crud;
 
+import com.potato112.springservice.domain.user.UserValidator;
 import com.potato112.springservice.domain.user.model.views.UserFormParametersVo;
 import com.potato112.springservice.domain.user.model.authorize.UserDto;
 import lombok.extern.slf4j.Slf4j;
@@ -24,9 +25,10 @@ public class CreateUserDatabaseService extends SaveUserService implements Create
         log.info("firstName:"+ userDto.getFirstName());
         log.info("lastName:"+ userDto.getLastName());
 
-        //TODO add user validator
-        UserDto saved = save(userDto);
+        UserValidator userValidator = new UserValidator(userRepository);
+        userValidator.validate(userDto);
 
+        UserDto saved = save(userDto);
         System.out.println("CREATED user id: " + saved.getId());
 
         return saved.getId();

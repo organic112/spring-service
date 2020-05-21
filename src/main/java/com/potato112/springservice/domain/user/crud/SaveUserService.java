@@ -16,7 +16,7 @@ import java.util.Optional;
 @Slf4j
 public abstract class SaveUserService {
 
-    private UserRepository userRepository;
+    protected final UserRepository userRepository;
     private UserService userService;
 
     public SaveUserService(UserRepository userRepository, UserService userService) {
