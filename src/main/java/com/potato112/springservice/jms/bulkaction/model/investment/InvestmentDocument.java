@@ -5,6 +5,7 @@ import com.potato112.springservice.jms.bulkaction.model.enums.SysDocumentType;
 import com.potato112.springservice.jms.bulkaction.model.interfaces.Lockable;
 import com.potato112.springservice.jms.bulkaction.model.interfaces.SysDocument;
 import com.potato112.springservice.repository.entities.BaseEntity;
+import lombok.Data;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
@@ -14,16 +15,19 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 
-
-// TODO entity structure with interfaces
+/**
+ * Represents header of Investment Document
+ * document interface table
+ */
+@Data
+@Entity
+@Table(schema = "demo-db", name = "investment_header")
 @NamedQueries({
         @NamedQuery(
                 name = "getAllInvestmentDocuments",
                 query = "select inv from InvestmentDocument inv order by inv.investmentNumber DESC"
         )
 })
-@Entity
-@Table(schema = "demo-db", name = "investment_header")
 public class InvestmentDocument extends BaseEntity implements SysDocument, Lockable {
 
     @Id
@@ -69,7 +73,7 @@ public class InvestmentDocument extends BaseEntity implements SysDocument, Locka
     public void setUpdateUser() {
     }
 
-    public String getId() {
+    /*public String getId() {
         return id;
     }
 
@@ -99,5 +103,5 @@ public class InvestmentDocument extends BaseEntity implements SysDocument, Locka
 
     public void setInvestmentItemList(List<IntInvestmentItem> investmentItemList) {
         this.investmentItemList = investmentItemList;
-    }
+    }*/
 }

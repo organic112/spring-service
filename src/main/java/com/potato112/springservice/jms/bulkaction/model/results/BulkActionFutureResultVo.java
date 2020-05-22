@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 /**
  * Bulk Action runs multiple parallel async processing operations.
- * This class represents result of single such operation.
+ * This class represents result of single such async operation.
  */
 public class BulkActionFutureResultVo implements Serializable {
 
@@ -34,10 +34,6 @@ public class BulkActionFutureResultVo implements Serializable {
         result.resultDetails = resultDetails;
         result.exception = exception;
         return result;
-    }
-
-    private static void makeResult(boolean isSuccess){
-        // TODO refactor
     }
 
     public String getProcessedObjectCode() {

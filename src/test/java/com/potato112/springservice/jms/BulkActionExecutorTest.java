@@ -103,7 +103,7 @@ public class BulkActionExecutorTest {
 
         SysStatus targetStatus = InvestmentStatus.CLOSED;
         Set<String> selectedDocumentIds = new HashSet<>();
-        List<InvestmentDocument> investmentDocumentList = investmentDao.getAllInvestmentDocuments();
+        List<IntInvestmentItem> investmentDocumentList = investmentDao.getAllInvestmentItems();
         investmentDocumentList.forEach(inv -> selectedDocumentIds.add(inv.getId()));
 
         String cancelationMessage = "";

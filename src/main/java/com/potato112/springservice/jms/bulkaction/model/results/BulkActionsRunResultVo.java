@@ -3,6 +3,11 @@ package com.potato112.springservice.jms.bulkaction.model.results;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Represents result of operation done by bulk action runner.
+ * Not persisted
+ */
 public class BulkActionsRunResultVo {
 
     private Boolean success = null;

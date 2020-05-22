@@ -3,18 +3,29 @@ package com.potato112.springservice.jms.bulkaction.model.investment;
 import com.potato112.springservice.jms.bulkaction.model.enums.InvestmentStatus;
 import com.potato112.springservice.jms.bulkaction.model.enums.SysDocumentType;
 import com.potato112.springservice.jms.bulkaction.model.interfaces.Lockable;
+import lombok.Data;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
+
+
+/**
+ * Represents row on overview table
+ */
+
+@Data
+@Entity
+@Table(schema = "demo-db", name = "int_investment_item")
 @NamedQueries({
         @NamedQuery(
                 name = "getAllInvestmentItems",
                 query = "select inv from IntInvestmentItem inv order by inv.itemNumber DESC"
         )
 })
-@Entity
-@Table(schema = "demo-db", name = "int_investment_item")
 public class IntInvestmentItem extends BaseInterfaceTable implements Lockable {
 
     @Id
@@ -38,22 +49,9 @@ public class IntInvestmentItem extends BaseInterfaceTable implements Lockable {
     @Column(name = "product_number")
     private Integer productNumber;
 
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public InvestmentStatus getInvestmentStatus() {
-        return investmentStatus;
-    }
-
-    public void setInvestmentStatus(InvestmentStatus investmentStatus) {
-        this.investmentStatus = investmentStatus;
-    }
+    @OneToMany(mappedBy = "intInvestmentItem")
+    @Cascade(CascadeType.ALL)
+    private List<InvestmentProduct> investmentProducts;
 
     public Integer getProductNumber() {
         return productNumber;
@@ -88,22 +86,6 @@ public class IntInvestmentItem extends BaseInterfaceTable implements Lockable {
 
     @Override
     public void setUpdateUser() {
-
     }
 
-    public InvestmentDocument getInvestmentDocument() {
-        return investmentDocument;
-    }
-
-    public void setInvestmentDocument(InvestmentDocument investmentDocument) {
-        this.investmentDocument = investmentDocument;
-    }
-
-    public String getItemNumber() {
-        return itemNumber;
-    }
-
-    public void setItemNumber(String itemNumber) {
-        this.itemNumber = itemNumber;
-    }
 }
