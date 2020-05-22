@@ -1,10 +1,12 @@
 package com.potato112.springservice.jms.bulkaction.model.entity;
 
+import ch.qos.logback.core.boolex.EvaluationException;
 import com.potato112.springservice.jms.bulkaction.model.enums.BulkActionStatus;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(schema = "demo-db", name = "bulkactions_results")
@@ -24,6 +26,7 @@ public class BulkActionResultMessage extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private BulkActionStatus bulkActionStatus;
 
+    @Column(name = "message_content", length = 1000)
     private String messageContent;
 
     @Override

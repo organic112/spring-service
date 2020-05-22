@@ -14,6 +14,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
+import java.util.List;
+
 
 // Processing wrapper
 
@@ -31,44 +34,57 @@ public class InvestmentAmortizationProcessor {
     // TODO IMPLEMENT ESSENTIAL PROCESSING LOGIC HERE
 
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
-    public String processInvestmentsAndCreateAmortizationRecords(IntInvestmentItem intInvestmentItem, InvestmentStatus newStatus) {
+    public String processInvestment(IntInvestmentItem intInvestmentItem, InvestmentStatus newStatus) {
 
         LOGGER.info("Starting amortization processing in ...");
 
+        String reaultMessage = "";
+
+        String itemId = intInvestmentItem.getId();
+
+        // init hibernate session
+        IntInvestmentItem dbItem = investmentDao.getInvestmentById(itemId);
+
+
+        reaultMessage = processInvestmentProducts(dbItem, newStatus);
+
+        investmentDao.update(dbItem);
+
+        InvestmentDocument document = intInvestmentItem.getInvestmentDocument();
+        String investmentId = document.getId();
+
+        // Fetch investment document from DB to get persistence context
+        InvestmentDocument investmentDocument = investmentDao.getInvestmentDocumentById(investmentId);
+        // some logic
+        //investmentDocument.setInvestmentStatus(InvestmentStatus.PROCESSED);
+        intInvestmentItem.setInvestmentDocument(investmentDocument);
+
+        LOGGER.info("Amortization processing ended");
+        return reaultMessage;
+    }
+
+    private String processInvestmentProducts(IntInvestmentItem dbItem, InvestmentStatus newStatus) {
+
+        String resultMessage = "";
+        List<InvestmentProduct> investmentProducts = dbItem.getInvestmentProducts();
         try {
 
-           InvestmentDocument document = intInvestmentItem.getInvestmentDocument();
-           String investmentId = document.getId();
-
-            // Fetch investment document from DB to get persistence context
-            InvestmentDocument investmentDocument = investmentDao.getInvestmentDocumentById(investmentId);
-            investmentDocument.setInvestmentStatus(InvestmentStatus.PROCESSED);
-
-            intInvestmentItem.setInvestmentDocument(investmentDocument);
-
-
-            // some business logic, create objects etc.
-            InvestmentProduct investmentProduct = new InvestmentProduct();
-
-            productProcessor.processProduct(investmentProduct, newStatus);
-            investmentProduct.setInvestmentProductStatus(InvestmentProductStatus.PROCESSED);
-
-            // NOTE to have failure logic should set status to <> PROCESSED
-            intInvestmentItem.setInvestmentStatus(InvestmentStatus.PROCESSED);
-            investmentDao.update(intInvestmentItem);
-
-            LOGGER.info("Amortization processing ended");
+            for (InvestmentProduct product : investmentProducts) {
+                resultMessage = productProcessor.processProduct(product, newStatus);
+                dbItem.setInvestmentStatus(InvestmentStatus.PROCESSED);
+            }
 
         } catch (CustomExplicitBussiesException e) {
 
-            String message = "Failed to process product. Business rule violated";
+            dbItem.setInvestmentStatus(InvestmentStatus.NOT_PROCESSED);
+            dbItem.getInvestmentProducts().forEach(prod -> prod.setInvestmentProductStatus(InvestmentProductStatus.NOT_PROCESSED));
 
+            String message = "Failed to process product. Business rule violated. ";
             LOGGER.debug(message + e.getMessage());
-        } catch (StatusManagerException e) {
 
+        } catch (StatusManagerException e) {
             LOGGER.debug(e.getMessage());
         }
-
-        return "FIXME processing message from Investment Amortization Processor";
+        return resultMessage;
     }
 }

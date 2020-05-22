@@ -1,6 +1,7 @@
 package com.potato112.springservice.jms.bulkaction.runners;
 
 
+import com.potato112.springservice.jms.bulkaction.model.enums.InvestmentProductStatus;
 import com.potato112.springservice.jms.bulkaction.model.enums.InvestmentStatus;
 import com.potato112.springservice.jms.bulkaction.model.exception.StatusManagerException;
 import com.potato112.springservice.jms.bulkaction.model.exception.checked.CustomExplicitBussiesException;
@@ -26,29 +27,24 @@ public class ProductProcessor {
 
     /**
      * Handles processing Products (processing embed in Amortization Processing).
-     *  - database operations
-     *  - transaction handling for single investment Product
-     *  - sets status and returns result message
+     * - database operations
+     * - transaction handling for single investment Product
+     * - sets status and returns result message
      */
     @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {StatusManagerException.class, CustomExplicitBussiesException.class})
-    public void processProduct(InvestmentProduct investmentProduct, InvestmentStatus newStatus) throws CustomExplicitBussiesException {
+    public String processProduct(InvestmentProduct investmentProduct, InvestmentStatus newStatus) throws CustomExplicitBussiesException {
 
         LOGGER.info("Start of embed processing in new transaction... Target status:" + newStatus.name());
 
-        // Product messages first created in db
-
-        // convert Investement target status to product status
-        // some logic with exceptions (processing some collections based on product)
-
-        // exceptions handling
-        // in exceptions handling settning product status
-
-        // FIXME (condition)
-
-        if (false) {
+        if (!investmentProduct.getIsValidFlag()) {
             throw new CustomExplicitBussiesException("Custom Business rule violated");
         }
+        // some investment product logic
+        // Product messages first created in db
+        investmentProduct.setInvestmentProductStatus(InvestmentProductStatus.PROCESSED);
+        // some logic with throw new exceptions (processing some collections based on product)
+        // exceptions handling
 
+        return "TODO should return message";
     }
-
 }

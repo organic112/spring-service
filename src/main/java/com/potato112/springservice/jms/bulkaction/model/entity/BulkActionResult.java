@@ -38,7 +38,6 @@ public class BulkActionResult extends BaseEntity {
     private LocalDateTime endProcessingDateTime;
     private String processingDetails;
     private Boolean isDeleted = false;
-     //mappedBy = "bulkActionResult",
     @OneToMany(mappedBy = "bulkActionResult", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BulkActionResultMessage> resultMessages = new ArrayList<>();
 

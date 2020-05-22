@@ -7,6 +7,12 @@ import java.util.Set;
 public enum InvestmentProductStatus implements SysStatus {
 
 
+    CREATED {
+        @Override
+        public Set<SysStatus> getExitStatuses() {
+            return null;
+        }
+    },
     PROCESSED {
         @Override
         public Set<SysStatus> getExitStatuses() {

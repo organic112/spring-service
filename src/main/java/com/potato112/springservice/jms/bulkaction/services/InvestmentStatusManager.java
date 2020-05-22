@@ -93,7 +93,7 @@ public class InvestmentStatusManager implements StatusManager<IntInvestmentItem,
 
         System.out.println("ECHO03 Sophisticated status change in processor..." + intInvestmentItem.getDocumentId());
 
-        String processingMessage = investmentAmortizationProcessor.processInvestmentsAndCreateAmortizationRecords(intInvestmentItem, newStatus);
+        String processingMessage = investmentAmortizationProcessor.processInvestment(intInvestmentItem, newStatus);
 
         validateProcessingResult(processingMessage, intInvestmentItem);
     }

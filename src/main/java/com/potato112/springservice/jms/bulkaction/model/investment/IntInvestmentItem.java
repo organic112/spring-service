@@ -15,8 +15,8 @@ import java.util.List;
 
 /**
  * Represents row on overview table
+ * (row selected with checkbox is send for BA processing)
  */
-
 @Data
 @Entity
 @Table(schema = "demo-db", name = "int_investment_item")
@@ -35,38 +35,29 @@ public class IntInvestmentItem extends BaseInterfaceTable implements Lockable {
     @GenericGenerator(name="system-uuid", strategy = "uuid")
     private String id;
 
-    @ManyToOne
-    @JoinColumn(name = "investment_id")
-    private InvestmentDocument investmentDocument;
-
     @Column(name = "item_number")
     private String itemNumber;
+
+    @Column(name = "product_number")
+    private Integer variant;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "investment_status", nullable = false, length = 30)
     private InvestmentStatus investmentStatus;
 
-    @Column(name = "product_number")
-    private Integer productNumber;
+    @ManyToOne
+    @JoinColumn(name = "investment_id")
+    private InvestmentDocument investmentDocument;
 
-    @OneToMany(mappedBy = "intInvestmentItem")
+    @OneToMany(mappedBy = "intInvestmentItem", fetch = FetchType.EAGER)
     @Cascade(CascadeType.ALL)
     private List<InvestmentProduct> investmentProducts;
 
-    public Integer getProductNumber() {
-        return productNumber;
-    }
-
-    public void setProductNumber(Integer clientNumber) {
-        this.productNumber = clientNumber;
-    }
-
     @Override
     public String getCode() {
-
         String code = itemNumber;
-        Integer clientNumber = getProductNumber();
-        return code.concat(" - ").concat(clientNumber.toString());
+        Integer variant = getVariant();
+        return code.concat(" - ").concat(variant.toString());
     }
 
     @Override
@@ -87,5 +78,4 @@ public class IntInvestmentItem extends BaseInterfaceTable implements Lockable {
     @Override
     public void setUpdateUser() {
     }
-
 }

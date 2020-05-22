@@ -7,11 +7,14 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+
+/**
+ * Represents message (info/warning) about single Investment item processing
+ */
+@Data
 @Entity
 @Table(schema = "tms", name = "investment_processing_messages")
-@Data
 public class InvestmentProcessingMessage extends BaseEntity {
-
 
     @Id
     @NotNull
