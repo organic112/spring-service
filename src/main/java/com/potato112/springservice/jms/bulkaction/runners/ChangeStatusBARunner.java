@@ -28,6 +28,7 @@ public abstract class ChangeStatusBARunner<OBJTYPE extends SysDocument, STATUS e
 
     protected abstract AsyncStatusChanger<OBJTYPE, STATUS> getStatusChanger();
 
+    @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public BulkActionsRunResultVo run(final BulkActionInit bulkActionInit) {
 
@@ -68,7 +69,6 @@ public abstract class ChangeStatusBARunner<OBJTYPE extends SysDocument, STATUS e
             totalSuccess = totalSuccess && singleProcessingResult.isSuccess();
             result.getResultList().add(singleProcessingResult);
         }
-
         LOGGER.info("Setting Threads future results... Total success:" + totalSuccess);
 
         result.setSuccess(totalSuccess);

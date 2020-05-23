@@ -21,7 +21,7 @@ public class ThreadConfig {
         return executorService;
     }
 
-    @Bean
+/*    @Bean
     public TaskExecutor threadPoolTaskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(4);
@@ -29,7 +29,7 @@ public class ThreadConfig {
         executor.setThreadNamePrefix("default_task_executor_thread-");
         executor.initialize();
         return executor;
-    }
+    }*/
 }
 
 

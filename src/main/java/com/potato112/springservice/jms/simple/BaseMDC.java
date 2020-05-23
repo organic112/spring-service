@@ -33,6 +33,7 @@ public abstract class BaseMDC implements MessageListener {
     @Override
     public void onMessage(Message message) {
         LOGGER.info("Received JMS message.");
+
         ObjectMessage objectMessage = validateJMSMessage(message);
         final String userName = getUserName(objectMessage);
         processMessage(objectMessage, userName);

@@ -53,14 +53,11 @@ public abstract class AbstractBARunner {
         LOGGER.info("Validate bulk action init start...");
 
         if (null == bulkActionInit) {
-
             throw new IllegalArgumentException("BulkActionInit cannot be null");
         }
 
         Set<String> documentIdSet = bulkActionInit.getDocumentIds();
-
         if (null != documentIdSet && documentIdSet.isEmpty()) {
-
             throw new IllegalArgumentException("BulkActionInit Document Id list can't be null or empty");
         }
     }

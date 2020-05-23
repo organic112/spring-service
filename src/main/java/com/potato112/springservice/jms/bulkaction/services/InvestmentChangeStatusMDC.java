@@ -8,6 +8,8 @@ import com.potato112.springservice.jms.bulkaction.model.results.BulkActionsRunRe
 import com.potato112.springservice.jms.bulkaction.runners.InvestmentAmortizationBARunner;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.jms.Message;
 
@@ -31,6 +33,7 @@ public class InvestmentChangeStatusMDC extends AbstractBulkActionMDC<InvestmentC
 
     @JmsListener(destination = DESTINATION_NAME, containerFactory = FACTORY_BEAN_NAME)
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void onMessage(Message message) {
         super.onMessage(message);
     }

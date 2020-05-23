@@ -6,11 +6,14 @@ import com.potato112.springservice.jms.bulkaction.model.entity.BulkActionResultM
 import com.potato112.springservice.jms.bulkaction.model.enums.BulkActionStatus;
 import com.potato112.springservice.jms.bulkaction.model.results.BulkActionFutureResultDto;
 import com.potato112.springservice.jms.bulkaction.model.results.BulkActionsRunResultVo;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.jms.JMSException;
 import javax.jms.ObjectMessage;
@@ -18,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Component
 public class BulkActionManager implements BulkActionInitiator, BulkActionResultManager {
 
@@ -25,7 +29,6 @@ public class BulkActionManager implements BulkActionInitiator, BulkActionResultM
     private static final String RESULT_PROPERTY = "RESULT_ID";
 
     private BulkActionResultDao bulkActionResultDao;
-
 
     // UserManager
     private static final String DESTINATION_NAME = "investmentChangeStatusBulkAction";
@@ -54,11 +57,14 @@ public class BulkActionManager implements BulkActionInitiator, BulkActionResultM
             throw new IllegalStateException("bulk action result Id should not be null");
         }
         try {
+            log.info("ZZ_ECHO_01 " + id);
             sendBulkActionToJMS(bulkActionInit, id, customDestination);
         } catch (JMSException e) {
+            log.info("ZZ_ECHO_01 " + e.getMessage());
             completeBulkAction(id, BulkActionStatus.FINISHED_ERROR, e.getLocalizedMessage());
         }
     }
+
 
     private void sendBulkActionToJMS(BulkActionInit bulkActionInit, String id, String customDestination) throws JMSException {
 
@@ -67,10 +73,12 @@ public class BulkActionManager implements BulkActionInitiator, BulkActionResultM
         String type = bulkActionInit.getType().name();
         String initUser = bulkActionInit.getLoggedUser();
 
+        //JmsTemplate jmsTemplate = new JmsTemplate();
+
         try {
             jmsTemplate.send(customDestination, session -> {
                 ObjectMessage objectMessage = session.createObjectMessage();
-                objectMessage.setStringProperty("RESULT_ID", id);
+                objectMessage.setStringProperty(RESULT_PROPERTY, id);
                 objectMessage.setStringProperty("BULK_ACTION_TYPE", type);
                 objectMessage.setStringProperty("userName", initUser);
                 objectMessage.setObject(bulkActionInit);
@@ -80,6 +88,7 @@ public class BulkActionManager implements BulkActionInitiator, BulkActionResultM
                 return objectMessage;
             });
         } catch (Exception e) {
+            log.info("failed to send JMS message " + e.getLocalizedMessage());
             throw new JMSException(e.getLocalizedMessage());
         }
     }
@@ -87,6 +96,8 @@ public class BulkActionManager implements BulkActionInitiator, BulkActionResultM
     private String createBulkActionResultInDatabase(BulkActionInit bulkActionInit) {
 
         BulkActionResult bulkActionResult = new BulkActionResult();
+        bulkActionResult.setBulkActionType(bulkActionInit.getType());
+        bulkActionResult.setCreateUser(bulkActionInit.getLoggedUser());
         bulkActionResultDao.create(bulkActionResult);
         return bulkActionResult.getId();
     }

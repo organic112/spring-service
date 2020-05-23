@@ -67,8 +67,10 @@ public class InvestmentStatusManager implements StatusManager<IntInvestmentItem,
 
     private void changeStatus(IntInvestmentItem intInvestmentItem, InvestmentStatus newStatus, String loggedUser) {
 
+        IntInvestmentItem item = investmentDao.getInvestmentById(intInvestmentItem.getId());
         documentLockManager.lockDocument(intInvestmentItem);
         intInvestmentItem.setInvestmentStatus(newStatus);
+        investmentDao.update(item);
         documentLockManager.unlockDocument(intInvestmentItem);
 
         validateProcessingResult("FIXME processing message from status manager ", intInvestmentItem);
@@ -114,6 +116,7 @@ public class InvestmentStatusManager implements StatusManager<IntInvestmentItem,
         log.info("Final Processing message: " + message + " status: "+ intInvestmentItem.getInvestmentStatus());
 
         if (intInvestmentItem.getInvestmentStatus().equals(InvestmentStatus.NOT_PROCESSED)) {
+
             throw new StatusManagerException(message);
         }
     }

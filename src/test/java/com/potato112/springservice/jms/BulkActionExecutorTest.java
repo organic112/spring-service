@@ -3,6 +3,7 @@ package com.potato112.springservice.jms;
 import com.potato112.springservice.config.AppConfig;
 import com.potato112.springservice.jms.bulkaction.BulkActionExecutor;
 import com.potato112.springservice.jms.bulkaction.dao.InvestmentDao;
+import com.potato112.springservice.jms.bulkaction.model.entity.BulkActionResult;
 import com.potato112.springservice.jms.bulkaction.model.enums.InvestmentStatus;
 import com.potato112.springservice.jms.bulkaction.model.init.InvestmentChangeStatusBAInit;
 import com.potato112.springservice.jms.bulkaction.model.interfaces.BulkActionInit;
@@ -10,6 +11,7 @@ import com.potato112.springservice.jms.bulkaction.model.interfaces.BulkActionMan
 import com.potato112.springservice.jms.bulkaction.model.interfaces.SysStatus;
 import com.potato112.springservice.jms.bulkaction.model.investment.IntInvestmentItem;
 import com.potato112.springservice.jms.bulkaction.model.investment.InvestmentDocument;
+import com.potato112.springservice.repository.interfaces.crud.CRUDServiceBean;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +21,15 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.net.ssl.SSLEngineResult;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
+import static org.awaitility.Awaitility.await;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {AppConfig.class})
@@ -39,6 +46,8 @@ public class BulkActionExecutorTest {
 
     @Autowired
     private InvestmentDao investmentDao;
+
+    private CRUDServiceBean<BulkActionResult> bulkActionResult;
 
     /*
     BULK ACTION EXECUTION FLOW (sophisticated processing path)
@@ -123,6 +132,18 @@ public class BulkActionExecutorTest {
         Set<String> set1 = new HashSet<>();
         set1.add(investmentDocumentList.get(0).getId());
 
+        Set<String> set2 = new HashSet<>();
+        set2.add(investmentDocumentList.get(1).getId());
+
+        Set<String> set3 = new HashSet<>();
+        set3.add(investmentDocumentList.get(2).getId());
+
+        Set<String> set4 = new HashSet<>();
+        set4.add(investmentDocumentList.get(3).getId());
+
+        Set<String> set5 = new HashSet<>();
+        set5.add(investmentDocumentList.get(4).getId());
+
         String cancelationMessage = "";
         String loggedUser = "testUserFromExecutor";
 
@@ -130,16 +151,32 @@ public class BulkActionExecutorTest {
 
         // adds several times the same Id to execute in async action in parallel on same object and throw lock error
         BulkActionInit bulkActionInit1 = new InvestmentChangeStatusBAInit(targetStatus, set1, cancelationMessage, loggedUser);
-        BulkActionInit bulkActionInit2 = new InvestmentChangeStatusBAInit(targetStatus, set1, cancelationMessage, loggedUser);
-        BulkActionInit bulkActionInit3 = new InvestmentChangeStatusBAInit(targetStatus, set1, cancelationMessage, loggedUser);
-        BulkActionInit bulkActionInit4 = new InvestmentChangeStatusBAInit(targetStatus, set1, cancelationMessage, loggedUser);
-        BulkActionInit bulkActionInit5 = new InvestmentChangeStatusBAInit(targetStatus, set1, cancelationMessage, loggedUser);
+        BulkActionInit bulkActionInit2 = new InvestmentChangeStatusBAInit(targetStatus, set2, cancelationMessage, loggedUser);
+        BulkActionInit bulkActionInit3 = new InvestmentChangeStatusBAInit(targetStatus, set3, cancelationMessage, loggedUser);
+        BulkActionInit bulkActionInit4 = new InvestmentChangeStatusBAInit(targetStatus, set4, cancelationMessage, loggedUser);
+        BulkActionInit bulkActionInit5 = new InvestmentChangeStatusBAInit(targetStatus, set5, cancelationMessage, loggedUser);
 
+        // fixme JMS MDB is closed before process finishes on message process
         bulkActionInitiator.initiateBulkAction(bulkActionInit1);
         bulkActionInitiator.initiateBulkAction(bulkActionInit2);
         bulkActionInitiator.initiateBulkAction(bulkActionInit3);
         bulkActionInitiator.initiateBulkAction(bulkActionInit4);
         bulkActionInitiator.initiateBulkAction(bulkActionInit5);
+
+        // waits with 'test shutdown' until condition is true
+        // in this case all async results (of JMS on message processes) are inserted to database
+        await().until(() ->
+        {
+            return investmentDao.getAllInvestmentItems().stream()
+                    .filter(item -> item.getInvestmentStatus().equals(InvestmentStatus.CLOSED))
+                    .collect(Collectors.toList()).size() >= 5;
+        });
+    }
+
+
+    @Test
+    public void doNothingInTestJustForAppConfigExecutionReference() {
+
     }
 
     /**
