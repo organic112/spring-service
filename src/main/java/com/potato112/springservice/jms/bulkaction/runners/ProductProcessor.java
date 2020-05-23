@@ -4,7 +4,7 @@ package com.potato112.springservice.jms.bulkaction.runners;
 import com.potato112.springservice.jms.bulkaction.model.enums.InvestmentProductStatus;
 import com.potato112.springservice.jms.bulkaction.model.enums.InvestmentStatus;
 import com.potato112.springservice.jms.bulkaction.model.exception.StatusManagerException;
-import com.potato112.springservice.jms.bulkaction.model.exception.checked.CustomExplicitBussiesException;
+import com.potato112.springservice.jms.bulkaction.model.exception.checked.CustomExplicitBusinessException;
 import com.potato112.springservice.jms.bulkaction.model.investment.InvestmentProduct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Runs inside InvestmentAmortizationProcessor
  * - handles transactions
  * - returns processing messages
- * - handles status change of Product
+ * - handles status change of Product by status manager
  */
 @Component
 public class ProductProcessor {
@@ -31,13 +31,13 @@ public class ProductProcessor {
      * - transaction handling for single investment Product
      * - sets status and returns result message
      */
-    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {StatusManagerException.class, CustomExplicitBussiesException.class})
-    public String processProduct(InvestmentProduct investmentProduct, InvestmentStatus newStatus) throws CustomExplicitBussiesException {
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = {StatusManagerException.class, CustomExplicitBusinessException.class})
+    public String processProduct(InvestmentProduct investmentProduct, InvestmentStatus newStatus) throws CustomExplicitBusinessException {
 
         LOGGER.info("Start of embed processing in new transaction... Target status:" + newStatus.name());
 
         if (!investmentProduct.getIsValidFlag()) {
-            throw new CustomExplicitBussiesException("Custom Business rule violated");
+            throw new CustomExplicitBusinessException("Failed to process product. Business rule violated. ");
         }
         // some investment product logic
         // Product messages first created in db
@@ -45,6 +45,6 @@ public class ProductProcessor {
         // some logic with throw new exceptions (processing some collections based on product)
         // exceptions handling
 
-        return "TODO should return message";
+        return "TODO (INFO/WARNING) PROCESSED message";
     }
 }

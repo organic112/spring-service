@@ -4,7 +4,7 @@ import com.potato112.springservice.jms.bulkaction.dao.BulkActionResultDao;
 import com.potato112.springservice.jms.bulkaction.model.entity.BulkActionResult;
 import com.potato112.springservice.jms.bulkaction.model.entity.BulkActionResultMessage;
 import com.potato112.springservice.jms.bulkaction.model.enums.BulkActionStatus;
-import com.potato112.springservice.jms.bulkaction.model.results.BulkActionFutureResultVo;
+import com.potato112.springservice.jms.bulkaction.model.results.BulkActionFutureResultDto;
 import com.potato112.springservice.jms.bulkaction.model.results.BulkActionsRunResultVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -154,7 +154,7 @@ public class BulkActionManager implements BulkActionInitiator, BulkActionResultM
         });
     }
 
-    private BulkActionResultMessage convertSingleResultMessage(BulkActionFutureResultVo resultVo){
+    private BulkActionResultMessage convertSingleResultMessage(BulkActionFutureResultDto resultVo){
 
         BulkActionResultMessage singleResultMessage  = new BulkActionResultMessage();
         String detailMessage =  String.join(" ", resultVo.getProcessedObjectCode(), resultVo.getResultDetails());

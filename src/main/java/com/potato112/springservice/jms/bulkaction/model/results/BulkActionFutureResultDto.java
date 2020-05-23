@@ -7,28 +7,28 @@ import java.io.Serializable;
  * Bulk Action runs multiple parallel async processing operations.
  * This class represents result of single such async operation.
  */
-public class BulkActionFutureResultVo implements Serializable {
+public class BulkActionFutureResultDto implements Serializable {
 
     private String processedObjectCode;
     private boolean success = true;
     private String resultDetails;
     private Exception exception;
 
-    public BulkActionFutureResultVo() {
+    public BulkActionFutureResultDto() {
     }
 
-    public static BulkActionFutureResultVo makeSuccess(final String processedObjectCode, final String resultDetails) {
+    public static BulkActionFutureResultDto makeSuccess(final String processedObjectCode, final String resultDetails) {
 
-        BulkActionFutureResultVo result = new BulkActionFutureResultVo();
+        BulkActionFutureResultDto result = new BulkActionFutureResultDto();
         result.processedObjectCode = processedObjectCode;
         result.success = true;
         result.resultDetails = resultDetails;
         return result;
     }
 
-    public static BulkActionFutureResultVo makeFailure(final String processedObjectCode, final String resultDetails, final Exception exception) {
+    public static BulkActionFutureResultDto makeFailure(final String processedObjectCode, final String resultDetails, final Exception exception) {
 
-        BulkActionFutureResultVo result = new BulkActionFutureResultVo();
+        BulkActionFutureResultDto result = new BulkActionFutureResultDto();
         result.processedObjectCode = processedObjectCode;
         result.success = false;
         result.resultDetails = resultDetails;

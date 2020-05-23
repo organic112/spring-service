@@ -12,7 +12,7 @@ public class BulkActionsRunResultVo {
 
     private Boolean success = null;
     private String details;
-    private List<BulkActionFutureResultVo> resultList = new ArrayList<>();
+    private List<BulkActionFutureResultDto> resultList = new ArrayList<>();
 
 
     public BulkActionsRunResultVo() {
@@ -46,11 +46,11 @@ public class BulkActionsRunResultVo {
         this.details = details;
     }
 
-    public List<BulkActionFutureResultVo> getResultList() {
+    public List<BulkActionFutureResultDto> getResultList() {
         return resultList;
     }
 
-    public void setResultList(List<BulkActionFutureResultVo> resultList) {
+    public void setResultList(List<BulkActionFutureResultDto> resultList) {
         this.resultList = resultList;
     }
 

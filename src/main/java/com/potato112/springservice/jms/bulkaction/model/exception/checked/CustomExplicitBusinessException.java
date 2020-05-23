@@ -3,13 +3,13 @@ package com.potato112.springservice.jms.bulkaction.model.exception.checked;
 /**
  * Exception for explicit business rule violation
  */
-public class CustomExplicitBussiesException extends Exception {
+public class CustomExplicitBusinessException extends Exception {
 
-    public CustomExplicitBussiesException(String message) {
+    public CustomExplicitBusinessException(String message) {
         super(message);
     }
 
-    public CustomExplicitBussiesException(String message, Throwable cause) {
+    public CustomExplicitBusinessException(String message, Throwable cause) {
         super(message, cause);
     }
 }

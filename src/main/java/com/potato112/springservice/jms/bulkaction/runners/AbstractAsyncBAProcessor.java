@@ -1,10 +1,10 @@
 package com.potato112.springservice.jms.bulkaction.runners;
 
 import com.potato112.springservice.jms.bulkaction.model.exception.StatusManagerException;
-import com.potato112.springservice.jms.bulkaction.model.exception.checked.CustomExplicitBussiesException;
+import com.potato112.springservice.jms.bulkaction.model.exception.checked.CustomExplicitBusinessException;
 import com.potato112.springservice.jms.bulkaction.model.interfaces.BulkActionInit;
 import com.potato112.springservice.jms.bulkaction.model.interfaces.SysDocument;
-import com.potato112.springservice.jms.bulkaction.model.results.BulkActionFutureResultVo;
+import com.potato112.springservice.jms.bulkaction.model.results.BulkActionFutureResultDto;
 import com.potato112.springservice.jms.doclock.AlreadyLockedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +24,6 @@ import java.util.concurrent.Future;
  * extending processors should provide:
  * - single Item document id
  * - implementation of processing single document (by runner)
- *
  */
 public abstract class AbstractAsyncBAProcessor<OBJTYPE extends SysDocument, INIT extends BulkActionInit, RUNNER extends AbstractBARunner> {
 
@@ -32,13 +31,13 @@ public abstract class AbstractAsyncBAProcessor<OBJTYPE extends SysDocument, INIT
 
     protected abstract OBJTYPE getDocumentById(String id, RUNNER runner);
 
-    protected abstract void processSingleDocument(OBJTYPE document, INIT init, RUNNER runner) throws CustomExplicitBussiesException;
+    protected abstract void processSingleDocument(OBJTYPE document, INIT init, RUNNER runner) throws CustomExplicitBusinessException;
 
 
     @Async
     // note dedicated TaskExecutor bean is defined in config for this annotation, TODO check if it is proper solution
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public Future<BulkActionFutureResultVo> processSingleItemAsync(final String id, final INIT bulkActionInit, final RUNNER parentRunner) {
+    public Future<BulkActionFutureResultDto> processSingleItemAsync(final String id, final INIT bulkActionInit, final RUNNER parentRunner) {
 
         String code = "";
         OBJTYPE document = null;
@@ -77,8 +76,8 @@ public abstract class AbstractAsyncBAProcessor<OBJTYPE extends SysDocument, INIT
             LOGGER.debug(message);
             return parentRunner.failure(code, message, e);
 
-        } catch (CustomExplicitBussiesException e) {
-            String message = "Failed process single document async. CustomExplicitBussiesException";
+        } catch (CustomExplicitBusinessException e) {
+            String message = "Failed process single document async. CustomExplicitBusinessException";
             LOGGER.debug(message);
             return parentRunner.failure(code, message, e);
 
@@ -88,7 +87,7 @@ public abstract class AbstractAsyncBAProcessor<OBJTYPE extends SysDocument, INIT
             return handleException(e, parentRunner, code);
         }
 
-        BulkActionFutureResultVo result = BulkActionFutureResultVo.makeSuccess(code, getSuccessMessage(document));
+        BulkActionFutureResultDto result = BulkActionFutureResultDto.makeSuccess(code, getSuccessMessage(document));
         return new AsyncResult<>(result);
     }
 
@@ -96,7 +95,7 @@ public abstract class AbstractAsyncBAProcessor<OBJTYPE extends SysDocument, INIT
         return "OK";
     }
 
-    private Future<BulkActionFutureResultVo> handleException(Exception e, RUNNER parentRunner, String code) {
+    private Future<BulkActionFutureResultDto> handleException(Exception e, RUNNER parentRunner, String code) {
 
         if (e instanceof AlreadyLockedException || e.getCause() instanceof AlreadyLockedException) {
             AlreadyLockedException exception = (AlreadyLockedException) e.getCause();
@@ -110,8 +109,8 @@ public abstract class AbstractAsyncBAProcessor<OBJTYPE extends SysDocument, INIT
             return parentRunner.failure(code, message, exception);
         }
 
-        if (e instanceof CustomExplicitBussiesException || e.getCause() instanceof CustomExplicitBussiesException) {
-            CustomExplicitBussiesException exception = (CustomExplicitBussiesException) e.getCause();
+        if (e instanceof CustomExplicitBusinessException || e.getCause() instanceof CustomExplicitBusinessException) {
+            CustomExplicitBusinessException exception = (CustomExplicitBusinessException) e.getCause();
             String message = "Custom Message" + e.getMessage();
             return parentRunner.failure(code, message, exception);
         }

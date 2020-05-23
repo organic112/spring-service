@@ -5,7 +5,7 @@ import com.potato112.springservice.jms.bulkaction.model.init.ChangeStatusBAInit;
 import com.potato112.springservice.jms.bulkaction.model.interfaces.BulkActionInit;
 import com.potato112.springservice.jms.bulkaction.model.interfaces.SysDocument;
 import com.potato112.springservice.jms.bulkaction.model.investment.*;
-import com.potato112.springservice.jms.bulkaction.model.results.BulkActionFutureResultVo;
+import com.potato112.springservice.jms.bulkaction.model.results.BulkActionFutureResultDto;
 import com.potato112.springservice.jms.bulkaction.runners.AbstractBARunner;
 import com.potato112.springservice.jms.bulkaction.runners.AsyncStatusChanger;
 import com.potato112.springservice.jms.bulkaction.runners.ChangeStatusBARunner;
@@ -50,7 +50,7 @@ public class AsyncInvestmentAmortizationStatusChanger extends AsyncStatusChanger
      */
     @Override
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
-    public Future<BulkActionFutureResultVo> processSingleItemAsync(String id, BulkActionInit bulkActionInit, AbstractBARunner parentRunner) {
+    public Future<BulkActionFutureResultDto> processSingleItemAsync(String id, BulkActionInit bulkActionInit, AbstractBARunner parentRunner) {
         return super.processSingleItemAsync(id, bulkActionInit, parentRunner);
     }
 }

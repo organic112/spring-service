@@ -19,6 +19,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -114,11 +115,38 @@ public class BulkActionExecutorTest {
         bulkActionInitiator.initiateBulkAction(bulkActionInit);
     }
 
+    @Test
+    public void shouldRunSimpleInvestmentChangeStatusAndExecuteDocumentLockBulkAction() {
+
+        SysStatus targetStatus = InvestmentStatus.CLOSED;
+        List<IntInvestmentItem> investmentDocumentList = investmentDao.getAllInvestmentItems();
+        Set<String> set1 = new HashSet<>();
+        set1.add(investmentDocumentList.get(0).getId());
+
+        String cancelationMessage = "";
+        String loggedUser = "testUserFromExecutor";
+
+        // FIXME Changle to simple bulk action
+
+        // adds several times the same Id to execute in async action in parallel on same object and throw lock error
+        BulkActionInit bulkActionInit1 = new InvestmentChangeStatusBAInit(targetStatus, set1, cancelationMessage, loggedUser);
+        BulkActionInit bulkActionInit2 = new InvestmentChangeStatusBAInit(targetStatus, set1, cancelationMessage, loggedUser);
+        BulkActionInit bulkActionInit3 = new InvestmentChangeStatusBAInit(targetStatus, set1, cancelationMessage, loggedUser);
+        BulkActionInit bulkActionInit4 = new InvestmentChangeStatusBAInit(targetStatus, set1, cancelationMessage, loggedUser);
+        BulkActionInit bulkActionInit5 = new InvestmentChangeStatusBAInit(targetStatus, set1, cancelationMessage, loggedUser);
+
+        bulkActionInitiator.initiateBulkAction(bulkActionInit1);
+        bulkActionInitiator.initiateBulkAction(bulkActionInit2);
+        bulkActionInitiator.initiateBulkAction(bulkActionInit3);
+        bulkActionInitiator.initiateBulkAction(bulkActionInit4);
+        bulkActionInitiator.initiateBulkAction(bulkActionInit5);
+    }
+
     /**
      * should send bulk action message
      */
     @Test
-    public void shouldRunExecutorService(){
+    public void shouldRunExecutorService() {
         bulkActionExecutor.executeBulkAction();
     }
 }
