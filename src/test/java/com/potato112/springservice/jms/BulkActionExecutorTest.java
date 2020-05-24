@@ -125,7 +125,7 @@ public class BulkActionExecutorTest {
     }
 
     @Test
-    public void shouldRunSimpleInvestmentChangeStatusAndExecuteDocumentLockBulkAction() {
+    public void shouldRunSeveralSimpleInvestmentChangeStatusBulkActionsInParallel() {
 
         SysStatus targetStatus = InvestmentStatus.CLOSED;
         List<IntInvestmentItem> investmentDocumentList = investmentDao.getAllInvestmentItems();
@@ -168,8 +168,7 @@ public class BulkActionExecutorTest {
         await().until(() ->
         {
             return investmentDao.getAllInvestmentItems().stream()
-                    .filter(item -> item.getInvestmentStatus().equals(InvestmentStatus.CLOSED))
-                    .collect(Collectors.toList()).size() >= 5;
+                    .filter(item -> item.getInvestmentStatus().equals(InvestmentStatus.CLOSED)).count() >= 5;
         });
     }
 

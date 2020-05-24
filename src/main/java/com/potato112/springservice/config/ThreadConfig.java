@@ -21,6 +21,8 @@ public class ThreadConfig {
         return executorService;
     }
 
+
+// commented clashes with executor service above (ambiguous executor in config - warn message)
 /*    @Bean
     public TaskExecutor threadPoolTaskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();

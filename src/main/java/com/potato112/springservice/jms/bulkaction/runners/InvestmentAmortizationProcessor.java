@@ -52,7 +52,7 @@ public class InvestmentAmortizationProcessor {
         InvestmentDocument document = intInvestmentItem.getInvestmentDocument();
         String investmentId = document.getId();
         InvestmentDocument investmentDocument = investmentDao.getInvestmentDocumentById(investmentId);
-        //investmentDocument.setInvestmentStatus(InvestmentStatus.PROCESSED);
+        // investmentDocument.setInvestmentStatus(InvestmentStatus.PROCESSED);
         intInvestmentItem.setInvestmentDocument(investmentDocument);
     }
 

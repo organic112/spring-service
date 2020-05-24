@@ -46,11 +46,13 @@ public class AsyncInvestmentAmortizationStatusChanger extends AsyncStatusChanger
      *
      * if async collisions  you can synchronize here with 'synchronized':
      *
-     * public synchronized Future<BulkActionFutureResult> processSingleItemAsync()
+     * public synchronized Future<BulkActionFutureResult> processSingleItemAsync(....)
      */
     @Override
     @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    // public synchronized Future<BulkActionFutureResultDto> processSingleItemAsync...
     public Future<BulkActionFutureResultDto> processSingleItemAsync(String id, BulkActionInit bulkActionInit, AbstractBARunner parentRunner) {
+
         return super.processSingleItemAsync(id, bulkActionInit, parentRunner);
     }
 }
