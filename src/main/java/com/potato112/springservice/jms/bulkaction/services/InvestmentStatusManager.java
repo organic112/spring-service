@@ -10,7 +10,6 @@ import com.potato112.springservice.jms.bulkaction.model.interfaces.SysStatus;
 import com.potato112.springservice.jms.bulkaction.model.investment.IntInvestmentItem;
 import com.potato112.springservice.jms.bulkaction.runners.InvestmentAmortizationProcessor;
 import com.potato112.springservice.jms.doclock.DocumentLockManager;
-import com.potato112.springservice.jms.doclock.JpaDocLockDao;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,7 +69,7 @@ public class InvestmentStatusManager implements StatusManager<IntInvestmentItem,
         IntInvestmentItem item = investmentDao.getInvestmentById(intInvestmentItem.getId());
         documentLockManager.lockDocument(intInvestmentItem);
         intInvestmentItem.setInvestmentStatus(newStatus);
-        investmentDao.update(item);
+        investmentDao.updateItem(item);
         documentLockManager.unlockDocument(intInvestmentItem);
 
         validateProcessingResult("FIXME processing message from status manager ", intInvestmentItem);
@@ -104,7 +103,7 @@ public class InvestmentStatusManager implements StatusManager<IntInvestmentItem,
         String itemId = intInvestmentItem.getId();
         IntInvestmentItem itemInNewJpaSession = investmentDao.getInvestmentById(itemId);
         String processingMessage = investmentAmortizationProcessor.processInvestment(itemInNewJpaSession, newStatus);
-        // investmentDao.update(dbItem); // explicit update not necessary, save provided by jpa lifecycle
+        investmentDao.updateItem(itemInNewJpaSession); // explicit update not necessary, save provided by jpa lifecycle
         validateProcessingResult(processingMessage, itemInNewJpaSession);
     }
 

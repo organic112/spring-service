@@ -111,18 +111,20 @@ public class AppConfig implements CommandLineRunner {
         userGroupMapping.setUserGroup(userGroup1);
         mappingCRUDService.create(userGroupMapping);
 
+        // CREATE IntInvestments
+
         InvestmentDocument investmentDocument = new InvestmentDocument();
         InvestmentDocument investmentDocument2 = new InvestmentDocument();
         InvestmentDocument investmentDocument3 = new InvestmentDocument();
 
-        InvestmentProduct investmentProduct = new InvestmentProduct();
-        InvestmentProduct investmentProduct1 = new InvestmentProduct();
-        InvestmentProduct investmentProduct2 = new InvestmentProduct();
-        InvestmentProduct investmentProduct3 = new InvestmentProduct();
-        InvestmentProduct investmentProduct4 = new InvestmentProduct();
-        InvestmentProduct investmentProduct5 = new InvestmentProduct();
-        InvestmentProduct investmentProduct6 = new InvestmentProduct();
-        InvestmentProduct investmentProduct7 = new InvestmentProduct();
+        InvestmentProduct product = new InvestmentProduct();
+        InvestmentProduct product1 = new InvestmentProduct();
+        InvestmentProduct product2 = new InvestmentProduct();
+        InvestmentProduct product3 = new InvestmentProduct();
+        InvestmentProduct product4 = new InvestmentProduct();
+        InvestmentProduct product5 = new InvestmentProduct();
+        InvestmentProduct product6 = new InvestmentProduct();
+        InvestmentProduct product7 = new InvestmentProduct();
 
         List<IntInvestmentItem> itemList1 = new ArrayList<>();
         IntInvestmentItem intInvestmentItem1 = new IntInvestmentItem();
@@ -131,7 +133,7 @@ public class AppConfig implements CommandLineRunner {
         intInvestmentItem1.setItemNumber("ITEM-01A");
         intInvestmentItem1.setInvestmentDocument(investmentDocument);
         itemList1.add(intInvestmentItem1);
-        intInvestmentItem1.setInvestmentProducts(Arrays.asList(investmentProduct));
+        intInvestmentItem1.setInvestmentProducts(Arrays.asList(product));
 
         IntInvestmentItem intInvestmentItem2 = new IntInvestmentItem();
         intInvestmentItem2.setInvestmentStatus(InvestmentStatus.IMPORTED);
@@ -139,7 +141,7 @@ public class AppConfig implements CommandLineRunner {
         intInvestmentItem2.setItemNumber("ITEM-02A");
         intInvestmentItem2.setInvestmentDocument(investmentDocument);
         itemList1.add(intInvestmentItem2);
-        intInvestmentItem2.setInvestmentProducts(Arrays.asList(investmentProduct1));
+        intInvestmentItem2.setInvestmentProducts(Arrays.asList(product1));
 
         IntInvestmentItem intInvestmentItem3 = new IntInvestmentItem();
         intInvestmentItem3.setInvestmentStatus(InvestmentStatus.IMPORTED);
@@ -147,7 +149,7 @@ public class AppConfig implements CommandLineRunner {
         intInvestmentItem3.setItemNumber("ITEM-03A");
         intInvestmentItem3.setInvestmentDocument(investmentDocument);
         itemList1.add(intInvestmentItem3);
-        intInvestmentItem3.setInvestmentProducts(Arrays.asList(investmentProduct2));
+        intInvestmentItem3.setInvestmentProducts(Arrays.asList(product2));
 
         List<IntInvestmentItem> itemList2 = new ArrayList<>();
         IntInvestmentItem intInvestmentItem4 = new IntInvestmentItem();
@@ -156,7 +158,7 @@ public class AppConfig implements CommandLineRunner {
         intInvestmentItem4.setItemNumber("ITEM-04A");
         intInvestmentItem4.setInvestmentDocument(investmentDocument2);
         itemList2.add(intInvestmentItem4);
-        intInvestmentItem4.setInvestmentProducts(Arrays.asList(investmentProduct3));
+        intInvestmentItem4.setInvestmentProducts(Arrays.asList(product3));
 
         IntInvestmentItem intInvestmentItem5 = new IntInvestmentItem();
         intInvestmentItem5.setInvestmentStatus(InvestmentStatus.IMPORTED);
@@ -164,7 +166,7 @@ public class AppConfig implements CommandLineRunner {
         intInvestmentItem5.setItemNumber("ITEM-05A");
         intInvestmentItem5.setInvestmentDocument(investmentDocument2);
         itemList2.add(intInvestmentItem5);
-        intInvestmentItem5.setInvestmentProducts(Arrays.asList(investmentProduct4));
+        intInvestmentItem5.setInvestmentProducts(Arrays.asList(product4));
 
         IntInvestmentItem intInvestmentItem6 = new IntInvestmentItem();
         intInvestmentItem6.setInvestmentStatus(InvestmentStatus.IMPORTED);
@@ -172,7 +174,7 @@ public class AppConfig implements CommandLineRunner {
         intInvestmentItem6.setItemNumber("ITEM-06A");
         intInvestmentItem6.setInvestmentDocument(investmentDocument2);
         itemList2.add(intInvestmentItem6);
-        intInvestmentItem6.setInvestmentProducts(Arrays.asList(investmentProduct5));
+        intInvestmentItem6.setInvestmentProducts(Arrays.asList(product5));
 
         List<IntInvestmentItem> itemList3 = new ArrayList<>();
         IntInvestmentItem intInvestmentItem7 = new IntInvestmentItem();
@@ -181,7 +183,7 @@ public class AppConfig implements CommandLineRunner {
         intInvestmentItem7.setItemNumber("ITEM-07A");
         intInvestmentItem7.setInvestmentDocument(investmentDocument3);
         itemList3.add(intInvestmentItem7);
-        intInvestmentItem7.setInvestmentProducts(Arrays.asList(investmentProduct6, investmentProduct7));
+        intInvestmentItem7.setInvestmentProducts(Arrays.asList(product6, product7)); // false, true
 
         // create 3 Investments for bulk action processing
 
@@ -197,45 +199,45 @@ public class AppConfig implements CommandLineRunner {
         investmentDocument3.setInvestmentNumber("INV_003");
         investmentDocument3.setInvestmentItemList(itemList3);
 
-        investmentProduct.setInvestmentProductStatus(InvestmentProductStatus.CREATED);
-        investmentProduct.setIsValidFlag(true);
-        investmentProduct.setIntInvestmentItem(intInvestmentItem1);
-        investmentProduct.setProductNumber("INV_NUM_000");
+        product.setInvestmentProductStatus(InvestmentProductStatus.CREATED);
+        product.setIsValidFlag(true);
+        product.setIntInvestmentItem(intInvestmentItem1);
+        product.setProductNumber("INV_NUM_000");
 
-        investmentProduct1.setInvestmentProductStatus(InvestmentProductStatus.CREATED);
-        investmentProduct1.setIsValidFlag(true);
-        investmentProduct1.setIntInvestmentItem(intInvestmentItem2);
-        investmentProduct1.setProductNumber("INV_NUM_001");
+        product1.setInvestmentProductStatus(InvestmentProductStatus.CREATED);
+        product1.setIsValidFlag(true);
+        product1.setIntInvestmentItem(intInvestmentItem2);
+        product1.setProductNumber("INV_NUM_001");
 
-        investmentProduct2.setInvestmentProductStatus(InvestmentProductStatus.CREATED);
-        investmentProduct2.setIsValidFlag(false);
-        investmentProduct2.setIntInvestmentItem(intInvestmentItem3);
-        investmentProduct2.setProductNumber("INV_NUM_002");
+        product2.setInvestmentProductStatus(InvestmentProductStatus.CREATED);
+        product2.setIsValidFlag(false);
+        product2.setIntInvestmentItem(intInvestmentItem3);
+        product2.setProductNumber("INV_NUM_002");
 
-        investmentProduct3.setInvestmentProductStatus(InvestmentProductStatus.CREATED);
-        investmentProduct3.setIsValidFlag(false);
-        investmentProduct3.setIntInvestmentItem(intInvestmentItem4);
-        investmentProduct3.setProductNumber("INV_NUM_003");
+        product3.setInvestmentProductStatus(InvestmentProductStatus.CREATED);
+        product3.setIsValidFlag(false);
+        product3.setIntInvestmentItem(intInvestmentItem4);
+        product3.setProductNumber("INV_NUM_003");
 
-        investmentProduct4.setInvestmentProductStatus(InvestmentProductStatus.CREATED);
-        investmentProduct4.setIsValidFlag(true);
-        investmentProduct4.setIntInvestmentItem(intInvestmentItem5);
-        investmentProduct4.setProductNumber("INV_NUM_004");
+        product4.setInvestmentProductStatus(InvestmentProductStatus.CREATED);
+        product4.setIsValidFlag(true);
+        product4.setIntInvestmentItem(intInvestmentItem5);
+        product4.setProductNumber("INV_NUM_004");
 
-        investmentProduct5.setInvestmentProductStatus(InvestmentProductStatus.CREATED);
-        investmentProduct5.setIsValidFlag(true);
-        investmentProduct5.setIntInvestmentItem(intInvestmentItem6);
-        investmentProduct5.setProductNumber("INV_NUM_005");
+        product5.setInvestmentProductStatus(InvestmentProductStatus.CREATED);
+        product5.setIsValidFlag(true);
+        product5.setIntInvestmentItem(intInvestmentItem6);
+        product5.setProductNumber("INV_NUM_005");
 
-        investmentProduct6.setInvestmentProductStatus(InvestmentProductStatus.CREATED);
-        investmentProduct6.setIsValidFlag(false);
-        investmentProduct6.setIntInvestmentItem(intInvestmentItem7);
-        investmentProduct6.setProductNumber("INV_NUM_006");
+        product6.setInvestmentProductStatus(InvestmentProductStatus.CREATED);
+        product6.setIsValidFlag(true);
+        product6.setIntInvestmentItem(intInvestmentItem7);
+        product6.setProductNumber("INV_NUM_006");
 
-        investmentProduct7.setInvestmentProductStatus(InvestmentProductStatus.CREATED);
-        investmentProduct7.setIsValidFlag(true);
-        investmentProduct7.setIntInvestmentItem(intInvestmentItem7);
-        investmentProduct7.setProductNumber("INV_NUM_007");
+        product7.setInvestmentProductStatus(InvestmentProductStatus.CREATED);
+        product7.setIsValidFlag(false);
+        product7.setIntInvestmentItem(intInvestmentItem7);
+        product7.setProductNumber("INV_NUM_007");
 
         investmentCRUDService.create(investmentDocument);
         investmentCRUDService.create(investmentDocument2);

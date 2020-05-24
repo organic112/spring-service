@@ -2,6 +2,7 @@ package com.potato112.springservice.jms.bulkaction.dao;
 
 import com.potato112.springservice.jms.bulkaction.model.investment.IntInvestmentItem;
 import com.potato112.springservice.jms.bulkaction.model.investment.InvestmentDocument;
+import com.potato112.springservice.jms.bulkaction.model.investment.InvestmentProduct;
 import com.potato112.springservice.repository.interfaces.crud.CRUDService;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +14,16 @@ public class InvestmentDao {
 
     private CRUDService<IntInvestmentItem> intInvestmentItemCRUDService;
     private CRUDService<InvestmentDocument> investmentDocumentCRUDService;
+    private CRUDService<InvestmentProduct> investmentProductCRUDService;
 
-    public InvestmentDao(CRUDService<IntInvestmentItem> intInvestmentItemCRUDService, CRUDService<InvestmentDocument> investmentDocumentCRUDService) {
+    public InvestmentDao(CRUDService<IntInvestmentItem> intInvestmentItemCRUDService,
+                         CRUDService<InvestmentDocument> investmentDocumentCRUDService,
+                         CRUDService<InvestmentProduct> investmentProductCRUDService) {
         this.intInvestmentItemCRUDService = intInvestmentItemCRUDService;
         this.investmentDocumentCRUDService = investmentDocumentCRUDService;
+        this.investmentProductCRUDService = investmentProductCRUDService;
     }
+
 
     //TODO implement as real DAO
 /*    private Map<String, IntInvestmentItem> repositoryInvestmentItemMap = new HashMap<>();
@@ -43,9 +49,24 @@ public class InvestmentDao {
         return intInvestmentItemCRUDService.findWithNamedQuery("getAllInvestmentItems");
     }
 
-    public void update(IntInvestmentItem item){
+    public void updateItem(IntInvestmentItem item){
 
         intInvestmentItemCRUDService.update(item);
+    }
+
+    public void updateDocument(InvestmentDocument document){
+
+        investmentDocumentCRUDService.update(document);
+    }
+
+    public InvestmentProduct getProductById(String id){
+
+       return investmentProductCRUDService.find(InvestmentProduct.class, id);
+    }
+
+    public void updateProduct(InvestmentProduct product){
+
+        investmentProductCRUDService.update(product);
     }
 
     /*private void init() {

@@ -50,23 +50,33 @@ public class BulkActionExecutorTest {
     private CRUDServiceBean<BulkActionResult> bulkActionResult;
 
     /*
+    BA model
+
+    IntInvestmentItem					        (InvestmentAmortizationProcessor  initializes Investment processing)
+    	InvestmentDocument				        (processed related Document, TODO some extra logic)
+	    List<InvestmentProduct>				    (ProductProcessor - Propagation.REQUIRES_NEW)
+		    List<InvestmentProcessingMessage>	(processed Message)
+
+    One Product fail in IntInvestmentItem  rollbacks processing of all products in current IntInvestmentItem
+    */
+    /*
     BULK ACTION EXECUTION FLOW (sophisticated processing path)
     1. BulkActionExecutor (this service may represent UI component or API endpoint - triggering BA)
         - with ExecutorService (provided java concurrent executor)
         - with BulkActionRunner
-		    - creates BulkActionInit
+		    - creates BulkActionInit (include document Id list to process)
 		    - uses BulkActionManager and initiates bulk action
 
     2. BulkActionManager
 	    - initiates bulk action (BulkActionInit, JMS destinationName)
-	    - creates bulk action result in database
+	    - creates bulk action result in database (later updated with final status)
 	    - sends BA message to JMS:
 		    - message contains database resultId
 		    - provides BA type
 		    - provides init user login
 
     3a.(ASYNC) dedicated destination MDC(Message Driven Component) e.g. InvestmentChangeStatusMDC
-	    - recives BA message
+	    - receives BA message
 	    - uses dedicated Runner e.g. InvestmentAmortizationBARunner
 	    - using runner executes run on BulkActionInit from message
 	    (returns BulkActionsRunResultVo contains List<BulkActionFutureResultVo>)
@@ -86,7 +96,7 @@ public class BulkActionExecutorTest {
 	    - gets BulkActionResults from DAO by Id
 	    - gets data from BulkActionsRunResultVo
 	    - updates BulkActionResults with BulkActionsRunResultVo(BulkActionFutureResultVo list)
-	    - persists updated BulkActionResults in database
+	    - persists updated BulkActionResults (with proper processing status) in database
      */
     @Test
     public void shouldRunSophisticatedInvestmentChangeStatusBulkAction() {

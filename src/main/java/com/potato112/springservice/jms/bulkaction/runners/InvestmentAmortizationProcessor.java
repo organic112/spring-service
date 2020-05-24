@@ -56,6 +56,11 @@ public class InvestmentAmortizationProcessor {
         intInvestmentItem.setInvestmentDocument(investmentDocument);
     }
 
+    /**
+     * Catch is on level of Product List loop.
+     * When one product processing cause exception all product in loop will be rolled back
+     *
+     */
     private String processInvestmentProducts(IntInvestmentItem investmentItem, InvestmentStatus newStatus) {
 
         String resultMessage = "";
@@ -67,8 +72,9 @@ public class InvestmentAmortizationProcessor {
             }
         } catch (CustomExplicitBusinessException e) {
 
+            // get failed product by reference and set new failure NOT_PROCESSED status
+            e.getInvestmentProduct().setInvestmentProductStatus(InvestmentProductStatus.NOT_PROCESSED);
             investmentItem.setInvestmentStatus(InvestmentStatus.NOT_PROCESSED);
-            investmentItem.getInvestmentProducts().forEach(product -> product.setInvestmentProductStatus(InvestmentProductStatus.NOT_PROCESSED));
             resultMessage = e.getMessage();
 
             LOGGER.debug(resultMessage);
