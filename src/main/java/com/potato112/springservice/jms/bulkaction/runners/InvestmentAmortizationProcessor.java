@@ -58,8 +58,9 @@ public class InvestmentAmortizationProcessor {
 
     /**
      * Catch is on level of Product List loop.
-     * When one product processing cause exception all product in loop will be rolled back
-     *
+     * Single Product fail in loop (thrown exception) rollbacks current single Product db operations.
+     * In catch this failed product has updated status to NOT_PROCESSED and later is persisted
+     * as member of list in IntInvestmentItem
      */
     private String processInvestmentProducts(IntInvestmentItem investmentItem, InvestmentStatus newStatus) {
 
