@@ -5,6 +5,7 @@ import com.potato112.springservice.domain.user.model.authorize.UserStatus;
 import com.potato112.springservice.repository.entities.BaseEntity;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -28,6 +29,7 @@ import java.util.List;
                 query = "delete from User u where u.id = :userId"
         )
 })
+@Audited
 @Data
 @Entity
 @Table(schema = "demo-db", name = "user")

@@ -4,6 +4,7 @@ package com.potato112.springservice.repository.entities.auth;
 import com.potato112.springservice.repository.entities.BaseEntity;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -13,6 +14,7 @@ import javax.validation.constraints.NotNull;
  * if user is mapped to group, he grants group authorities
  */
 
+@Audited
 @Data
 @Entity
 @Table(schema = "demo-db", name = "user_group_mapping")

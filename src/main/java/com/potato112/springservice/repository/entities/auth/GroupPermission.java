@@ -3,11 +3,12 @@ package com.potato112.springservice.repository.entities.auth;
 
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-
+@Audited
 @Data
 @Entity
 @Table(schema = "demo-db", name = "group_permission")
