@@ -171,12 +171,12 @@ public class CrudServiceTest {
         String id1 = rentalCar1.getCarId();
         RentalCar carFromDb1 = rentalCarCRUDService.findById(id1).get();
         carFromDb1.setRentalAgreements(rentalAgreements1);
-        rentalCarCRUDService.update(carFromDb1);
+        //rentalCarCRUDService.update(carFromDb1);
 
         String id2 = rentalCar2.getCarId();
         RentalCar carFromDb2 = rentalCarCRUDService.findById(id2).get();
         carFromDb2.setRentalAgreements(rentalAgreements2);
-        rentalCarCRUDService.update(carFromDb2);
+       // rentalCarCRUDService.update(carFromDb2);
 
         // get persisted rental Car
         System.out.println("Check persited car, client, agreement (mapping).");

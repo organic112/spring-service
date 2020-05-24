@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.history.RevisionRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -18,6 +19,7 @@ import java.util.Optional;
 @Repository
 @Transactional
 public class RentalCarCRUDService implements JpaRepository<RentalCar, String> {
+        // RevisionRepository<RentalCar, String, Integer>
 
     @PersistenceContext
     private EntityManager em;

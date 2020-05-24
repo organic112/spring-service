@@ -1,5 +1,8 @@
 package com.potato112.springservice.config;
 
+import com.mysql.cj.xdevapi.SessionFactory;
+import com.potato112.springservice.crud.jpa.services.RentalCarCRUDService;
+import com.potato112.springservice.crud.model.RentalCar;
 import com.potato112.springservice.domain.user.model.authorize.UserStatus;
 import com.potato112.springservice.jms.bulkaction.BulkActionExecutor;
 import com.potato112.springservice.jms.bulkaction.dao.InvestmentDao;
@@ -20,6 +23,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.envers.repository.support.EnversRevisionRepositoryFactoryBean;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;

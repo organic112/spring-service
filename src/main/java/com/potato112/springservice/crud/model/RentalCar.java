@@ -1,6 +1,9 @@
 package com.potato112.springservice.crud.model;
 
+import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -23,7 +26,8 @@ import java.util.List;
                 query = "delete from RentalCar rce where rce.carId = :carId"
         )
 })
-
+@Audited
+//@Data
 @Entity
 @Table(schema = "demo-db", name = "rental_car")
 public class RentalCar implements Serializable {
@@ -41,7 +45,8 @@ public class RentalCar implements Serializable {
     @Column(columnDefinition = "DECIMAL(19,6)") // accuracy of big decimal stored in db
     private BigDecimal pricePerHour;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "rentalCar", cascade = CascadeType.ALL)
+    @NotAudited
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "rentalCar")
     private List<RentalAgreement> rentalAgreements = new ArrayList<>();
 
     public String getCarId() {
