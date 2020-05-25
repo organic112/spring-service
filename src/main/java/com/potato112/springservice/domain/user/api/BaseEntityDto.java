@@ -14,10 +14,7 @@ import java.time.LocalDateTime;
 public class BaseEntityDto implements Serializable {
 
     private LocalDateTime createDate;
-
     private LocalDateTime updateDate;
-
     private String createUser;
-
     private String updateUser;
 }

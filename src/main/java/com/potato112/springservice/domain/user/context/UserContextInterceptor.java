@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 
 @Component
 @AllArgsConstructor
-public class LoginContextInterceptor implements HandlerInterceptor {
+public class UserContextInterceptor implements HandlerInterceptor {
 
-    private LoginContextRequest loginContextRequest;
+    private UserContextRequest userContextRequest;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -26,10 +26,7 @@ public class LoginContextInterceptor implements HandlerInterceptor {
             return true;
         }
         System.out.println("SET user context login: " + contextLogin);
-        loginContextRequest.setUserLogin(contextLogin);
+        userContextRequest.setUserLogin(contextLogin);
         return true;
-
-
-        //return true;
     }
 }

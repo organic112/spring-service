@@ -12,13 +12,8 @@ import lombok.Setter;
 public class GroupPermissionDto extends BaseEntityDto {
 
     private String id;
-
     private ViewName viewName;
-
     private boolean canCreate;
-
     private boolean canUpdate;
-
     private boolean canDelete;
-
 }

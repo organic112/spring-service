@@ -1,7 +1,7 @@
 package com.potato112.springservice.domain.common.interceptor;
 
 import com.potato112.springservice.domain.user.context.UserContext;
-import com.potato112.springservice.domain.user.context.UserLoginContextService;
+import com.potato112.springservice.domain.user.context.UserContextService;
 import com.potato112.springservice.repository.entities.BaseEntity;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -13,19 +13,20 @@ import java.util.Objects;
 
 /**
  * Database interceptor (entity listener)
- * performs operations on entities
+ * Performs operations on entities
  */
-
 @Component
 @AllArgsConstructor
-//@EntityListeners(BaseEntity.class)
 public class SysDatabaseInterceptor {
 
-    private UserLoginContextService userLoginContextService;
+    private UserContextService userContextService;
 
     public SysDatabaseInterceptor() {
     }
 
+    /**
+     * When Entity is created in other than Request scope, create user has to be set manually
+     */
     @PrePersist
     public void prePersist(final Object entity) {
 
@@ -40,13 +41,8 @@ public class SysDatabaseInterceptor {
         if (Objects.isNull(createDate)) {
             baseEntity.setCreateDate(LocalDateTime.now());
         }
-
-/*        if (null != baseEntity.getCreateUser() && !"".equals(baseEntity.getCreateUser())) {
-            return;
-        }*/
-
         if (null == baseEntity.getCreateUser() || "".equals(baseEntity.getCreateUser())) {
-            UserContext userContext = userLoginContextService.getUserContext();
+            UserContext userContext = userContextService.getUserContext();
             String userLogin = userContext.getContextUserLogin();
             baseEntity.setCreateUser(userLogin);
         }
@@ -55,32 +51,17 @@ public class SysDatabaseInterceptor {
     @PreUpdate
     public void preUpdate(final Object entity) {
 
-
-
         BaseEntity baseEntity = checkEntityAndCastToBaseEntity(entity);
         if (null == baseEntity) {
             return;
         }
-
         System.out.println("PreUpdate Entity Interceptor, create user check:" + baseEntity.getCreateUser());
 
-        LocalDateTime updateDate = baseEntity.getUpdateDate();
-
-        if (Objects.isNull(updateDate)) {
-            baseEntity.setUpdateDate(LocalDateTime.now());
-        }
-
-/*        if (null != baseEntity.getCreateUser() && !"".equals(baseEntity.getCreateUser())) {
-            System.out.println("EMPTY CREATE USER");
-            return;
-        }*/
-
-        UserContext userContext = userLoginContextService.getUserContext();
+        baseEntity.setUpdateDate(LocalDateTime.now());
+        UserContext userContext = userContextService.getUserContext();
         String userLogin = userContext.getContextUserLogin();
         baseEntity.setUpdateUser(userLogin);
     }
-
-
 
     private BaseEntity checkEntityAndCastToBaseEntity(final Object entity) {
 
@@ -89,7 +70,6 @@ public class SysDatabaseInterceptor {
         if (null == entity) {
             throw new IllegalStateException("Hibernate tries to save or update NULL reference. Should never happened");
         }
-        // if not BaseEntity do nothing
         if (!(entity instanceof BaseEntity)) {
             return null;
         }

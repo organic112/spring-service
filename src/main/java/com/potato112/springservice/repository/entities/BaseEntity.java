@@ -3,7 +3,6 @@ package com.potato112.springservice.repository.entities;
 
 
 import com.potato112.springservice.domain.common.interceptor.SysDatabaseInterceptor;
-import com.potato112.springservice.repository.interceptors.DatabaseInterceptor;
 import com.potato112.springservice.repository.interceptors.TransientBaseEntityState;
 import com.potato112.springservice.repository.interfaces.BaseTable;
 import com.potato112.springservice.repository.interfaces.EntityWithTransientState;

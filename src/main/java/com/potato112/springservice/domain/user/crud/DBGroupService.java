@@ -7,10 +7,9 @@ import com.potato112.springservice.domain.group.GroupSearchDto;
 import com.potato112.springservice.domain.user.api.GroupDto;
 import com.potato112.springservice.domain.user.api.GroupOverviewResponseDto;
 import com.potato112.springservice.domain.user.api.GroupService;
-import com.potato112.springservice.domain.user.model.GroupOverviewMapper;
 import com.potato112.springservice.domain.user.model.GroupMapper;
+import com.potato112.springservice.domain.user.model.GroupOverviewMapper;
 import com.potato112.springservice.repository.entities.auth.UserGroup;
-import com.potato112.springservice.repository.services.UserGroupCRUDService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -26,19 +25,13 @@ public class DBGroupService implements GroupService {
 
     private final GroupRepository groupRepository;
 
-    private final UserGroupCRUDService userGroupCRUDService;
-
-
     @Override
     public String create(GroupDto groupDto) {
 
         GroupMapper userGroupMapper = new GroupMapper();
-
         UserGroup userGroup = userGroupMapper.mapToEntity(groupDto);
         groupRepository.save(userGroup);
-
-        System.out.println("user group save");
-        return "fixme";
+        return userGroup.getId();
     }
 
     @Override
@@ -59,7 +52,6 @@ public class DBGroupService implements GroupService {
 
         // fetch entity
         Page<UserGroup> entityPage = groupRepository.findAll(pageable);
-
         // convert entity to specific dto
         Page<GroupOverviewResponseDto> dtoPage = entityPage.map(group -> new GroupOverviewMapper().mapToVo(group));
         return dtoPage;
@@ -69,23 +61,18 @@ public class DBGroupService implements GroupService {
     public Optional<GroupDto> getGroup(String id) {
 
         System.out.println("Try fetch group with id: " + id);
-
         return groupRepository.findById(id).map(group -> new GroupMapper().mapToVo(group));
     }
 
-    // move to extracted Update Service
     @Override
     public GroupDto update(GroupDto groupDto) {
 
         System.out.println("group name" + groupDto.getGroupName());
         System.out.println("group permissions size" + groupDto.getGroupPermissions().size());
-
         System.out.println("ECHO01 before update groupDTO create user: "+ groupDto.getCreateUser());
 
-        userGroupCRUDService.update(new GroupMapper().mapToEntity(groupDto));
-
-/*        UserGroup userGroup = groupRepository.save(new GroupMapper().mapToEntity(groupDto));
-        groupRepository.save(userGroup);*/
+        UserGroup userGroup = groupRepository.save(new GroupMapper().mapToEntity(groupDto));
+        groupRepository.save(userGroup);
         return groupDto;
     }
 }

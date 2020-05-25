@@ -7,11 +7,9 @@ import lombok.Data;
 @Data
 public class UserContext {
 
-        private UserDto userDto;
-        //private final UserLogin;
+    private UserDto userDto;
 
-      public String getContextUserLogin(){
-
-          return userDto.getEmail();
-      }
+    public String getContextUserLogin() {
+        return userDto.getEmail();
+    }
 }

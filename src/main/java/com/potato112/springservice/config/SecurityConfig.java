@@ -33,8 +33,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         @Override
         public String encode(CharSequence rawPass) {
-            log.info("SERVICE: raw password to encode:" + rawPass);
 
+            log.info("SERVICE: raw password to encode:" + rawPass);
             return rawPass.toString();
         }
 
@@ -42,7 +42,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         public boolean matches(CharSequence rawPass, String decodedPass) {
 
             log.info("try mach raw pass:" + rawPass + " and encoded pass:" + decodedPass);
-
             return rawPass.toString().equals(decodedPass);
         }
     }

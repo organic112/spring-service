@@ -1,7 +1,5 @@
 package com.potato112.springservice.domain.user.context;
 
-
-
 import com.potato112.springservice.domain.user.model.authorize.UserDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,32 +13,31 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @AllArgsConstructor
-public class UserLoginContextService {
+public class UserContextService {
 
-
-    private final LoginContextRequest loginContextRequest;
-    private final LoginContextRequestHolder loginContextRequestHolder;
+    private final UserContextRequest userContextRequest;
+    private final UserContextRequestHolder userContextRequestHolder;
 
     // private final UserService  userService
 
     public UserContext getUserContext() {
 
-        if (null == loginContextRequestHolder.getUserContext()) {
-            String userLogin = loginContextRequest.getUserLogin();
+        if (null == userContextRequestHolder.getUserContext()) {
+            String userLogin = userContextRequest.getUserLogin();
 
             if (null == userLogin) {
                 throw new IllegalStateException("User login is missing in user context");
             }
             UserContext userContext = getUserContext(userLogin);
-            loginContextRequestHolder.setUserContext(userContext);
+            userContextRequestHolder.setUserContext(userContext);
         }
-        return loginContextRequestHolder.getUserContext();
+        return userContextRequestHolder.getUserContext();
     }
 
     private UserContext getUserContext(String userLogin) {
 
         // FIXME get user from database with all UserDto info
-        //UserContext = userService.getByLogin(userLogin)
+        // UserContext = userService.getByLogin(userLogin)
 
         UserDto userDto = new UserDto();
         userDto.setEmail(userLogin);
@@ -49,5 +46,4 @@ public class UserLoginContextService {
         userContext.setUserDto(userDto);
         return userContext;
     }
-
 }

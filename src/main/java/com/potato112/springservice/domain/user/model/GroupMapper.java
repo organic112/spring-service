@@ -65,7 +65,6 @@ public class GroupMapper implements SysMapper<UserGroup, GroupDto> {
 
     @Override
     public UserGroup mapToEntity(GroupDto modelVo, CrudRepository<UserGroup, String> crudRepository) {
-
         return null;
     }
 }

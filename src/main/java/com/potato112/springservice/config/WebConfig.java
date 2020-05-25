@@ -1,24 +1,27 @@
 package com.potato112.springservice.config;
 
 
-import com.potato112.springservice.domain.user.context.LoginContextInterceptor;
+import com.potato112.springservice.domain.user.context.UserContextInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * Configures Request scope 'UserLoginContextService'
+ */
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    private LoginContextInterceptor loginContextInterceptor;
+    private UserContextInterceptor userContextInterceptor;
 
-    public WebConfig(LoginContextInterceptor loginContextInterceptor) {
-        this.loginContextInterceptor = loginContextInterceptor;
+    public WebConfig(UserContextInterceptor userContextInterceptor) {
+        this.userContextInterceptor = userContextInterceptor;
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
-        registry.addInterceptor(loginContextInterceptor);
+        registry.addInterceptor(userContextInterceptor);
     }
 }
 

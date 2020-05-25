@@ -1,17 +1,11 @@
 package com.potato112.springservice.config;
 
-import com.mysql.cj.xdevapi.SessionFactory;
-import com.potato112.springservice.crud.jpa.services.RentalCarCRUDService;
-import com.potato112.springservice.crud.model.RentalCar;
 import com.potato112.springservice.domain.user.model.authorize.UserStatus;
 import com.potato112.springservice.jms.bulkaction.BulkActionExecutor;
 import com.potato112.springservice.jms.bulkaction.dao.InvestmentDao;
 import com.potato112.springservice.jms.bulkaction.model.enums.InvestmentProductStatus;
 import com.potato112.springservice.jms.bulkaction.model.enums.InvestmentStatus;
-import com.potato112.springservice.jms.bulkaction.model.init.InvestmentChangeStatusBAInit;
-import com.potato112.springservice.jms.bulkaction.model.interfaces.BulkActionInit;
 import com.potato112.springservice.jms.bulkaction.model.interfaces.BulkActionManager;
-import com.potato112.springservice.jms.bulkaction.model.interfaces.SysStatus;
 import com.potato112.springservice.jms.bulkaction.model.investment.IntInvestmentItem;
 import com.potato112.springservice.jms.bulkaction.model.investment.InvestmentDocument;
 import com.potato112.springservice.jms.bulkaction.model.investment.InvestmentProduct;
@@ -23,15 +17,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.envers.repository.support.EnversRevisionRepositoryFactoryBean;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 import javax.annotation.PostConstruct;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @EnableAsync
 @EnableJms
@@ -91,7 +84,6 @@ public class AppConfig implements CommandLineRunner {
         groupPermission1.setCanUpdate(true);
         groupPermission1.setCanDelete(true);
         groupPermission1.setUserGroup(userGroup1);
-
 
         GroupPermission groupPermission2 = new GroupPermission();
         groupPermission2.setCreateUser("app-context-user");
@@ -198,7 +190,6 @@ public class AppConfig implements CommandLineRunner {
         intInvestmentItem7.setInvestmentProducts(Arrays.asList(product6, product7)); // false, true
 
         // create 3 Investments for bulk action processing
-
         investmentDocument.setInvestmentStatus(InvestmentStatus.IMPORTED);
         investmentDocument.setInvestmentNumber("INV_001");
         investmentDocument.setInvestmentItemList(itemList1);
