@@ -16,11 +16,11 @@ import java.time.LocalDateTime;
 
 
 @MappedSuperclass
-//@EntityListeners(SysDatabaseInterceptor.class)
+@EntityListeners(SysDatabaseInterceptor.class)
 public abstract class BaseEntity implements Serializable, BaseTable, EntityWithTransientState<TransientBaseEntityState> {
 
 
-    private LocalDateTime createDate = LocalDateTime.now();
+    private LocalDateTime createDate;
 
     private LocalDateTime updateDate;
 

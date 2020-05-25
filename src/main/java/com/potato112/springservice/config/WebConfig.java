@@ -20,24 +20,5 @@ public class WebConfig implements WebMvcConfigurer {
 
         registry.addInterceptor(loginContextInterceptor);
     }
-
-/*    @Bean
-    public RequestContextListener requestContextListener() {
-        return new RequestContextListener();
-    }*/
-
-/*
-    @Bean
-    @Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
-    public UserCRUDService requestScopedEntityService() {
-        return new UserCRUDService();
-    }
-
-    @Bean
-    @Scope(value = "singleton")
-    public UserCRUDService prototypeScopedEntityService() {
-        return new UserCRUDService();
-    }
-*/
-
 }
+
