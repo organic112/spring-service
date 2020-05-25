@@ -17,10 +17,11 @@ public class LoginContextInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        String contextLogin = request.getHeader("LoginContext");
+        String contextLogin = request.getHeader("UserLoginContext");
         if(contextLogin.equals("")){
             return true;
         }
+        System.out.println("SET user context login: " + contextLogin);
         loginContextRequest.setUserLogin(contextLogin);
         return true;
     }

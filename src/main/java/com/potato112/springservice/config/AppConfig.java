@@ -77,19 +77,24 @@ public class AppConfig implements CommandLineRunner {
         user.setEmail("admin@temp.com"); //
         user.setLocked(UserStatus.ENABLED);
         user.setPhone("52 5556 6565 54");
+        user.setCreateUser("app-context-user");
         userCRUDService.save(user);
 
         // create group with permissions
         UserGroup userGroup1 = new UserGroup();
+        userGroup1.setCreateUser("app-context-user");
         userGroup1.setGroupName("new_test_user_group_name");
         GroupPermission groupPermission1 = new GroupPermission();
+        groupPermission1.setCreateUser("app-context-user");
         groupPermission1.setViewName(ViewName.FOO_OVERVIEW_VIEW);
         groupPermission1.setCanCreate(true);
         groupPermission1.setCanUpdate(true);
         groupPermission1.setCanDelete(true);
         groupPermission1.setUserGroup(userGroup1);
 
+
         GroupPermission groupPermission2 = new GroupPermission();
+        groupPermission2.setCreateUser("app-context-user");
         groupPermission2.setViewName(ViewName.USER_VIEW);
         groupPermission2.setCanCreate(true);
         groupPermission2.setCanUpdate(true);
@@ -97,6 +102,7 @@ public class AppConfig implements CommandLineRunner {
         groupPermission2.setUserGroup(userGroup1);
 
         GroupPermission groupPermission3 = new GroupPermission();
+        groupPermission3.setCreateUser("app-context-user");
         groupPermission3.setViewName(ViewName.GROUP_VIEW);
         groupPermission3.setCanCreate(true);
         groupPermission3.setCanUpdate(true);
@@ -113,12 +119,12 @@ public class AppConfig implements CommandLineRunner {
 
         // create user - group mapping
         UserGroupMapping userGroupMapping = new UserGroupMapping();
+        userGroupMapping.setCreateUser("app-context-user");
         userGroupMapping.setUser(user);
         userGroupMapping.setUserGroup(userGroup1);
         mappingCRUDService.create(userGroupMapping);
 
         // CREATE IntInvestments
-
         InvestmentDocument investmentDocument = new InvestmentDocument();
         InvestmentDocument investmentDocument2 = new InvestmentDocument();
         InvestmentDocument investmentDocument3 = new InvestmentDocument();
@@ -244,6 +250,10 @@ public class AppConfig implements CommandLineRunner {
         product7.setIsValidFlag(false);
         product7.setIntInvestmentItem(intInvestmentItem7);
         product7.setProductNumber("INV_NUM_007");
+
+        investmentDocument.setCreateUser("app-context-user");
+        investmentDocument2.setCreateUser("app-context-user");
+        investmentDocument3.setCreateUser("app-context-user");
 
         investmentCRUDService.create(investmentDocument);
         investmentCRUDService.create(investmentDocument2);

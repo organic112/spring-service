@@ -13,7 +13,6 @@ import javax.validation.constraints.NotNull;
  * maps current User to group
  * if user is mapped to group, he grants group authorities
  */
-
 @Audited
 @Data
 @Entity

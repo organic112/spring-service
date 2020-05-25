@@ -30,7 +30,4 @@ public class UserGroup extends BaseEntity {
     @OneToMany(mappedBy = "userGroup", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<GroupPermission> groupPermissions;
 
-
-
-
 }

@@ -39,11 +39,11 @@ public class UserLoginContextService {
 
     private UserContext getUserContext(String userLogin) {
 
-        // FIXME get user from database
+        // FIXME get user from database with all UserDto info
         //UserContext = userService.getByLogin(userLogin)
 
         UserDto userDto = new UserDto();
-        userDto.setEmail("fixme@hardcoded.com");
+        userDto.setEmail(userLogin);
 
         UserContext userContext = new UserContext();
         userContext.setUserDto(userDto);

@@ -2,6 +2,7 @@ package com.potato112.springservice.repository.entities;
 
 
 
+import com.potato112.springservice.domain.common.interceptor.SysDatabaseInterceptor;
 import com.potato112.springservice.repository.interceptors.DatabaseInterceptor;
 import com.potato112.springservice.repository.interceptors.TransientBaseEntityState;
 import com.potato112.springservice.repository.interfaces.BaseTable;
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 
 
 @MappedSuperclass
-@EntityListeners(DatabaseInterceptor.class)
+//@EntityListeners(SysDatabaseInterceptor.class)
 public abstract class BaseEntity implements Serializable, BaseTable, EntityWithTransientState<TransientBaseEntityState> {
 
 

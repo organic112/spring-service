@@ -133,7 +133,7 @@ public class DBUserService implements UserService {
         userDetailsDto.setPassword("98ACDA0612B5263009C0E9F605F6844B8DAFF5AE");
         userDetailsDto.setFirstName("admin");
         userDetailsDto.setLastName("admin");
-        userDetailsDto.setSelectedOrganizationId("aaabbbcccddd"); // FIXME
+        //userDetailsDto.setSelectedOrganizationId("aaabbbcccddd"); // FIXME
         userDetailsDto.setUserGroups(Arrays.asList(userGroupVO));
 
         userDetailsAuthority.setUserDetailsDto(userDetailsDto);

@@ -1,6 +1,7 @@
 package com.potato112.springservice.repository.entities.auth;
 
 
+import com.potato112.springservice.repository.entities.BaseEntity;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.envers.Audited;
@@ -12,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @Entity
 @Table(schema = "demo-db", name = "group_permission")
-public class GroupPermission {
+public class GroupPermission extends BaseEntity {
 
     @Id
     @NotNull
