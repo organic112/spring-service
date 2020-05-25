@@ -8,6 +8,9 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Interceptor handling Request scope for 'UserContextService'
+ */
 @Component
 @AllArgsConstructor
 public class UserContextInterceptor implements HandlerInterceptor {

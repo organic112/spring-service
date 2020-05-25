@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * Configures Request scope 'UserLoginContextService'
+ * Configures Request scope 'UserContextService'
  */
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
