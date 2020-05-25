@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode
-public class GroupPermissionDto {
+public class GroupPermissionDto extends BaseEntityDto {
 
     private String id;
 

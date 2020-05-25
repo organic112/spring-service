@@ -19,6 +19,10 @@ public class GroupPermissionMapper implements SysMapper<GroupPermission, GroupPe
         groupPermissionVO.setCanUpdate(groupPermission.isCanUpdate());
         groupPermissionVO.setCanDelete(groupPermission.isCanDelete());
 
+        groupPermissionVO.setCreateUser(groupPermission.getCreateUser());
+        groupPermissionVO.setCreateDate(groupPermission.getCreateDate());
+        groupPermissionVO.setUpdateUser(groupPermission.getCreateUser());
+        groupPermissionVO.setUpdateDate(groupPermission.getUpdateDate());
         return groupPermissionVO;
     }
 
@@ -31,6 +35,11 @@ public class GroupPermissionMapper implements SysMapper<GroupPermission, GroupPe
         groupPermission.setCanCreate(modelVo.isCanCreate());
         groupPermission.setCanUpdate(modelVo.isCanUpdate());
         groupPermission.setCanDelete(modelVo.isCanDelete());
+
+        groupPermission.setCreateUser(modelVo.getCreateUser());
+        groupPermission.setCreateDate(modelVo.getCreateDate());
+        groupPermission.setUpdateUser(modelVo.getCreateUser());
+        groupPermission.setUpdateDate(modelVo.getUpdateDate());
         return groupPermission;
     }
 
