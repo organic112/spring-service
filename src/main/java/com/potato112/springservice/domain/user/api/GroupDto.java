@@ -17,7 +17,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class GroupDto implements Serializable {
+public class GroupDto extends BaseEntityDto implements Serializable {
 
     public static final class AttributeName {
         private AttributeName() {
@@ -26,7 +26,6 @@ public class GroupDto implements Serializable {
         public static final String GROUP_NAME = "groupName";
         public static final String GROUP_PERMISSIONS = "groupPermissions";
     }
-
     private String id;
 
     @NotEmpty(message = "Group name should not be empty")

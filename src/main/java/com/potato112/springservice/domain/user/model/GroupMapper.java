@@ -20,6 +20,11 @@ public class GroupMapper implements SysMapper<UserGroup, GroupDto> {
         userGroupVo.setId(userGroup.getId());
         userGroupVo.setGroupName(userGroup.getGroupName());
 
+        userGroupVo.setCreateUser(userGroup.getCreateUser());
+        userGroupVo.setCreateDate(userGroup.getCreateDate());
+        userGroupVo.setUpdateUser(userGroup.getUpdateUser());
+        userGroupVo.setUpdateDate(userGroup.getUpdateDate());
+
         List<GroupPermission> groupPermissions = userGroup.getGroupPermissions();
 
         List<GroupPermissionDto> groupPermissionVOS = getGroupPermissionVOS(groupPermissions);
@@ -41,6 +46,11 @@ public class GroupMapper implements SysMapper<UserGroup, GroupDto> {
         userGroup.setGroupName(groupDto.getGroupName());
         userGroup.setId(groupDto.getId());
 
+        userGroup.setCreateUser(groupDto.getCreateUser());
+        userGroup.setCreateDate(groupDto.getCreateDate());
+        userGroup.setUpdateUser(groupDto.getUpdateUser());
+        userGroup.setUpdateDate(groupDto.getUpdateDate());
+
         List<GroupPermissionDto> groupPermissions = groupDto.getGroupPermissions();
 
         List<GroupPermission> groupPermissionEntities = groupPermissions.stream()
@@ -55,7 +65,6 @@ public class GroupMapper implements SysMapper<UserGroup, GroupDto> {
 
     @Override
     public UserGroup mapToEntity(GroupDto modelVo, CrudRepository<UserGroup, String> crudRepository) {
-
 
         return null;
     }

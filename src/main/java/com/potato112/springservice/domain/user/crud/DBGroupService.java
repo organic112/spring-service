@@ -10,6 +10,7 @@ import com.potato112.springservice.domain.user.api.GroupService;
 import com.potato112.springservice.domain.user.model.GroupOverviewMapper;
 import com.potato112.springservice.domain.user.model.GroupMapper;
 import com.potato112.springservice.repository.entities.auth.UserGroup;
+import com.potato112.springservice.repository.services.UserGroupCRUDService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -24,6 +25,8 @@ import java.util.Optional;
 public class DBGroupService implements GroupService {
 
     private final GroupRepository groupRepository;
+
+    private final UserGroupCRUDService userGroupCRUDService;
 
 
     @Override
@@ -77,9 +80,12 @@ public class DBGroupService implements GroupService {
         System.out.println("group name" + groupDto.getGroupName());
         System.out.println("group permissions size" + groupDto.getGroupPermissions().size());
 
+        System.out.println("ECHO01 before update groupDTO create user: "+ groupDto.getCreateUser());
 
-        UserGroup userGroup = groupRepository.save(new GroupMapper().mapToEntity(groupDto));
-        groupRepository.save(userGroup);
+        userGroupCRUDService.update(new GroupMapper().mapToEntity(groupDto));
+
+/*        UserGroup userGroup = groupRepository.save(new GroupMapper().mapToEntity(groupDto));
+        groupRepository.save(userGroup);*/
         return groupDto;
     }
 }

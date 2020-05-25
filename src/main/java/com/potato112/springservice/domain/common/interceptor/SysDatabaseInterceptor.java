@@ -55,12 +55,15 @@ public class SysDatabaseInterceptor {
     @PreUpdate
     public void preUpdate(final Object entity) {
 
-        System.out.println("PreUpdate Entity Interceptor");
+
 
         BaseEntity baseEntity = checkEntityAndCastToBaseEntity(entity);
         if (null == baseEntity) {
             return;
         }
+
+        System.out.println("PreUpdate Entity Interceptor, create user check:" + baseEntity.getCreateUser());
+
         LocalDateTime updateDate = baseEntity.getUpdateDate();
 
         if (Objects.isNull(updateDate)) {
