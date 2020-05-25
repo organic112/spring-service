@@ -15,7 +15,7 @@ import javax.persistence.*;
 @Entity
 @RevisionEntity(CustomRevisionEntityListener.class)
 @Getter @Setter
-@Table(name = "REVINFO", schema = "audit")
+@Table(name = "HISTORY_REV_INFO", schema = "audit")
 @AttributeOverrides({
         @AttributeOverride(name = "timestamp", column = @Column(name = "REVTSTMP")),
         @AttributeOverride(name = "id", column = @Column(name = "REV"))
