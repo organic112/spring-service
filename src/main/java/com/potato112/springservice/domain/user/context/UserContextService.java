@@ -3,6 +3,7 @@ package com.potato112.springservice.domain.user.context;
 import com.potato112.springservice.domain.user.model.authorize.UserDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
 
 
 /**
@@ -17,18 +18,29 @@ public class UserContextService {
 
     private final UserContextRequest userContextRequest;
     private final UserContextRequestHolder userContextRequestHolder;
+    private static final String NOT_REQUEST_SCOPE_USER_NAME = "not-request-scope-user";
 
-    // private final UserService  userService
+
+
+    // FIXME in Tests request scope is not null but user login is null
+    // service fails in unit tests
 
     public UserContext getUserContext() {
 
-        if (null == userContextRequestHolder.getUserContext()) {
+        boolean isRequestScopeAvailable = null != RequestContextHolder.getRequestAttributes();
+        UserContext userContext;
+
+        if (!isRequestScopeAvailable){
+            userContext = getUserContext(NOT_REQUEST_SCOPE_USER_NAME);
+            userContextRequestHolder.setUserContext(userContext);
+        }
+        else if (null == userContextRequestHolder.getUserContext()) {
             String userLogin = userContextRequest.getUserLogin();
 
             if (null == userLogin) {
                 throw new IllegalStateException("User login is missing in user context");
             }
-            UserContext userContext = getUserContext(userLogin);
+            userContext = getUserContext(userLogin);
             userContextRequestHolder.setUserContext(userContext);
         }
         return userContextRequestHolder.getUserContext();

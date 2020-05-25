@@ -75,7 +75,7 @@ public class AppConfig implements CommandLineRunner {
 
         // create group with permissions
         UserGroup userGroup1 = new UserGroup();
-        userGroup1.setCreateUser("app-context-user");
+        //userGroup1.setCreateUser("app-context-user");
         userGroup1.setGroupName("new_test_user_group_name");
         GroupPermission groupPermission1 = new GroupPermission();
         groupPermission1.setCreateUser("app-context-user");
