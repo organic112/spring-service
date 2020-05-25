@@ -47,17 +47,20 @@ public class UserCRUDServiceTest {
         user.setEmail("admin@temp.com"); //
         user.setLocked(UserStatus.ENABLED);
         user.setPhone("52 5556 6565 54");
+        user.setCreateUser("app-context-user");
         userCRUDService.save(user);
 
         // create group with permissions
         UserGroup userGroup1 = new UserGroup();
         userGroup1.setGroupName("new_test_user_group_name");
+        userGroup1.setCreateUser("app-context-user");
         GroupPermission groupPermission1 = new GroupPermission();
         groupPermission1.setViewName(ViewName.FOO_OVERVIEW_VIEW);
         groupPermission1.setCanCreate(true);
         groupPermission1.setCanUpdate(true);
         groupPermission1.setCanDelete(true);
         groupPermission1.setUserGroup(userGroup1);
+        groupPermission1.setCreateUser("app-context-user");
 
         GroupPermission groupPermission2 = new GroupPermission();
         groupPermission2.setViewName(ViewName.USER_VIEW);
@@ -65,6 +68,7 @@ public class UserCRUDServiceTest {
         groupPermission2.setCanUpdate(true);
         groupPermission2.setCanDelete(true);
         groupPermission2.setUserGroup(userGroup1);
+        groupPermission2.setCreateUser("app-context-user");
 
         List<GroupPermission> permissions = new ArrayList<>();
         permissions.add(groupPermission1);
@@ -78,6 +82,7 @@ public class UserCRUDServiceTest {
         UserGroupMapping userGroupMapping = new UserGroupMapping();
         userGroupMapping.setUser(user);
         userGroupMapping.setUserGroup(userGroup1);
+        userGroupMapping.setCreateUser("app-context-user");
         mappingCRUDService.create(userGroupMapping);
 
 

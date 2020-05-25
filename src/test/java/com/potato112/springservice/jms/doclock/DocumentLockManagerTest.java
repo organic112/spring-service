@@ -37,6 +37,7 @@ public class DocumentLockManagerTest {
     public void shouldCreateDocumentLock() {
         // given
         InvestmentDocument investmentDocument = new InvestmentDocument();
+        investmentDocument.setCreateUser("app-context-user");
         investmentDocument.setInvestmentNumber("INV001-TEST01");
         investmentDocument.setInvestmentStatus(InvestmentStatus.IMPORTED);
         crudServiceBean.create(investmentDocument);
@@ -53,6 +54,7 @@ public class DocumentLockManagerTest {
     public void shouldCreateAndRemoveDocumentLock() {
         // given
         InvestmentDocument investmentDocument = new InvestmentDocument();
+        investmentDocument.setCreateUser("app-context-user");
         investmentDocument.setInvestmentNumber("INV001-TEST01");
         investmentDocument.setInvestmentStatus(InvestmentStatus.IMPORTED);
         crudServiceBean.create(investmentDocument);
@@ -69,6 +71,7 @@ public class DocumentLockManagerTest {
     public void shouldThrowAlreadyLockExceptionWhenSecondLockAttemptOnLockedDocument() {
         // given
         InvestmentDocument investmentDocument = new InvestmentDocument();
+        investmentDocument.setCreateUser("app-context-user");
         investmentDocument.setInvestmentNumber("INV001-TEST01");
         investmentDocument.setInvestmentStatus(InvestmentStatus.IMPORTED);
         crudServiceBean.create(investmentDocument);
