@@ -4,12 +4,11 @@ import com.potato112.springservice.domain.user.context.UserContext;
 import com.potato112.springservice.domain.user.context.UserContextService;
 import com.potato112.springservice.repository.entities.BaseEntity;
 import org.hibernate.envers.RevisionListener;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
 
 /**
  * Sets custom field values to Hibernate Audit (entity history) revision table
+ * Handles entities extending BaseEntity
  */
 @Component
 public class CustomRevisionEntityListener implements RevisionListener {
@@ -28,18 +27,9 @@ public class CustomRevisionEntityListener implements RevisionListener {
             return;
         }
 
-        boolean isRequestScopeAvailable = null != RequestContextHolder.getRequestAttributes();
-
-        System.out.println("ECHO request scope available:" + isRequestScopeAvailable);
-
-        if (isRequestScopeAvailable) {
-
-            // FIXME provide username from context (not works in Application context)
-            String login = userContextService.getUserContext().getContextUserLogin();
-            entity.setUserName(login);
-        } else {
-            entity.setUserName("FIXME user name");
-        }
+        UserContext userContext = userContextService.getNotStrictRequestUserContext();
+        String login = userContext.getContextUserLogin();
+        entity.setUserName(login);
     }
 
     private CustomRevisionEntity checkEntityAndCastToBaseEntity(final Object entity) {

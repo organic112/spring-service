@@ -1,5 +1,6 @@
 package com.potato112.springservice.crud.model;
 
+import com.potato112.springservice.repository.entities.BaseEntity;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.envers.Audited;
@@ -30,7 +31,7 @@ import java.util.List;
 //@Data
 @Entity
 @Table(schema = "demo-db", name = "rental_car")
-public class RentalCar implements Serializable {
+public class RentalCar extends BaseEntity implements Serializable {
 
     @Id
     @NotNull
@@ -48,6 +49,16 @@ public class RentalCar implements Serializable {
     @NotAudited
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "rentalCar")
     private List<RentalAgreement> rentalAgreements = new ArrayList<>();
+
+    @Override
+    public String getId() {
+        return carId;
+    }
+
+    @Override
+    public void setId(String id) {
+        //this.carId = id;
+    }
 
     public String getCarId() {
         return carId;

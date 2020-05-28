@@ -42,7 +42,7 @@ public class SysDatabaseInterceptor {
             baseEntity.setCreateDate(LocalDateTime.now());
         }
         if (null == baseEntity.getCreateUser() || "".equals(baseEntity.getCreateUser())) {
-            UserContext userContext = userContextService.getUserContext();
+            UserContext userContext = userContextService.getRequestUserContext();
             String userLogin = userContext.getContextUserLogin();
             baseEntity.setCreateUser(userLogin);
         }
@@ -58,7 +58,7 @@ public class SysDatabaseInterceptor {
         System.out.println("PreUpdate Entity Interceptor, create user check:" + baseEntity.getCreateUser());
 
         baseEntity.setUpdateDate(LocalDateTime.now());
-        UserContext userContext = userContextService.getUserContext();
+        UserContext userContext = userContextService.getNotStrictRequestUserContext();  //FIXME
         String userLogin = userContext.getContextUserLogin();
         baseEntity.setUpdateUser(userLogin);
     }
@@ -75,6 +75,25 @@ public class SysDatabaseInterceptor {
         }
         return (BaseEntity) entity;
     }
+
+   /* String createUser = baseEntity.getCreateUser();
+    String updateUser = baseEntity.getUpdateUser();
+
+    boolean bothUsersAreNull = null == createUser && null == updateUser;
+    boolean createNotNullUpdateNull = null != createUser && null == updateUser;
+    boolean createNotNullUpdateNotNull = null != createUser && null != updateUser;
+
+            if (bothUsersAreNull) {
+        entity.setUserName("anonymous");
+    } else if (createNotNullUpdateNull) {
+        entity.setUserName(baseEntity.getCreateUser());
+    } else if (createNotNullUpdateNotNull) {
+        entity.setUserName(baseEntity.getUpdateUser());
+    } else {
+        UserContext userContext = userContextService.getRequestUserContext();
+        String login = userContext.getContextUserLogin();
+        entity.setUserName(login);
+    }*/
 }
 
 

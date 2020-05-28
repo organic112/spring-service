@@ -2,7 +2,9 @@ package com.potato112.springservice.domain.user.context;
 
 import com.potato112.springservice.domain.user.model.authorize.UserDto;
 import lombok.AllArgsConstructor;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
 
@@ -18,35 +20,68 @@ public class UserContextService {
 
     private final UserContextRequest userContextRequest;
     private final UserContextRequestHolder userContextRequestHolder;
-    private static final String NOT_REQUEST_SCOPE_USER_NAME = "not-request-scope-user";
-
+    private static final String NOT_REQUEST_SCOPE_USER_NAME_ANONYMOUS = "not-request-scope-anonymous";
+    private static final String REQUEST_SCOPE_USER_NAME_ANONYMOUS = "request-scope-anonymous";
 
 
     // FIXME in Tests request scope is not null but user login is null
     // service fails in unit tests
 
-    public UserContext getUserContext() {
+    public UserContext getRequestUserContext() {
 
-        boolean isRequestScopeAvailable = null != RequestContextHolder.getRequestAttributes();
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+
+        boolean isRequestScopeAvailable = null != requestAttributes;
         UserContext userContext;
 
-        if (!isRequestScopeAvailable){
-            userContext = getUserContext(NOT_REQUEST_SCOPE_USER_NAME);
-            userContextRequestHolder.setUserContext(userContext);
-        }
-        else if (null == userContextRequestHolder.getUserContext()) {
-            String userLogin = userContextRequest.getUserLogin();
+        System.out.println("ECHO_REQUEST01 isRequestScopeAvailable:" + isRequestScopeAvailable);
 
+        if (!isRequestScopeAvailable){
+            userContext = getRequestUserContext(NOT_REQUEST_SCOPE_USER_NAME_ANONYMOUS);
+            return userContext;
+        }
+
+        System.out.println("requestAttributes session id: " + requestAttributes.getSessionId());
+        System.out.println("requestAttributes names: " + requestAttributes.getAttributeNames(0).toString() );
+        //System.out.println("requestAttributes names: " + requestAttributes.get );
+
+        if (null == userContextRequestHolder.getUserContext()) {
+
+            String userLogin = userContextRequest.getUserLogin();
             if (null == userLogin) {
                 throw new IllegalStateException("User login is missing in user context");
             }
-            userContext = getUserContext(userLogin);
+            userContext = getRequestUserContext(userLogin);
+            userContextRequestHolder.setUserContext(userContext);
+
+        }
+        return userContextRequestHolder.getUserContext();
+    }
+
+    public UserContext getNotStrictRequestUserContext() {
+
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+        boolean isRequestScopeAvailable = null != requestAttributes;
+        UserContext userContext;
+
+        if (!isRequestScopeAvailable) {
+            userContext = getRequestUserContext(NOT_REQUEST_SCOPE_USER_NAME_ANONYMOUS);
+            return userContext;
+        }
+
+        if (null == userContextRequestHolder.getUserContext()) {
+
+            String userLogin = userContextRequest.getUserLogin();
+            if (null == userLogin) {
+                return getRequestUserContext(REQUEST_SCOPE_USER_NAME_ANONYMOUS);
+            }
+            userContext = getRequestUserContext(userLogin);
             userContextRequestHolder.setUserContext(userContext);
         }
         return userContextRequestHolder.getUserContext();
     }
 
-    private UserContext getUserContext(String userLogin) {
+    private UserContext getRequestUserContext(String userLogin) {
 
         // FIXME get user from database with all UserDto info
         // UserContext = userService.getByLogin(userLogin)
