@@ -42,7 +42,7 @@ public class SysDatabaseInterceptor {
             baseEntity.setCreateDate(LocalDateTime.now());
         }
         if (null == baseEntity.getCreateUser() || "".equals(baseEntity.getCreateUser())) {
-            UserContext userContext = userContextService.getRequestUserContext();
+            UserContext userContext = userContextService.getNotStrictRequestUserContext();
             String userLogin = userContext.getContextUserLogin();
             baseEntity.setCreateUser(userLogin);
         }

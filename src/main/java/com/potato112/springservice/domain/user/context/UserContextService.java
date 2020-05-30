@@ -2,7 +2,6 @@ package com.potato112.springservice.domain.user.context;
 
 import com.potato112.springservice.domain.user.model.authorize.UserDto;
 import lombok.AllArgsConstructor;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -27,7 +26,12 @@ public class UserContextService {
     // FIXME in Tests request scope is not null but user login is null
     // service fails in unit tests
 
-    public UserContext getRequestUserContext() {
+    /**
+     * When request scope is available and user login is not present in throws exception
+     *
+     * @return
+     */
+    public UserContext getStrictRequestUserContext() {
 
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
 
@@ -37,7 +41,7 @@ public class UserContextService {
         System.out.println("ECHO_REQUEST01 isRequestScopeAvailable:" + isRequestScopeAvailable);
 
         if (!isRequestScopeAvailable){
-            userContext = getRequestUserContext(NOT_REQUEST_SCOPE_USER_NAME_ANONYMOUS);
+            userContext = getStrictRequestUserContext(NOT_REQUEST_SCOPE_USER_NAME_ANONYMOUS);
             return userContext;
         }
 
@@ -51,13 +55,18 @@ public class UserContextService {
             if (null == userLogin) {
                 throw new IllegalStateException("User login is missing in user context");
             }
-            userContext = getRequestUserContext(userLogin);
+            userContext = getStrictRequestUserContext(userLogin);
             userContextRequestHolder.setUserContext(userContext);
 
         }
         return userContextRequestHolder.getUserContext();
     }
 
+    /**
+     * Allows to persist entity in application context when user is not provided i request scope
+     *
+     * @return
+     */
     public UserContext getNotStrictRequestUserContext() {
 
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
@@ -65,7 +74,7 @@ public class UserContextService {
         UserContext userContext;
 
         if (!isRequestScopeAvailable) {
-            userContext = getRequestUserContext(NOT_REQUEST_SCOPE_USER_NAME_ANONYMOUS);
+            userContext = getStrictRequestUserContext(NOT_REQUEST_SCOPE_USER_NAME_ANONYMOUS);
             return userContext;
         }
 
@@ -73,15 +82,15 @@ public class UserContextService {
 
             String userLogin = userContextRequest.getUserLogin();
             if (null == userLogin) {
-                return getRequestUserContext(REQUEST_SCOPE_USER_NAME_ANONYMOUS);
+                return getStrictRequestUserContext(REQUEST_SCOPE_USER_NAME_ANONYMOUS);
             }
-            userContext = getRequestUserContext(userLogin);
+            userContext = getStrictRequestUserContext(userLogin);
             userContextRequestHolder.setUserContext(userContext);
         }
         return userContextRequestHolder.getUserContext();
     }
 
-    private UserContext getRequestUserContext(String userLogin) {
+    private UserContext getStrictRequestUserContext(String userLogin) {
 
         // FIXME get user from database with all UserDto info
         // UserContext = userService.getByLogin(userLogin)

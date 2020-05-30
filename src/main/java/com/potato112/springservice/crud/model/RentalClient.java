@@ -1,5 +1,6 @@
 package com.potato112.springservice.crud.model;
 
+import com.potato112.springservice.repository.entities.BaseEntity;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -26,7 +27,7 @@ import java.util.List;
 
 @Entity
 @Table(schema = "demo-db", name = "rental_client")
-public class RentalClient implements Serializable {
+public class RentalClient extends BaseEntity implements Serializable {
 
     @Id
     @NotNull
@@ -57,6 +58,16 @@ public class RentalClient implements Serializable {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "rentalClient", cascade = CascadeType.ALL)
     private List<RentalAgreement> rentalAgreements;
+
+    @Override
+    public String getId() {
+        return clientId;
+    }
+
+    @Override
+    public void setId(String id) {
+
+    }
 
     public String getClientId() {
         return clientId;
