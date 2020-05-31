@@ -5,7 +5,9 @@ import com.potato112.springservice.domain.common.search.OffsetResponseVo;
 import com.potato112.springservice.domain.user.api.GroupDto;
 import com.potato112.springservice.domain.user.api.GroupOverviewResponseDto;
 import com.potato112.springservice.domain.user.api.GroupService;
+
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +15,7 @@ import javax.validation.Valid;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+@Slf4j
 @RestController
 @RequestMapping(value = GroupApi.ENDPOINT, produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
@@ -54,6 +57,9 @@ public class GroupApi {
 
     @PutMapping
     public GroupDto update(@RequestBody @Valid GroupDto groupDto) {
+
+        groupDto.getGroupPermissions().forEach(permissionDto -> log.info("ECHO_UU REQUEST:create-update-delete "
+          + permissionDto.isCanCreate()    + "-"  + permissionDto.isCanUpdate()     + "-" + permissionDto.isCanDelete()));
 
         groupService.update(groupDto);
 
