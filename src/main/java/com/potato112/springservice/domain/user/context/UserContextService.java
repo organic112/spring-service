@@ -41,7 +41,7 @@ public class UserContextService {
         System.out.println("ECHO_REQUEST01 isRequestScopeAvailable:" + isRequestScopeAvailable);
 
         if (!isRequestScopeAvailable){
-            userContext = getStrictRequestUserContext(NOT_REQUEST_SCOPE_USER_NAME_ANONYMOUS);
+            userContext = getRequestUserContext(NOT_REQUEST_SCOPE_USER_NAME_ANONYMOUS);
             return userContext;
         }
 
@@ -55,7 +55,7 @@ public class UserContextService {
             if (null == userLogin) {
                 throw new IllegalStateException("User login is missing in user context");
             }
-            userContext = getStrictRequestUserContext(userLogin);
+            userContext = getRequestUserContext(userLogin);
             userContextRequestHolder.setUserContext(userContext);
 
         }
@@ -74,7 +74,7 @@ public class UserContextService {
         UserContext userContext;
 
         if (!isRequestScopeAvailable) {
-            userContext = getStrictRequestUserContext(NOT_REQUEST_SCOPE_USER_NAME_ANONYMOUS);
+            userContext = getRequestUserContext(NOT_REQUEST_SCOPE_USER_NAME_ANONYMOUS);
             return userContext;
         }
 
@@ -82,15 +82,15 @@ public class UserContextService {
 
             String userLogin = userContextRequest.getUserLogin();
             if (null == userLogin) {
-                return getStrictRequestUserContext(REQUEST_SCOPE_USER_NAME_ANONYMOUS);
+                return getRequestUserContext(REQUEST_SCOPE_USER_NAME_ANONYMOUS);
             }
-            userContext = getStrictRequestUserContext(userLogin);
+            userContext = getRequestUserContext(userLogin);
             userContextRequestHolder.setUserContext(userContext);
         }
         return userContextRequestHolder.getUserContext();
     }
 
-    private UserContext getStrictRequestUserContext(String userLogin) {
+    private UserContext getRequestUserContext(String userLogin) {
 
         // FIXME get user from database with all UserDto info
         // UserContext = userService.getByLogin(userLogin)
