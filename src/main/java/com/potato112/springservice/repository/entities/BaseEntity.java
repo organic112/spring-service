@@ -7,6 +7,7 @@ import com.potato112.springservice.repository.interceptors.TransientBaseEntitySt
 import com.potato112.springservice.repository.interfaces.BaseTable;
 import com.potato112.springservice.repository.interfaces.EntityWithTransientState;
 
+import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
@@ -19,10 +20,12 @@ import java.time.LocalDateTime;
 public abstract class BaseEntity implements Serializable, BaseTable, EntityWithTransientState<TransientBaseEntityState> {
 
 
+    @Column(nullable = false)
     private LocalDateTime createDate;
 
     private LocalDateTime updateDate;
 
+    @Column(nullable = false)
     private String createUser;
 
     private String updateUser;
