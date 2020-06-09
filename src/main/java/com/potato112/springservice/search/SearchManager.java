@@ -7,5 +7,5 @@ public interface SearchManager<MODEL> {
     int count(QueryMeta queryMeta);
 
     List<MODEL> find(QueryMeta queryMeta);
-    
+
 }

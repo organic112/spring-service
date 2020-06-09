@@ -1,7 +1,10 @@
 package com.potato112.springservice.search;
 
+import lombok.Data;
+
 import java.util.List;
 
+@Data
 public class QueryMeta {
 
     private int pageSize;
