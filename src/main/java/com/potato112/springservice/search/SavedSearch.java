@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Entity
+//@Entity
 @Data
 @Table(schema = "demo-db", name = "saved_search")
 public class SavedSearch extends BaseEntity {

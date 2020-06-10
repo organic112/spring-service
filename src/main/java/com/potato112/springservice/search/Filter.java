@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.List;
 
 
-@Entity
+//@Entity
 @Data
 @Table(schema = "demo-db", name = "query_filters")
 public class Filter extends BaseEntity {
@@ -45,6 +45,14 @@ public class Filter extends BaseEntity {
     @Override
     public void setId(String id) {
 
+    }
+
+    public Serializable getValue() {
+        return value;
+    }
+
+    public void setValue(Serializable value) {
+        this.value = value;
     }
 
     public void setValue(Object value) {

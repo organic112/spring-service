@@ -3,9 +3,7 @@ package com.potato112.springservice.search;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projection;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.*;
 import org.hibernate.sql.JoinType;
 import org.springframework.stereotype.Service;
 
@@ -26,20 +24,49 @@ public class BaseDAO {
     @PersistenceContext
     private EntityManager entityManager;
 
+
+    public List<String> getPropertyValuesByQueryMeta(QueryMeta queryMeta, Class<?> clazz, String propertyName){
+
+        Projection idProjection = Projections.property(propertyName);
+        return (List<String>) getByQueryMeta(queryMeta, clazz, idProjection);
+    }
+
+    public List<?> getByQueryMeta(QueryMeta queryMeta, Class<?> clazz) {
+        List<?> result = getByQueryMeta(queryMeta, clazz, null);
+        return result;
+    }
+
+    public int count(QueryMeta queryMeta, Class<?> clazz) {
+        Session session = (Session) entityManager.getDelegate();
+
+        Long count = 0L;
+        DetachedCriteria criteria = getCriteria(queryMeta, session, clazz);
+        Criteria c = criteria.getExecutableCriteria(session);
+        c.setProjection(Projections.countDistinct("id"));
+        count = (Long) c.uniqueResult();
+
+        return count.intValue();
+    }
+
     protected final List<?> getByQueryMeta(QueryMeta queryMeta, Class<?> clazz, Projection projection) {
 
         Session session = (Session) entityManager.getDelegate();
         ArrayList<Object> resultList = new ArrayList<>();
 
         SysDetachedCriteria criteria = getCriteria(queryMeta, session, clazz);
+
         criteria = getCriteriaWithOrder(queryMeta, criteria);
         Criteria c = getCriteriaPaged(criteria, queryMeta, session);
+
         Optional.ofNullable(projection).ifPresent(c::setProjection);
         List<?> result = c.list();
+
         if (projection == null) {
             initializeFields(result);
         }
         resultList.addAll(result);
+
+        System.out.println("result list size "+ resultList.size());
         return resultList;
     }
 
@@ -190,6 +217,9 @@ public class BaseDAO {
     private void addBasicRestrictionsFromFilter(SysDetachedCriteria criteria, FilterType filterType, Object filterValue,
                                                 List<? extends Serializable> filterValues, String propertyName) {
 
+
+        System.out.println("ECHO add basic restrictions");
+
         if (FilterType.INTEGER_LIKE.equals(filterType) && filterValue != null && filterValue instanceof Integer) {
             //c.add(new) FIXME
         } else if (FilterType.LIKE.equals(filterType) && filterValue != null) {
@@ -198,6 +228,12 @@ public class BaseDAO {
             criteria.add(Restrictions.ilike(propertyName, "%" + filterValue + "%"));
         } else if (FilterType.EQUALS.equals(filterType)) {
             criteria.add(Restrictions.eq(propertyName, filterValue));
+
+            System.out.println("filterType" + filterType);
+            System.out.println("propertyName" + propertyName);
+            System.out.println("filterValue" + filterValue);
+            System.out.println("Echo added equals restriction...");
+
         } else if (FilterType.NOT_EQUALS.equals(filterType)) {
             criteria.add(Restrictions.not(Restrictions.eqOrIsNull(propertyName, filterValue)));
         } else if (FilterType.GREATER.equals(filterType)) {
