@@ -1,6 +1,10 @@
-package com.potato112.springservice.search;
+package com.potato112.springservice.search.service;
 
 
+import com.potato112.springservice.search.model.SysDetachedCriteria;
+import com.potato112.springservice.search.model.query.Filter;
+import com.potato112.springservice.search.model.query.FilterType;
+import com.potato112.springservice.search.model.query.QueryMeta;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.*;
@@ -17,7 +21,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Provides generic db queries based on:
+ * Provides generic db queries based on Hibernate API and:
  * - QueryMeta
  * - Entity class
  * - class property name (class field)

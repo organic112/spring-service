@@ -1,4 +1,4 @@
-package com.potato112.springservice.search;
+package com.potato112.springservice.search.model;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.sql.JoinType;

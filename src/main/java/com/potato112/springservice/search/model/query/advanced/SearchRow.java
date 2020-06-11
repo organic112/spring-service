@@ -1,4 +1,4 @@
-package com.potato112.springservice.search;
+package com.potato112.springservice.search.model.query.advanced;
 
 import com.potato112.springservice.repository.entities.BaseEntity;
 import lombok.Data;

@@ -1,7 +1,6 @@
-package com.potato112.springservice.search;
+package com.potato112.springservice.search.model.query.advanced;
 
 import com.potato112.springservice.crud.model.RentalCar;
-import com.potato112.springservice.repository.entities.auth.ViewName;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collections;

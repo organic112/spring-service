@@ -1,4 +1,4 @@
-package com.potato112.springservice.search;
+package com.potato112.springservice.search.interfaces;
 
 import java.io.Serializable;
 

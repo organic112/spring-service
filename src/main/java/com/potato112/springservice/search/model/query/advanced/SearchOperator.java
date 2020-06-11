@@ -1,4 +1,4 @@
-package com.potato112.springservice.search;
+package com.potato112.springservice.search.model.query.advanced;
 
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;

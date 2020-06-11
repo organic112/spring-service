@@ -1,5 +1,6 @@
-package com.potato112.springservice.search;
+package com.potato112.springservice.search.model.query;
 
+import com.potato112.springservice.search.model.query.advanced.SavedAdvSearch;
 import lombok.Data;
 
 import java.util.List;

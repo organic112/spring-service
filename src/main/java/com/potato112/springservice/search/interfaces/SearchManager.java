@@ -1,4 +1,6 @@
-package com.potato112.springservice.search;
+package com.potato112.springservice.search.interfaces;
+
+import com.potato112.springservice.search.model.query.QueryMeta;
 
 import java.util.List;
 

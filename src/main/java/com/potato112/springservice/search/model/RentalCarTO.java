@@ -1,5 +1,6 @@
-package com.potato112.springservice.search;
+package com.potato112.springservice.search.model;
 
+import com.potato112.springservice.search.interfaces.BaseTO;
 import lombok.Data;
 
 import java.io.Serializable;

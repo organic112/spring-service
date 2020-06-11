@@ -1,4 +1,4 @@
-package com.potato112.springservice.search;
+package com.potato112.springservice.search.model.query;
 
 /**
  * Possible types of filters for simple search

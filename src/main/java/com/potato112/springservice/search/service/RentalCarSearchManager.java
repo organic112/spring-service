@@ -1,12 +1,19 @@
-package com.potato112.springservice.search;
+package com.potato112.springservice.search.service;
 
 import com.potato112.springservice.crud.model.RentalCar;
+import com.potato112.springservice.search.interfaces.DBSearchManager;
+import com.potato112.springservice.search.interfaces.SearchManager;
+import com.potato112.springservice.search.model.query.QueryMeta;
+import com.potato112.springservice.search.model.RentalCarTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implements specific search operations for current Entity
+ */
 @Service
 public class RentalCarSearchManager implements SearchManager<RentalCarTO>, DBSearchManager<RentalCarTO> {
 
