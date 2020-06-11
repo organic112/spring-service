@@ -1,7 +1,6 @@
 package com.potato112.springservice.crud.model;
 
 import com.potato112.springservice.repository.entities.BaseEntity;
-import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
@@ -24,7 +23,7 @@ import java.util.List;
         ),
         @NamedQuery(
                 name = "deleteRentalCarsById",
-                query = "delete from RentalCar rce where rce.carId = :carId"
+                query = "delete from RentalCar rce where rce.id = :carId"
         )
 })
 @Audited
@@ -38,7 +37,7 @@ public class RentalCar extends BaseEntity implements Serializable {
     @Column(name = "car_id", length = 80)
     @GeneratedValue(generator="system-uuid") // auto generated as String to Varchar
     @GenericGenerator(name="system-uuid", strategy = "uuid")
-    private String carId;
+    private String id;
     private String brand;
     private int payloadKG;
     private String color;
@@ -52,20 +51,15 @@ public class RentalCar extends BaseEntity implements Serializable {
 
     @Override
     public String getId() {
-        return carId;
+        return id;
     }
 
     @Override
     public void setId(String id) {
         //this.carId = id;
+        this.id = id;
     }
 
-    public String getCarId() {
-        return carId;
-    }
-    public void setCarId(String carId) {
-        this.carId = carId;
-    }
     public String getBrand() {
         return brand;
     }

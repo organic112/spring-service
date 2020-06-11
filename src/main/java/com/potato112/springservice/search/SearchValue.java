@@ -8,7 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 /**
- * Holds single comparing value for search row in adv. search
+ * Holds single comparing value for search row in advanced search
  */
 @Data
 @Entity
@@ -22,6 +22,7 @@ public class SearchValue extends BaseEntity {
     @GenericGenerator(name="system-uuid", strategy = "uuid")
     private String id;
 
+    // provides position: single field always 0, two fields (e.g. between operator) 0 or 1, etc.
     @Column(name = "value_position")
     private Integer position;
 

@@ -34,13 +34,12 @@ public class BaseDAOTest {
     @Test
     public void shouldFetchDataWithHibernateQuery(){
 
+        // TODO
+/*
         QueryMeta queryMeta = new QueryMeta();
 
         Criterion projection = Restrictions.eq("brand", "Tesla");
-
-
-
-        baseDAO.getPropertyValuesByQueryMeta(queryMeta, RentalCar.class, "brand");
+        baseDAO.getPropertyValuesByQueryMeta(queryMeta, RentalCar.class, "brand");*/
 
 
 

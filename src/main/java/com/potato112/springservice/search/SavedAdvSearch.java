@@ -11,10 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * Stores Advanced logical search filtering meta information
+ */
 //@Entity
 @Data
 @Table(schema = "demo-db", name = "saved_search")
-public class SavedSearch extends BaseEntity {
+public class SavedAdvSearch extends BaseEntity {
 
     @Id
     @NotNull

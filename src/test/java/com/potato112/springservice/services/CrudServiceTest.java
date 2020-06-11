@@ -168,19 +168,19 @@ public class CrudServiceTest {
         rentalAgreements2.add(rentalAgreement6);
 
         // 5) add rental agreements by update of Car (new Hibernate session)
-        String id1 = rentalCar1.getCarId();
+        String id1 = rentalCar1.getId();
         RentalCar carFromDb1 = rentalCarCRUDService.findById(id1).get();
         carFromDb1.setRentalAgreements(rentalAgreements1);
         //rentalCarCRUDService.update(carFromDb1);
 
-        String id2 = rentalCar2.getCarId();
+        String id2 = rentalCar2.getId();
         RentalCar carFromDb2 = rentalCarCRUDService.findById(id2).get();
         carFromDb2.setRentalAgreements(rentalAgreements2);
        // rentalCarCRUDService.update(carFromDb2);
 
         // get persisted rental Car
         System.out.println("Check persited car, client, agreement (mapping).");
-        System.out.println("rental car from db id" + carFromDb1.getCarId());
+        System.out.println("rental car from db id" + carFromDb1.getId());
         System.out.println("rental car agreements from db size:" + carFromDb1.getRentalAgreements().size());
         System.out.println("TEST END");
     }

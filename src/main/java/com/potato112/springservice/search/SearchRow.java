@@ -10,6 +10,9 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Logical row for Advanced search filtering
+ */
 @Data
 @Entity
 @Table(schema = "demo-db", name = "search_rows")
@@ -44,6 +47,4 @@ public class SearchRow extends BaseEntity {
     @JoinColumn(name = "search_row_id")
     @Cascade({ org.hibernate.annotations.CascadeType.ALL })
     private List<SearchValue> searchValues = new ArrayList<>();
-
-
 }

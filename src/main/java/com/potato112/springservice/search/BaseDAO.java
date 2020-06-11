@@ -16,7 +16,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+/**
+ * Provides generic db queries based on:
+ * - QueryMeta
+ * - Entity class
+ * - class property name (class field)
+ */
 @Service
 @Transactional
 public class BaseDAO {
@@ -24,21 +29,8 @@ public class BaseDAO {
     @PersistenceContext
     private EntityManager entityManager;
 
-
-    public List<String> getPropertyValuesByQueryMeta(QueryMeta queryMeta, Class<?> clazz, String propertyName){
-
-        Projection idProjection = Projections.property(propertyName);
-        return (List<String>) getByQueryMeta(queryMeta, clazz, idProjection);
-    }
-
-    public List<?> getByQueryMeta(QueryMeta queryMeta, Class<?> clazz) {
-        List<?> result = getByQueryMeta(queryMeta, clazz, null);
-        return result;
-    }
-
     public int count(QueryMeta queryMeta, Class<?> clazz) {
         Session session = (Session) entityManager.getDelegate();
-
         Long count = 0L;
         DetachedCriteria criteria = getCriteria(queryMeta, session, clazz);
         Criteria c = criteria.getExecutableCriteria(session);
@@ -46,6 +38,17 @@ public class BaseDAO {
         count = (Long) c.uniqueResult();
 
         return count.intValue();
+    }
+
+    public List<?> getByQueryMeta(QueryMeta queryMeta, Class<?> clazz) {
+        List<?> result = getByQueryMeta(queryMeta, clazz, null);
+        return result;
+    }
+
+    public List<String> getPropertyValuesByQueryMeta(QueryMeta queryMeta, Class<?> clazz, String propertyName){
+
+        Projection idProjection = Projections.property(propertyName);
+        return (List<String>) getByQueryMeta(queryMeta, clazz, idProjection);
     }
 
     protected final List<?> getByQueryMeta(QueryMeta queryMeta, Class<?> clazz, Projection projection) {
@@ -71,6 +74,7 @@ public class BaseDAO {
     }
 
     private void initializeFields(List<?> result) {
+        //TODO
     }
 
     private Criteria getCriteriaPaged(SysDetachedCriteria detachedCriteria, QueryMeta queryMeta, Session session) {
@@ -108,22 +112,24 @@ public class BaseDAO {
     }
 
     private SysDetachedCriteria getCriteria(QueryMeta queryMeta, Session session, Class<?> clazz) {
-        SysDetachedCriteria c = SysDetachedCriteria.forClazz(clazz);
-        customizeCriteria(c, queryMeta);
+        SysDetachedCriteria detachedCriteria = SysDetachedCriteria.forClazz(clazz);
+        customizeCriteria(detachedCriteria, queryMeta);
 
 /*        if (null != queryMeta.getSavedSearch()) {
             fillAdvancedSearchCriteria(queryMeta, c);
         } else {*/
+
+        // simple search
         List<Filter> filters = queryMeta.getFilters();
         if (null == filters) {
-            return c;
+            return detachedCriteria;
         }
         filters.forEach(filter -> {
             String propertyName = filter.getPropertyId();
-            propertyName = createAliasesForSearchField(c, propertyName);
-            addRestrictionsFromFilter(c, filter.getFilterType(), filter.getValue(), filter.getValues(), propertyName);
+            propertyName = createAliasesForSearchField(detachedCriteria, propertyName);
+            addFilterRestrictions(detachedCriteria, filter.getFilterType(), filter.getValue(), filter.getValues(), propertyName);
         });
-        return c;
+        return detachedCriteria;
         //}
     }
 
@@ -153,15 +159,18 @@ public class BaseDAO {
     private void customizeCriteria(SysDetachedCriteria criteria, QueryMeta queryMeta) {
     }
 
-    private void addRestrictionsFromFilter(SysDetachedCriteria criteria, FilterType filterType, Object filterValue, List<? extends Serializable> filterValues, String propertyName) {
+    private void addFilterRestrictions(SysDetachedCriteria criteria, FilterType filterType, Object filterValue, List<? extends Serializable> filterValues, String propertyName) {
 
-        boolean wasDateFilterType = addDateRestrictionsFromFilter(criteria, filterType, filterValue, filterValues, propertyName);
+        boolean wasDateFilterType = addDateFilterRestrictions(criteria, filterType, filterValue, filterValues, propertyName);
         if (!wasDateFilterType) {
-            addBasicRestrictionsFromFilter(criteria, filterType, filterValue, filterValues, propertyName);
+            addBasicFilterRestriction(criteria, filterType, filterValue, filterValues, propertyName);
         }
     }
 
-    private boolean addDateRestrictionsFromFilter(SysDetachedCriteria criteria, FilterType filterType, Object filterValue, List<? extends Serializable> filterValues, String propertyName) {
+    /**
+     * Handles comparison between dates
+     */
+    private boolean addDateFilterRestrictions(SysDetachedCriteria criteria, FilterType filterType, Object filterValue, List<? extends Serializable> filterValues, String propertyName) {
 
         Date filterDate;
         switch (filterType) {
@@ -176,7 +185,7 @@ public class BaseDAO {
                     cal2.add(Calendar.DAY_OF_YEAR, 1);
                     criteria.add(Restrictions.between(propertyName, cal1.getTime(), cal2.getTime()));
                 } catch (ClassCastException e) {
-                    addBasicRestrictionsFromFilter(criteria, FilterType.EQUALS, filterValue, filterValues, propertyName);
+                    addBasicFilterRestriction(criteria, FilterType.EQUALS, filterValue, filterValues, propertyName);
                 }
                 return true;
             case DATE_AFTER:
@@ -188,7 +197,7 @@ public class BaseDAO {
                     cal.add(Calendar.DAY_OF_YEAR, 1);
                     criteria.add(Restrictions.ge(propertyName, cal.getTime()));
                 } catch (ClassCastException e) {
-                    addBasicRestrictionsFromFilter(criteria, FilterType.GREATER, filterType, filterValues, propertyName);
+                    addBasicFilterRestriction(criteria, FilterType.GREATER, filterType, filterValues, propertyName);
                 }
                 return true;
             case DATE_BEFORE:
@@ -199,7 +208,7 @@ public class BaseDAO {
                     removeTimeFromCalendar(cal);
                     criteria.add(Restrictions.lt(propertyName, cal.getTime()));
                 } catch (ClassCastException e) {
-                    addBasicRestrictionsFromFilter(criteria, FilterType.LESS, filterValue, filterValues, propertyName);
+                    addBasicFilterRestriction(criteria, FilterType.LESS, filterValue, filterValues, propertyName);
                 }
                 return true;
             default:
@@ -214,38 +223,41 @@ public class BaseDAO {
         cal.set(Calendar.MILLISECOND, 0);
     }
 
-    private void addBasicRestrictionsFromFilter(SysDetachedCriteria criteria, FilterType filterType, Object filterValue,
-                                                List<? extends Serializable> filterValues, String propertyName) {
-
+    /**
+     * Adds Hibernate criterions (Restrictions) for current simple search filter
+     * Depending on criterion uses single value or list of values
+     */
+    private void addBasicFilterRestriction(SysDetachedCriteria criteria, FilterType filterType, Object singleFilterValue,
+                                           List<? extends Serializable> filterValueList, String propertyName) {
 
         System.out.println("ECHO add basic restrictions");
 
-        if (FilterType.INTEGER_LIKE.equals(filterType) && filterValue != null && filterValue instanceof Integer) {
-            //c.add(new) FIXME
-        } else if (FilterType.LIKE.equals(filterType) && filterValue != null) {
-            criteria.add(Restrictions.like(propertyName, "%" + filterValue + "%"));
+        if (FilterType.INTEGER_LIKE.equals(filterType) && singleFilterValue != null && singleFilterValue instanceof Integer) {
+            //c.add(new) FIXME - custom Restriction
+        } else if (FilterType.LIKE.equals(filterType) && singleFilterValue != null) {
+            criteria.add(Restrictions.like(propertyName, "%" + singleFilterValue + "%"));
         } else if (FilterType.LIKE_CASE_INSENSITIVE.equals(filterType) && filterType != null) {
-            criteria.add(Restrictions.ilike(propertyName, "%" + filterValue + "%"));
+            criteria.add(Restrictions.ilike(propertyName, "%" + singleFilterValue + "%"));
         } else if (FilterType.EQUALS.equals(filterType)) {
-            criteria.add(Restrictions.eq(propertyName, filterValue));
+            criteria.add(Restrictions.eq(propertyName, singleFilterValue));
 
             System.out.println("filterType" + filterType);
             System.out.println("propertyName" + propertyName);
-            System.out.println("filterValue" + filterValue);
+            System.out.println("filterValue" + singleFilterValue);
             System.out.println("Echo added equals restriction...");
 
         } else if (FilterType.NOT_EQUALS.equals(filterType)) {
-            criteria.add(Restrictions.not(Restrictions.eqOrIsNull(propertyName, filterValue)));
+            criteria.add(Restrictions.not(Restrictions.eqOrIsNull(propertyName, singleFilterValue)));
         } else if (FilterType.GREATER.equals(filterType)) {
-            criteria.add(Restrictions.gt(propertyName, filterValue));
+            criteria.add(Restrictions.gt(propertyName, singleFilterValue));
         } else if (FilterType.LESS.equals(filterType)) {
-            criteria.add(Restrictions.lt(propertyName, filterValue));
+            criteria.add(Restrictions.lt(propertyName, singleFilterValue));
         } else if (FilterType.GREATER_EQUALS.equals(filterType)) {
-            criteria.add(Restrictions.le(propertyName, filterValue));
+            criteria.add(Restrictions.le(propertyName, singleFilterValue));
         } else if (FilterType.IN.equals(filterType)) {
-            criteria.add(Restrictions.in(propertyName, filterValues));
+            criteria.add(Restrictions.in(propertyName, filterValueList));
         } else if (FilterType.NOT_IN.equals(filterType)) {
-            criteria.add(Restrictions.not(Restrictions.in(propertyName, filterValues)));
+            criteria.add(Restrictions.not(Restrictions.in(propertyName, filterValueList)));
         }
     }
 }

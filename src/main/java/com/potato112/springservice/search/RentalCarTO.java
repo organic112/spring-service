@@ -4,10 +4,11 @@ import lombok.Data;
 
 import java.io.Serializable;
 
-
+/**
+ * Result TO for RentalCar entity
+ */
 @Data
 public class RentalCarTO implements Serializable, BaseTO {
-
 
     private String id;
     private String brand;
@@ -17,6 +18,4 @@ public class RentalCarTO implements Serializable, BaseTO {
     public String getId() {
         return id;
     }
-
-
 }

@@ -9,7 +9,9 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 
-
+/**
+ * Entity storing Filter data for simple search
+ */
 //@Entity
 @Data
 @Table(schema = "demo-db", name = "query_filters")
@@ -73,5 +75,4 @@ public class Filter extends BaseEntity {
         filter.setValues(values);
         return filter;
     }
-
 }

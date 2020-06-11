@@ -7,7 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.history.RevisionRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -127,10 +126,10 @@ public class RentalCarCRUDService implements JpaRepository<RentalCar, String> {
     @Override
     public void delete(RentalCar rentalCar) {
 
-        Optional<RentalCar> car = findById(rentalCar.getCarId());
+        Optional<RentalCar> car = findById(rentalCar.getId());
 
         if (car.isPresent()) {
-            String carId = car.get().getCarId();
+            String carId = car.get().getId();
 
             em.createNamedQuery("deleteRentalCarsById")
                     .setParameter("carId", carId)

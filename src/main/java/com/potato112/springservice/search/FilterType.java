@@ -1,5 +1,8 @@
 package com.potato112.springservice.search;
 
+/**
+ * Possible types of filters for simple search
+ */
 public enum  FilterType {
     EQUALS,
     DATE_EQUALS,

@@ -6,8 +6,10 @@ import org.hibernate.sql.JoinType;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Custom criteria that extends DetachedCriteria to store list of Aliases for created custom criteria
+ */
 public class SysDetachedCriteria extends DetachedCriteria {
-
 
     private List<String> createdAliases = new ArrayList<>();
 
@@ -37,6 +39,4 @@ public class SysDetachedCriteria extends DetachedCriteria {
 
         return createdAliases;
     }
-
-
 }
