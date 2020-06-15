@@ -14,7 +14,7 @@ import java.util.List;
  */
 @Data
 @Entity
-@Table(schema = "tms", name = "investment_product")
+@Table(schema = "demo-db", name = "investment_product")
 public class InvestmentProduct extends BaseInterfaceTable {
 
     @Id

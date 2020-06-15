@@ -76,6 +76,11 @@ public class UserApi {
         return createUserService.getUserParameters();
     }
 
+    @PostMapping(value = "/resetPassword")
+    public void resetPassword(@RequestBody String emailAddress) {
+        userService.resetPassword(emailAddress);
+    }
+
 
 
 

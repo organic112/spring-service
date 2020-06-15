@@ -29,6 +29,8 @@ public interface UserService {
 
     Optional<UserDto> getUser(String id);
 
+    void resetPassword(String emailAddress);
+
     // void deleteUsers(Set<String> ids);
     // void resetPassword(String emailAddress);
     // String generateRandomPassword();

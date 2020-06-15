@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 @Entity
-@Table(schema = "tms", name = "investment_processing_messages")
+@Table(schema = "demo-db", name = "investment_processing_messages")
 public class InvestmentProcessingMessage extends BaseEntity {
 
     @Id
