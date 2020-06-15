@@ -77,6 +77,15 @@ public class AppConfig implements CommandLineRunner {
         UserGroup userGroup1 = new UserGroup();
         //userGroup1.setCreateUser("app-context-user");
         userGroup1.setGroupName("new_test_user_group_name");
+
+        GroupPermission groupPermission0 = new GroupPermission();
+        groupPermission0.setCreateUser("app-context-user");
+        groupPermission0.setViewName(ViewName.DEFAULT_AUTHORIZED_VIEW);
+        groupPermission0.setCanCreate(true);
+        groupPermission0.setCanUpdate(true);
+        groupPermission0.setCanDelete(true);
+        groupPermission0.setUserGroup(userGroup1);
+
         GroupPermission groupPermission1 = new GroupPermission();
         groupPermission1.setCreateUser("app-context-user");
         groupPermission1.setViewName(ViewName.FOO_OVERVIEW_VIEW);
@@ -102,6 +111,7 @@ public class AppConfig implements CommandLineRunner {
         groupPermission3.setUserGroup(userGroup1);
 
         List<GroupPermission> permissions = new ArrayList<>();
+        permissions.add(groupPermission0); // default auth view
         permissions.add(groupPermission1);
         permissions.add(groupPermission2);
         permissions.add(groupPermission3);
