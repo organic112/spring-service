@@ -27,12 +27,18 @@ import java.util.Optional;
 
 @Slf4j
 @Service
-@AllArgsConstructor
+// @AllArgsConstructor
 public class DBUserService implements UserService {
 
     private final UserRepository userRepository;
     private final EmailService emailService;
     private final PasswordService passwordService;
+
+    public DBUserService(UserRepository userRepository, EmailService emailService, PasswordService passwordService) {
+        this.userRepository = userRepository;
+        this.emailService = emailService;
+        this.passwordService = passwordService;
+    }
 
     @Override
     public Optional<UserDetailsAuthority> findByUserName(String userName) {

@@ -2,16 +2,16 @@ package com.potato112.springservice.domain.user.api;
 
 import com.potato112.springservice.domain.common.email.PasswordService;
 import org.jboss.seam.security.management.PasswordHash;
+import org.springframework.stereotype.Service;
 
 import java.security.GeneralSecurityException;
 
-public class PasswordSimpleImpl implements PasswordService {
-
+@Service
+public class PasswordServiceImpl implements PasswordService {
 
     private static final String VALID_CHARS_STRING = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final int RANDOM_PASS_HASH_ITER = 100;
     private static final int RANDOM_PASS_LENGTH = 10;
-
 
     @Override
     public String generateRandomPassword() {
