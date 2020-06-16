@@ -34,63 +34,46 @@ public class UserApi {
     private final UpdateUserService updateUserService;
     private final CreateUserService createUserService;
 
-
     @GetMapping(value = "/login/{username}")
     public UserDetailsAuthority getUserByName(@PathVariable("username") String userName) {
-
         System.out.println("request in user api (with param)! userName:" + userName);
-
         Optional<UserDetailsAuthority> user = userService.findByUserName(userName);
         return user.orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     @PostMapping
     public String createUser(@RequestBody @Valid UserDto userDto) {
-
         return createUserService.createUser(userDto);
     }
 
     @GetMapping
     OffsetResponseVo<UserOverviewResponseVo> getUsers(@RequestParam Map<String, String> allParams) {
-
         UserSearchVo userSearchVo = new UserSearchVo(allParams);
         return userService.getUsers(userSearchVo);
     }
 
     @GetMapping(value = "/{userId}")
     public UserDto getUser(@PathVariable String userId){
-
         return userService.getUser(userId).orElseThrow(() -> new NoSuchElementException("user with current id not exists"));
     }
 
     @PutMapping
     public UserDto update(@RequestBody @Valid UserDto userDto) {
-
         return updateUserService.save(userDto);
     }
 
     @GetMapping(value = "/create-parameters")
     public UserFormParametersVo getUserParameters() {
-
         System.out.println("CREATE PARAMETERS!");
         return createUserService.getUserParameters();
     }
 
-    @PostMapping(value = "/resetPassword")
+    @PostMapping(value = "/login/resetPassword")
     public void resetPassword(@RequestBody String emailAddress) {
         userService.resetPassword(emailAddress);
     }
 
-
-
-
-
-    /*@PostMapping
-    public String createUser(@RequestMapping @Valid UserVo user) {
-        return userService.createUser(user);
-    }*/
-
-    // FIXME rest of methods implementation
+    // TODO methods to implement
     // getUsers
     // getUser
     // updateUser
@@ -99,7 +82,6 @@ public class UserApi {
     // getUsersParameters
     // getUserProfile
     // updateUserProfile
-
 }
 
 
